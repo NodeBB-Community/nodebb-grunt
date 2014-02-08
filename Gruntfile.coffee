@@ -46,7 +46,6 @@ module.exports = (grunt) ->
   devAllWatch = []
   for m in moduleNames
     devAllWatch = devAllWatch.concat ["clean:#{m}", "copy:toTmp_#{m}", "coffee:#{m}", "copy:index_#{m}", "clean:.#{m}", "copy:toModules_#{m}"]
-  console.log devAllWatch
   initObj =
     clean:
       all: [paths.tmp]

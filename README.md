@@ -9,8 +9,9 @@ Also allows you to use coffee-script instead of plain javascript :smile:
 
 ## Installation
 
- + Clone this repository into your NodeBB Forum path (or into any path
-   containing the NodeBB Forum as sub-directory)
+ + Download the *Gruntfile.coffee* from this project into your NodeBB-path
+   or any directory containing the NodeBB Forum as sub-directory
+   (clone of this repository would overwrite the README.md file of NodeBB)
  + run `npm install grunt grunt-coffee grunt-contrib-clean grunt-contrib-copy grunt-contrib-coffee grunt-contrib-uglify grunt-contrib-watch`
    from within your NodeBB-directory
  + setup your module-directory, e.g. by creating custom_modules/
