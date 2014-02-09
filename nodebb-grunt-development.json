@@ -1,0 +1,30 @@
+{
+  "modules": {
+    "plugins": {
+      "emoji": "emoji-extended",
+      "livereload": "livereload"
+    },
+    "themes": {
+      "dark_rectangles": "dark-rectangles"
+    }
+  },
+  "paths": {
+    "nodebb": "./",
+    "custom": {
+      "base": "custom_modules/",
+      "plugins": "plugins/",
+      "themes": "themes/",
+      "coffee": "coffee/"
+    },
+    "tmp": ".tmp/"
+  },
+  "uglify": {
+    "dev": [],
+    "dist": ["**/*.js", "!**/node_modules/**/*"]
+  },
+  "wrapping": {
+    "index": true,
+    "other": false
+  },
+  "liveReload": 35729
+}

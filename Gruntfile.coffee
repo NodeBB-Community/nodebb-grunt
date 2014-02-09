@@ -1,114 +1,113 @@
 module.exports = (grunt) ->
 
-  paths = # have to end with /
-    nodebb: './'
-    custom:
-      base: 'custom_modules/'
-      plugins: 'plugins/'
-      themes: 'themes/'
-      coffee: 'coffee/'
-    tmp: '.tmp/'
+  # NodeBB Grunt Development  --  Version 0.2-1
 
-  # Module-names must not begin with '.'
-
-  plugins = {
-
-  }
-
-  themes = {
-
-  }
-
-  uglifyDist = true
-
-  livereload = 35729 # false to disable
-
-  ###
-    DO NOT CHANGE ANYTHING BELOW THIS LINE!
-  ###
+  config = grunt.file.readJSON('grunt-development.json')
 
   modules = {}
 
-  for p of plugins
-    continue if plugins[p][0] == '.'
+  for p of config.modules.plugins
+    continue if config.modules.plugins[p][0] == '.'
     modules[p] =
-      src: "#{paths.custom.base}#{paths.custom.plugins}#{p}"
-      tmp: "#{paths.tmp}plugin-#{p}"
-      dest: "#{paths.nodebb}node_modules/nodebb-plugin-#{plugins[p]}"
+      src: "#{config.paths.custom.base}#{config.paths.custom.plugins}#{p}"
+      tmp: "#{config.paths.tmp}plugin-#{p}"
+      dest: "#{config.paths.nodebb}node_modules/nodebb-plugin-#{config.modules.plugins[p]}"
       plugin: true
-  for t of themes
-    continue if themes[t][0] == '.'
+  for t of config.modules.themes
+    continue if config.modules.themes[t][0] == '.'
     modules[t] =
-      src: "#{paths.custom.base}#{paths.custom.themes}#{t}"
-      tmp: "#{paths.tmp}theme-#{t}"
-      dest: "#{paths.nodebb}node_modules/nodebb-theme-#{themes[t]}"
+      src: "#{config.paths.custom.base}#{config.paths.custom.themes}#{t}"
+      tmp: "#{config.paths.tmp}theme-#{t}"
+      dest: "#{config.paths.nodebb}node_modules/nodebb-theme-#{config.modules.themes[t]}"
       plugin: false
 
   moduleNames = Object.getOwnPropertyNames modules
-  devAllWatch = []
-  for m in moduleNames
-    devAllWatch = devAllWatch.concat ["clean:#{m}", "copy:toTmp_#{m}", "coffee:#{m}", "copy:index_#{m}", "clean:.#{m}", "copy:toModules_#{m}"]
   initObj =
     clean:
-      all: [paths.tmp]
+      all: [config.paths.tmp]
     copy: {}
     coffee: {}
-    uglify: {}
+    uglify:
+      options:
+        mangle: false
     watch:
       all:
-        files: "#{paths.custom.base}**/*"
-        tasks: devAllWatch
+        files: "#{config.paths.custom.base}**/*"
       options:
-        livereload: livereload
+        livereload: config.livereload
     dev:
       options:
         all: moduleNames
-        tasks: devAllWatch
+        uglify: config.uglify.dev || []
     dist:
       options:
         all: moduleNames
-        uglify: uglifyDist
+        uglify: config.uglify.dist || []
+
+  devAllTasks = []
 
   for m of modules
     mod = modules[m]
     # clean
     initObj.clean["#{m}"] = [mod.tmp]
-    initObj.clean[".#{m}"] = [mod.dest, "#{mod.tmp}/#{paths.custom.coffee}"]
+    initObj.clean[".#{m}"] = [mod.dest, "#{mod.tmp}/#{config.paths.custom.coffee}", "#{mod.tmp}/**/*.coffee"]
     # copy
     initObj.copy["toTmp_#{m}"] =
+      expand: true
       cwd: "#{mod.src}/"
       src: "**"
       dest: "#{mod.tmp}/"
-      expand: true
       dot: true
       filter: (p) -> !(/(^|\/)\.git/.test p)
     initObj.copy["toModules_#{m}"] =
+      expand: true
       cwd: "#{mod.tmp}/"
       src: ["**"]
       dest: "#{mod.dest}/"
-      expand: true
       dot: true
     initObj.copy["index_#{m}"] = # copy /coffee/index.js to /index.js if /coffee/ contains more than just index.js
-      src: ["#{mod.tmp}/#{paths.custom.coffee}index.js"]
+      src: ["#{mod.tmp}/#{config.paths.custom.coffee}index.js"]
       dest: "#{mod.tmp}/index.js"
       filter: (p) -> dir = require('fs').readdirSync(p.substr(0,p.length-9)); console.log dir; dir.length > 1
     # coffee
-    initObj.coffee[m] =
+    initObj.coffee["#{m}"] =
       options:
         join: true
-        bare: false
-    initObj.coffee[m].files = [{}]
-    initObj.coffee[m].files[0]["#{mod.tmp}/#{paths.custom.coffee}index.js"] = ["#{mod.tmp}/#{paths.custom.coffee}**/*.coffee"]
+        bare: !config.wrapping.index
+    initObj.coffee["#{m}"].files = [{}]
+    initObj.coffee["#{m}"].files[0]["#{mod.tmp}/#{config.paths.custom.coffee}index.js"] = ["#{mod.tmp}/#{config.paths.custom.coffee}**/*.coffee"]
+    initObj.coffee[".#{m}"] =
+      options:
+        bare: !config.wrapping.other
+      expand: true
+      cwd: "#{mod.tmp}/"
+      src: ["**/*.coffee"]
+      dest: "#{mod.tmp}/"
+      ext: ".js"
     # uglify
     initObj.uglify[m] =
-      options:
-        mangle: false
-    initObj.uglify[m].files = [{}]
-    initObj.uglify[m].files[0]["#{mod.tmp}/index.js"] = "#{mod.tmp}/index.js"
+      files: [
+        expand: true
+        cwd: "#{mod.tmp}/"
+        src: config.uglify.dist
+        dest: "#{mod.tmp}"
+      ]
+    initObj.uglify[".#{m}"] =
+      files: [
+        expand: true
+        cwd: "#{mod.tmp}/"
+        src: config.uglify.dev
+        dest: "#{mod.tmp}"
+      ]
     # watch
+    watchTasks = ["clean:#{m}", "copy:toTmp_#{m}", "coffee:#{m}", "copy:index_#{m}", "coffee:.#{m}", "clean:.#{m}", "uglify:.#{m}", "copy:toModules_#{m}"]
     initObj.watch[m] =
-      tasks: ["clean:#{m}", "copy:toTmp_#{m}", "coffee:#{m}", "copy:index_#{m}", "clean:.#{m}", "copy:toModules_#{m}"]
+      tasks: watchTasks
     initObj.watch[m].files = ["#{mod.src}/**/*"]
+
+    devAllTasks = devAllTasks.concat watchTasks
+
+  initObj.watch.all.tasks = initObj.dev.options.tasks = devAllTasks
 
   grunt.initConfig initObj
   grunt.loadNpmTasks 'grunt-contrib-clean'
@@ -120,8 +119,7 @@ module.exports = (grunt) ->
   grunt.registerTask 'dev', 'build and watch module(s).', (m) ->
     o = this.options()
     if m?
-      grunt.exec
-      grunt.task.run "clean:#{m}", "copy:toTmp_#{m}", "coffee:#{m}", "copy:index_#{m}", "clean:.#{m}", "copy:toModules_#{m}", "watch:#{m}"
+      grunt.task.run "clean:#{m}", "copy:toTmp_#{m}", "coffee:#{m}", "copy:index_#{m}", "coffee:.#{m}", "clean:.#{m}", "uglify:.#{m}", "copy:toModules_#{m}", "watch:#{m}"
     else
       grunt.task.run o.tasks.concat ["watch:all"]
 
@@ -130,9 +128,6 @@ module.exports = (grunt) ->
     if !m?
       grunt.task.run "dist:#{m}" for m in o.all
       return;
-    dist = ["clean:#{m}", "copy:toTmp_#{m}", "coffee:#{m}", "copy:index_#{m}"]
-    dist.push "uglify:#{m}" if o.uglify
-    dist = dist.concat ["clean:.#{m}", "copy:toModules_#{m}"]
-    grunt.task.run dist
+    grunt.task.run "clean:#{m}", "copy:toTmp_#{m}", "coffee:#{m}", "copy:index_#{m}", "coffee:.#{m}", "clean:.#{m}", "uglify:#{m}", "copy:toModules_#{m}"
 
   grunt.registerTask "default", ["dev"]
