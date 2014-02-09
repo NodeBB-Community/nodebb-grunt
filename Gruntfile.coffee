@@ -34,7 +34,7 @@ module.exports = (grunt) ->
       all:
         files: "#{config.paths.custom.base}**/*"
       options:
-        livereload: config.livereload
+        livereload: config.liveReload
     dev:
       options:
         all: moduleNames
