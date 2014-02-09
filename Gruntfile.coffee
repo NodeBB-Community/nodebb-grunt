@@ -21,6 +21,8 @@ module.exports = (grunt) ->
 
   uglifyDist = true
 
+  livereload = 35729 # false to disable
+
   ###
     DO NOT CHANGE ANYTHING BELOW THIS LINE!
   ###
@@ -56,6 +58,8 @@ module.exports = (grunt) ->
       all:
         files: "#{paths.custom.base}**/*"
         tasks: devAllWatch
+      options:
+        livereload: livereload
     dev:
       options:
         all: moduleNames
