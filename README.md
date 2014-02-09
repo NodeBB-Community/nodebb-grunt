@@ -1,4 +1,4 @@
-# NodeBB Grunt Development - 0.2-1
+# NodeBB Grunt Development - 0.2-2
 
 ## Features
 
