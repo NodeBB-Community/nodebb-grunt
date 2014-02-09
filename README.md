@@ -115,7 +115,7 @@ module).
 
 ## Changelog
 
-### Version 0.2-1
+### Version 0.2
 
  + improved configuration
  + added build-in compilation of any *.coffee*-files within modules to equivalent *.js*-files
