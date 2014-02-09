@@ -67,5 +67,5 @@ module).
  + `grunt dev`
  + work on modules, refresh browser, work on modules, [...]
  + kill grunt
- + `grunt dist`
+ + `grunt dist` (not needed if index.js shouldn't get uglified)
  + `npm publish node_modules/nodebb-MODULE`
