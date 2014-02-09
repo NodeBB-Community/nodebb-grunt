@@ -15,8 +15,8 @@ Also allows you to use coffee-script instead of plain javascript :smile:
    as sub-directory (clone of this repository would overwrite the nice
    README.md file of NodeBB).
 
- + run `npm install grunt grunt-coffee grunt-contrib-clean grunt-contrib-copy grunt-contrib-coffee grunt-contrib-uglify`
-   `grunt-contrib-watch`
+ + run `npm install grunt grunt-coffee grunt-contrib-clean grunt-contrib-copy grunt-contrib-coffee`
+   `grunt-contrib-uglify grunt-contrib-watch`
    from within your NodeBB-directory
  + setup your module-directory, e.g. by creating custom_modules/
    directory containing themes/ and plugins/. You may change the
