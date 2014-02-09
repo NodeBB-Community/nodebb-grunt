@@ -1,6 +1,6 @@
 module.exports = (grunt) ->
 
-  # NodeBB Grunt Development  --  Version 0.2-1
+  # NodeBB Grunt Development  --  Version 0.2-2
 
   config = grunt.file.readJSON('grunt-development.json')
 
