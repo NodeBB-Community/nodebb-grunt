@@ -1,4 +1,4 @@
-# NodeBB Custom Modules
+# NodeBB Grunt Development
 
 ## Features
 
