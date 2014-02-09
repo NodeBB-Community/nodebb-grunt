@@ -7,8 +7,6 @@ simple and comfortable.
 
 Also allows you to use coffee-script instead of plain javascript :smile:
 
-Note: Doesn't work on admin-pages yet.
-
 ## Installation
 
  + run `wget https://raw.github.com/frissdiegurke/nodebb-grunt-development/master/Gruntfile.coffee`
