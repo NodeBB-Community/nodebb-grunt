@@ -7,6 +7,15 @@ simple and comfortable.
 
 Also allows you to use coffee-script instead of plain javascript :smile:
 
+## Example Modules
+
++ [nodebb-plugin-emoji-extended](https://github.com/frissdiegurke/nodebb-plugin-emoji-extended)
++ [nodebb-plugin-livereload](https://github.com/frissdiegurke/nodebb-plugin-livereload)
+
+As you can see the `plugin.json` references to `"library": "./index.js"` that will get compiled out of all files within the `coffee`-dir which is a great way to split long one-file scripts into different files :wink:.
+
+Also you may notice that even within other directories all `.coffee`-files will get compiled to same-named `.js` files.
+
 ## Installation
 
  + run `wget https://raw.github.com/frissdiegurke/nodebb-grunt-development/master/Gruntfile.coffee`
