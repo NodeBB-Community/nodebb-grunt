@@ -5,17 +5,18 @@
       "livereload": "livereload"
     },
     "themes": {
-      "dark_rectangles": "dark-rectangles"
+      "dark_rectangles": "dark-rectangles",
+      "factory": "factory"
     }
   },
   "paths": {
-    "nodebb": "./",
     "custom": {
       "base": "custom_modules/",
       "plugins": "plugins/",
       "themes": "themes/",
       "coffee": "coffee/"
     },
+    "dist": "node_modules/",
     "tmp": ".tmp/"
   },
   "uglify": {
@@ -26,5 +27,6 @@
     "index": true,
     "other": false
   },
+  "beforeCommit": "git add -u",
   "liveReload": 35729
 }

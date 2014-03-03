@@ -1,4 +1,4 @@
-# NodeBB Grunt Development - 0.2-2
+# NodeBB Grunt Development - 0.3-1
 
 ## Features
 
@@ -11,6 +11,7 @@ Also allows you to use coffee-script instead of plain javascript :smile:
 
 + [nodebb-plugin-emoji-extended](https://github.com/frissdiegurke/nodebb-plugin-emoji-extended)
 + [nodebb-plugin-livereload](https://github.com/frissdiegurke/nodebb-plugin-livereload)
++ [nodebb-theme-dark-rectangles](https://github.com/frissdiegurke/nodebb-theme-dark-rectangles)
 
 As you can see the `plugin.json` references to `"library": "./index.js"` that will get compiled out of all files within the `coffee`-dir which is a great way to split long one-file scripts into different files :wink:.
 
@@ -109,20 +110,41 @@ structure.
    rebuilds
  + `grunt dist` - builds your modules and uglifies them if configured
    (within *Gruntfile.coffee*)
+ + `grunt publ` - runs `grunt dist` and publishes changes into NPM.
  + `grunt clean` - removes the *.tmp*-directory
 
 For each of the tasks you may add `:MODULENAME` to just use one module (`dev` does only work for all modules or a single
 module).
 
+ + `grunt publ:MODULENAME:COMMIT-MSG:PUSH`
+    1. runs `grunt dist:MODULENAME`
+    2. publishes changes into NPM
+    3. commits changes to git-repository if `COMMIT_MSG` is given
+    4. pushes commits to git-repository if `PUSH` is not "false"
+
 ## Typical Workflow
+
+### Multiple plugins / themes
 
  + `grunt dev`
  + work on modules, refresh browser, work on modules, [...]
- + kill grunt
- + `grunt dist` (not needed if index.js shouldn't get uglified)
- + `npm publish node_modules/nodebb-MODULE`
+ + `grunt publ` (no git calls) OR `grunt "publ:I have done some changes"` (commits each module with same message)
+
+### Single plugin / theme
+
+ + `grunt dev:MODULENAME`
+ + work on module, refresh browser, work on module, [...]
+ + `grunt "publ:MODULENAME:I have done some changes"`
 
 ## Changelog
+
+### Version 0.3
+
+ + added npm publish
+ + added git add+commit, push
+ + moved dist-path to config
+ + since `grunt publ` runs all necessary tasks to publish your work within short time there is no more need to kill the
+   `grunt dev` task anymore.
 
 ### Version 0.2
 
