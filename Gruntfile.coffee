@@ -156,7 +156,6 @@ module.exports = (grunt) ->
     grunt.task.run "dist:#{m}", "publish:#{m}", "git#{gitArgs}"
 
   grunt.registerMultiTask 'publish', 'Publish to module.', ->
-    return
     path = process.cwd()
     _done = this.async()
     done = ->
