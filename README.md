@@ -52,12 +52,14 @@ The structure should be self-explaining ;)
 
 **Sample meanings:**
 
-There are 2 plugins:
+There are 3 plugins:
 
  + The plugin within the directory *custom_modules/plugins/emoji/* gets
    mapped to a NodeBB-plugin called **nodebb-plugin-emoji-extended**
  + The plugin within the directory *custom_modules/plugins/livereload/*
    gets mapped to a NodeBB-plugin called **nodebb-plugin-livereload**
+ + The plugin within the directory *custom_modules/plugins/shortcuts/*
+   gets mapped to a NodeBB-plugin called **nodebb-plugin-shortcuts**
 
 There is one theme:
 
