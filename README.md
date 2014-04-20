@@ -4,7 +4,7 @@
 
  + Allows you to separate your development module-states from the actual NodeBB Forum while keeping the development-process simple and comfortable.
  + Allows you to use coffee-script instead of plain javascript :smile:
- + Simplifies the process of creating a new plugin/theme.
+ + Simplifies the process of creating new plugins/themes.
 
 ## Example Modules
 
