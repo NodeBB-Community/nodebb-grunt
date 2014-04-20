@@ -1,0 +1,10 @@
+{
+  "id": "nodebb-theme-@{id}",
+  "library": "./index.js",
+  "staticDirs": {
+    "@{id}": "static/@{id}/lib"
+  },
+  "scripts": [
+    "static/@{id}/@{id}.js"
+  ]
+}

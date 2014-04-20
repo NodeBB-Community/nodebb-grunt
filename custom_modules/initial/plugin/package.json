@@ -1,0 +1,17 @@
+{
+  "name": "nodebb-plugin-@{id}",
+  "version": "0.0.1-1",
+  "description": "@{desc}",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/@{gh}/nodebb-plugin-@{id}"
+  },
+  "keywords": [
+    "nodebb"
+  ],
+  "author": {
+    "name": "@{author}"
+  },
+  "license": "MIT"
+}

@@ -1,6 +1,6 @@
 module.exports = (grunt) ->
 
-  # NodeBB Grunt Development  --  Version 0.3-1
+  # NodeBB Grunt Development  --  Version 0.4-1
 
   config = grunt.file.readJSON('grunt-development.json')
 
@@ -57,7 +57,8 @@ module.exports = (grunt) ->
       src: "**"
       dest: "#{mod.tmp}/"
       dot: true
-      filter: (p) -> !(/(^|\/)\.git/.test p)
+      filter: (p) ->
+        !(/(^|\/)\.git/.test p)
     initObj.copy["toModules_#{m}"] =
       expand: true
       cwd: "#{mod.tmp}/"
@@ -67,13 +68,17 @@ module.exports = (grunt) ->
     initObj.copy["index_#{m}"] = # copy /coffee/index.js to /index.js if /coffee/ contains more than just index.js
       src: ["#{mod.tmp}/#{config.paths.custom.coffee}index.js"]
       dest: "#{mod.tmp}/index.js"
-      filter: (p) -> dir = require('fs').readdirSync(p.substr(0,p.length-9)); dir.length > 1
+      filter: (p) ->
+        dir = require('fs').readdirSync p.substr 0, p.length - 9
+        dir.length > 1
     # coffee
     initObj.coffee["#{m}"] =
       options:
         join: true
         bare: !config.wrapping.index
-    initObj.coffee["#{m}"].files = [{}]
+    initObj.coffee["#{m}"].files = [
+      {}
+    ]
     initObj.coffee["#{m}"].files[0]["#{mod.tmp}/#{config.paths.custom.coffee}index.js"] = ["#{mod.tmp}/#{config.paths.custom.coffee}**/*.coffee"]
     initObj.coffee[".#{m}"] =
       options:
@@ -105,7 +110,8 @@ module.exports = (grunt) ->
     initObj.git[m] =
       cwd: "#{mod.src}/"
     # watch
-    watchTasks = ["clean:#{m}", "copy:toTmp_#{m}", "coffee:#{m}", "copy:index_#{m}", "coffee:.#{m}", "clean:.#{m}", "uglify:.#{m}", "copy:toModules_#{m}"]
+    watchTasks = ["clean:#{m}", "copy:toTmp_#{m}", "coffee:#{m}", "copy:index_#{m}", "coffee:.#{m}", "clean:.#{m}",
+                  "uglify:.#{m}", "copy:toModules_#{m}"]
     initObj.watch[m] =
       tasks: watchTasks
     initObj.watch[m].files = ["#{mod.src}/**/*"]
@@ -155,6 +161,36 @@ module.exports = (grunt) ->
       return;
     grunt.task.run "dist:#{m}", "publish:#{m}", "git#{gitArgs}"
 
+  grunt.registerTask 'init', 'initialize a new plugin or theme.', ->
+    replacements =
+      "@{author}": config.author
+      "@{gh}": config.github
+    newConfig = grunt.file.readJSON 'grunt-development.json'
+    if ['theme', 't'].indexOf(this.args[0].toLowerCase()) == -1
+      id = this.args[1] || "my-new-plugin"
+      from = config.paths.initials.plugin
+      to = config.paths.custom.base + config.paths.custom.plugins + id
+      replacements["@{name}"] = this.args[2] || "My New Plugin"
+      replacements["@{desc}"] = this.args[3] || "Some useful description of what the plugin does."
+      newConfig.modules.plugins[id] = id
+    else
+      id = this.args[1] || "my-new-theme"
+      from = config.paths.initials.theme
+      to = config.paths.custom.base + config.paths.custom.themes + id
+      replacements["@{name}"] = this.args[2] || "My New Theme"
+      replacements["@{desc}"] = this.args[3] || "Some useful description for the theme."
+      newConfig.modules.themes[id] = id
+    replacements["@{id}"] = id
+    grunt.file.recurse from, (file, ignored, subdir, filename) ->
+      pathSuffix = if subdir? then subdir + '/' + filename else filename
+      content = grunt.file.read(file).toString()
+      for key, val of replacements
+        regex = new RegExp key, 'g'
+        content = content.replace regex, val
+        pathSuffix = pathSuffix.replace regex, val
+      grunt.file.write to + '/' + pathSuffix, new Buffer content
+    grunt.file.write 'grunt-development.json', new Buffer JSON.stringify newConfig, null, '  '
+
   grunt.registerMultiTask 'publish', 'Publish to module.', ->
     path = process.cwd()
     _done = this.async()
@@ -171,7 +207,7 @@ module.exports = (grunt) ->
 
   grunt.registerMultiTask 'git', 'Commit and push changes to git-repo.', ->
     message = this.args[0]?.replace /'/g, "\\'"
-    push = this.args[1] != 'false' && (message || this.args[1])
+    doPush = this.args[1] != 'false' && (message || this.args[1])
     return if !message and !push
     path = process.cwd()
     process.chdir this.data.cwd
@@ -186,7 +222,7 @@ module.exports = (grunt) ->
       push()
       return
     exec done, "#{config.beforeCommit || 'test 1'} && git commit -m '#{message}'", ->
-      return done() if !push
+      return done() if !doPush
       push()
 
   grunt.registerTask "default", ["dev"]

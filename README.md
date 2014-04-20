@@ -1,15 +1,15 @@
-# NodeBB Grunt Development - 0.3-1
+# NodeBB Grunt Development - 0.4-1
 
 ## Features
 
-Allows you to separate your development module-states from the actual NodeBB Forum while keeping the development-process
-simple and comfortable.
-
-Also allows you to use coffee-script instead of plain javascript :smile:
+ + Allows you to separate your development module-states from the actual NodeBB Forum while keeping the development-process simple and comfortable.
+ + Allows you to use coffee-script instead of plain javascript :smile:
+ + Simplifies the process of creating a new plugin/theme.
 
 ## Example Modules
 
 + [nodebb-plugin-emoji-extended](https://github.com/frissdiegurke/nodebb-plugin-emoji-extended)
++ [nodebb-plugin-shortcuts](https://github.com/frissdiegurke/nodebb-plugin-shortcuts)
 + [nodebb-plugin-livereload](https://github.com/frissdiegurke/nodebb-plugin-livereload)
 + [nodebb-theme-dark-rectangles](https://github.com/frissdiegurke/nodebb-theme-dark-rectangles)
 
@@ -72,7 +72,7 @@ is **not** within any *node_modules*-(sub-)directory gets uglified (compressed).
 **Note:** Minor releases like `0.2-1` to `0.2-2` don't need any update of the
 *grunt-development.json*-file.
 
-Overwrite your *Gruntfile.coffee* with the up-to-date one.
+Overwrite your *Gruntfile.coffee* and the initial-folders with the up-to-date ones.
 Now look up the file-format of the up-to-date *grunt-development.json* and
 manually update your *grunt-development.json*-file to match the needed
 structure.
@@ -81,6 +81,15 @@ structure.
 
 ### New Theme
 
+#### Automated
+
+ + Run `grunt init:t:theme-id:theme-name:theme-description` (theme-arguments are optional, but will simplify your life).
+   This command creates a new theme called `nodebb-theme-theme-id`. If you want to have a different theme-initialization
+   just edit the files within *custom_modules/initial/theme/*, you may use `@{id}`, `@{name}`, `@{desc}`, `@{author}`,
+   `@{gh}` (github profile-name as specified within *grunt-development.json*) as placeholders (even within path-names ;)
+
+#### By hand
+
  + Create a new directory within the *custom_modules/themes* directory
  + Add a new entry within your *grunt-development.json* to `modules.themes`
    like `"DIRNAME": "THEME-NAME"` where `DIRNAME` is the name of the folder
@@ -88,6 +97,18 @@ structure.
    as you wish to publish it (without `nodebb-theme-` prefix)
 
 ### New Plugin
+
+#### Automated
+
+ + Run `grunt init::plugin-id:plugin-name:plugin-description` (plugin-arguments are optional, but will simplify your
+   life). This command creates a new plugin called `nodebb-plugin-plugin-id`. If you want to have a different
+   plugin-initialization just edit the files within *custom_modules/initial/plugin/*, you may use `@{id}`, `@{name}`,
+   `@{desc}`, `@{author}`, `@{gh}` (github profile-name as specified within *grunt-development.json*) as placeholders
+   (even within path-names ;)
+ + **Notice the two `::` behind `grunt init`!** (first argument decides theme or plugin, everything else than `:t:` and
+   `:theme:` determines a plugin, even empty argument `::`.
+
+#### By hand
 
  + Create a new directory within the *custom_modules/plugins* directory
  + Add a new entry within your *grunt-development.json* to `modules.plugins`
@@ -112,6 +133,7 @@ structure.
    (within *Gruntfile.coffee*)
  + `grunt publ` - runs `grunt dist` and publishes changes into NPM.
  + `grunt clean` - removes the *.tmp*-directory
+ + `grunt init` - initializes a new theme or plugin as described above.
 
 For each of the tasks you may add `:MODULENAME` to just use one module (`dev` does only work for all modules or a single
 module).
@@ -137,6 +159,11 @@ module).
  + `grunt "publ:MODULENAME:I have done some changes"`
 
 ## Changelog
+
+### Version 0.4
+
+ + fixed no git-push if false given
+ + added `grunt init` command to initialize a new theme or plugin based on initial-folders
 
 ### Version 0.3
 

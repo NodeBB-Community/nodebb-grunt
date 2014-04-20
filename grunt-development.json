@@ -1,12 +1,14 @@
 {
+  "author": "Ole Reglitzki",
+  "github": "frissdiegurke",
   "modules": {
     "plugins": {
       "emoji": "emoji-extended",
-      "livereload": "livereload"
+      "livereload": "livereload",
+      "shortcuts": "shortcuts"
     },
     "themes": {
-      "dark_rectangles": "dark-rectangles",
-      "factory": "factory"
+      "dark_rectangles": "dark-rectangles"
     }
   },
   "paths": {
@@ -15,6 +17,10 @@
       "plugins": "plugins/",
       "themes": "themes/",
       "coffee": "coffee/"
+    },
+    "initials": {
+      "plugin": "custom_modules/initial/plugin/",
+      "theme": "custom_modules/initial/theme/"
     },
     "dist": "node_modules/",
     "tmp": ".tmp/"

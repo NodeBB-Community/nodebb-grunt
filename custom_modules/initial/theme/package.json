@@ -1,0 +1,21 @@
+{
+  "name": "nodebb-theme-@{id}",
+  "version": "0.0.1-1",
+  "description": "@{desc}",
+  "main": "theme.less",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/@{gh}/nodebb-theme-@{id}"
+  },
+  "keywords": [
+    "nodebb",
+    "theme"
+  ],
+  "author": {
+    "name": "@{author}"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "nodebb-theme-vanilla": "~0.0.13"
+  }
+}
