@@ -44,6 +44,7 @@ The structure should be self-explaining ;)
 
 **Some notes:**
 
+ + You should replace the `author` and `github` attributes by your own values to get the `grunt init` command working properly ;)
  + Paths have to end with `/`
  + Module-names must not begin with `.`
  + Files to uglify are relative to the modules root-directory
