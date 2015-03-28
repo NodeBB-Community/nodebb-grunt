@@ -1,0 +1,14 @@
+{
+  "name": "nodebb-@{type}-@{id}",
+  "version": "${version}",
+  "description": "@{description}",
+  "main": "@{main}",
+  "repository": {
+    "type": "git",
+    "url": "${git}"
+  },
+  "author": {
+    "name": "${author}"
+  },
+  "license": "@{license}"
+}

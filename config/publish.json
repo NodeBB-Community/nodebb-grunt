@@ -1,0 +1,9 @@
+{
+  "git": {
+    "providers": {
+      "GitHub": "https://github.com/frissdiegurke/nodebb-@{type}-@{id}.git"
+    },
+    "beforeCommit": "git add -u",
+    "defaultProvider": "GitHub"
+  }
+}

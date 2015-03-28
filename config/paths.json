@@ -1,0 +1,7 @@
+{
+  "source": {
+    "base": "modules/${type}/${id}/"
+  },
+  "deploy": "node_modules/",
+  "tmp": "modules/.tmp/"
+}
