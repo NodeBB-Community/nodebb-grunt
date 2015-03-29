@@ -25,9 +25,46 @@ module.exports = function (config, gruntConfig, loadService) {
       return result;
     },
 
+    getByKey: function (obj, key) {
+      if (!key.length) {
+        return obj;
+      }
+      if (obj === null || typeof obj !== "object") {
+        return;
+      }
+      var parts = key.split(".");
+      var _len = parts.length - 1;
+      for (var i = 0; i < _len; i++) {
+        var k = parts[i];
+        if (typeof obj[k] === "object" && obj[k] !== null) {
+          obj = obj[k];
+        } else {
+          return;
+        }
+      }
+      return obj[parts[_len]];
+    },
+
+    setByKey: function (obj, key, value) {
+      if (obj === null || typeof obj !== "object") {
+        return;
+      }
+      var parts = key.split(".");
+      var _len = parts.length - 1;
+      for (var i = 0; i < _len; i++) {
+        var k = parts[i];
+        if (obj[k] === null || typeof obj[k] !== "object") {
+          obj = obj[k] = {};
+        } else {
+          obj = obj[k];
+        }
+      }
+      return obj[parts[_len]] = value;
+    },
+
     loadTask: function (name, attrName) {
       if (helpers.tasks[name] != null) {
-        return gruntConfig[attrName] = helpers.tasks[name].result;
+        return helpers.setByKey(gruntConfig, attrName, helpers.tasks[name].result);
       }
       if (typeof attrName !== "string") {
         attrName = name;
@@ -37,7 +74,7 @@ module.exports = function (config, gruntConfig, loadService) {
         result = result.call(grunt, config, helpers, gruntConfig);
       }
       if (result != null) {
-        gruntConfig[attrName] = result;
+        helpers.setByKey(gruntConfig, attrName, result);
       }
       helpers.tasks[name] = {result: result};
       return result;
@@ -66,9 +103,7 @@ module.exports = function (config, gruntConfig, loadService) {
     },
 
     loadNpmTask: function (name) {
-      try {
-        require.resolve(name);
-      } catch (e) {
+      if (!grunt.file.exists(path.join(path.resolve("node_modules"), name, "package.json"))) {
         if (dependencies.hasOwnProperty(name)) {
           grunt.log.error(new Error("You need to run 'npm install' first."));
           process.exit(13);
@@ -77,11 +112,10 @@ module.exports = function (config, gruntConfig, loadService) {
           if (optionalDependencies.hasOwnProperty(name)) {
             grunt.log.error(new Error("According to your configuration you need to install '" + name +
             "'. Try 'npm install " + name + "'"));
+            process.exit(14);
           }
-          process.exit(14);
+          grunt.log.warn("grunt-task '" + name + "' could not get resolved");
         }
-        grunt.log.error(new Error("Grunt task not found: " + name));
-        process.exit(15);
       }
       grunt.loadNpmTasks(name);
     },
@@ -90,16 +124,12 @@ module.exports = function (config, gruntConfig, loadService) {
       var result = grunt.file.readJSON(path.join(config.cwd, "modules", id + ".json"));
       if (result != null) {
         result.id = id;
-        if (result.hasOwnProperty("type") && !~config.moduleTypes.indexOf(result.type)) {
-          config.moduleTypes.push(result.type);
-        }
       }
       return result;
     },
 
     findModules: function () {
       var p = path.join(config.cwd, "modules");
-      config.moduleTypes = ["plugin", "theme"];
       if (!grunt.file.isDir(p)) {
         return config.modules = [];
       }

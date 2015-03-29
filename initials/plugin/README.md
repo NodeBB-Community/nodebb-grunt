@@ -1,4 +1,4 @@
-# NodeBB: @{name}
+# NodeBB: @{name} (${YYYY})
 
 ## Features
 

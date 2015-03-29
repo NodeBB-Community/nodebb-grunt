@@ -13,131 +13,186 @@ module.exports = function (config, helpers, gruntConfig) {
 
   helpers.loadNpmTask("grunt-prompt");
 
+  var customTypeMetaKeys = _.uniq(_.flatten(_.map(_.pluck(_.values(config.types), "meta"), function (val) {
+    return _.keys(val);
+  })));
+
+  var replacer = {};
+
+  function addReplacer(value, key) {
+    replacer[key] = {
+      regex: new RegExp("\\$\\{" + key + "}", "gi"),
+      value: value
+    };
+  }
+
+  _.each(["type.id", "id", "name", "version", "license", "author"], function (key) {
+    addReplacer(function (key) {
+      return grunt.config(prefix + key);
+    }, key);
+  });
+
   gruntConfig.prompt.init = {
     options: {
-      questions: [
-        {
-          config: prefix + "type",
-          type: "list",
-          message: "Choose the NodeBB module-type:",
-          choices: _.clone(config.moduleTypes).concat("---", {name: "custom", value: null})
-        },
-        {
-          config: prefix + "type",
-          type: "input",
-          message: "Specify the custom NodeBB module-type:",
-          filter: function (str) {
-            return str.trim().toLowerCase();
+      questions: [].concat(
+          {
+            config: prefix + "type.id",
+            type: "list",
+            message: "Choose the NodeBB module-type:",
+            choices: _.clone(_.keys(config.types)).concat("---", {name: "custom", value: null})
           },
-          when: function (answers) {
-            return answers[prefix + "type"] === null;
-          }
-        },
-        {
-          config: prefix + "id",
-          type: "input",
-          message: "Specify the ID of your new module (without nodebb-[type]- prefix):",
-          validate: function (id) {
-            if (!id) {
+          {
+            config: prefix + "customType.id",
+            type: "input",
+            message: "Insert a new ID for the custom NodeBB module-type:",
+            when: function (answers) {
+              return answers[prefix + "type.id"] === null;
+            }
+          },
+          _.map(customTypeMetaKeys, function (key) {
+            return {
+              config: prefix + "customType.meta." + key,
+              type: "input",
+              message: "Insert the value for '" + key + "' of the new custom module",
+              when: function (answers) {
+                return answers[prefix + "type.id"] === null && config.types[answers[prefix + "customType.id"]] == null;
+              }
+            };
+          }),
+          {
+            config: prefix + "id",
+            type: "input",
+            message: "Specify the ID of your new module (without nodebb-[type]- prefix):",
+            validate: function (id) {
+              if (!id) {
+                idOverwriteConfirm = null;
+                return "No ID specified.";
+              }
+              if (id.length < 3 && idOverwriteConfirm !== id) {
+                //noinspection JSUnusedAssignment
+                idOverwriteConfirm = id;
+                return "Please use an ID longer than 3 characters. Enter same again to force.";
+              }
               idOverwriteConfirm = null;
-              return "No ID specified.";
+              if (!/^[^\._]/.test(id)) {
+                return "ID may not begin with '.' or '_'.";
+              }
+              if (!regexps.urlsafe.test(id)) {
+                return "ID contains illegal character(s).";
+              }
+              return true;
             }
-            if (id.length < 3 && idOverwriteConfirm !== id) {
-              //noinspection JSUnusedAssignment
-              idOverwriteConfirm = id;
-              return "Please use an ID longer than 3 characters. Enter same again to force.";
+          },
+          {
+            config: prefix + "version",
+            type: "input",
+            message: "Initial version:",
+            default: "0.0.1",
+            validate: function (version) {
+              if (!semver.valid(version)) {
+                return "Version needs to be semver-valid.";
+              }
+              return true;
             }
-            idOverwriteConfirm = null;
-            if (!/^[^\._]/.test(id)) {
-              return "ID may not begin with '.' or '_'.";
+          },
+          {
+            config: prefix + "name",
+            type: "input",
+            message: "Specify the name of your new module (human readable):"
+          },
+          {
+            config: prefix + "description",
+            type: "input",
+            message: "Enter a brief description of what the module does:"
+          },
+          {
+            config: prefix + "license",
+            type: "list",
+            message: "Choose the license to use:",
+            choices: Object.keys(config.licenses).concat("Others")
+          },
+          {
+            config: prefix + "license",
+            type: "input",
+            message: "License-Name:",
+            when: function (answers) {
+              return answers[prefix + "license"] === "Others";
             }
-            if (!regexps.urlsafe.test(id)) {
-              return "ID contains illegal character(s).";
-            }
-            return true;
+          },
+          {
+            config: prefix + "author",
+            type: "input",
+            message: "Author:",
+            default: config.meta.author
+          },
+          {
+            config: prefix + "publish.npm",
+            type: "confirm",
+            message: "Enable npm-publish (trigger a npm publish within deploy-dir while grunt publ):",
+            default: true
+          },
+          {
+            config: prefix + "publish.git",
+            type: "confirm",
+            message: "Enable git-push (trigger a push within module-dir while grunt publ):",
+            default: true
+          },
+          {
+            config: prefix + "keywords",
+            type: "input",
+            message: "Keywords to associate with the module (comma-separated):",
+            default: keywords.join(", ")
+          },
+          {
+            config: prefix + "git.provider",
+            type: "list",
+            message: "Choose the git-provider to use for the package.json entry:",
+            choices: _.map(config.publish.git.providers, function (url, name) {
+              return {name: name};
+            }).concat("---", {name: "None", value: "$$none"}),
+            default: config.publish.git.defaultProvider || "$$none"
+          },
+          {
+            config: prefix + "aliases",
+            type: "input",
+            message: "Module-aliases for grunt tasks (comma-separated):"
           }
-        },
-        {
-          config: prefix + "version",
-          type: "input",
-          message: "Initial version:",
-          default: "0.0.1",
-          validate: function (version) {
-            if (!semver.valid(version)) {
-              return "Version needs to be semver-valid.";
-            }
-            return true;
-          }
-        },
-        {
-          config: prefix + "name",
-          type: "input",
-          message: "Specify the name of your new module (human readable):"
-        },
-        {
-          config: prefix + "description",
-          type: "input",
-          message: "Enter a brief description of what the module does:"
-        },
-        {
-          config: prefix + "license",
-          type: "list",
-          message: "Choose the license to use:",
-          choices: Object.keys(config.licenses).concat("Others")
-        },
-        {
-          config: prefix + "license",
-          type: "input",
-          message: "License-Name:",
-          when: function (answers) {
-            return answers[prefix + "license"] === "Others";
-          }
-        },
-        {
-          config: prefix + "author",
-          type: "input",
-          message: "Author:",
-          default: config.meta.author
-        },
-        {
-          config: prefix + "publish.npm",
-          type: "confirm",
-          message: "Enable npm-publish (trigger a npm publish within deploy-dir while grunt publ):",
-          default: true
-        },
-        {
-          config: prefix + "publish.git",
-          type: "confirm",
-          message: "Enable git-push (trigger a push within module-dir while grunt publ):",
-          default: true
-        },
-        {
-          config: prefix + "keywords",
-          type: "input",
-          message: "Keywords to associate with the module (comma-separated):",
-          default: keywords.join(", ")
-        },
-        {
-          config: prefix + "git.provider",
-          type: "list",
-          message: "Choose the git-provider to use for the package.json entry:",
-          choices: _.map(config.publish.git.providers, function (url, name) {
-            return {name: name};
-          }).concat("---", {name: "None", value: "$$none"}),
-          default: config.publish.git.defaultProvider || "$$none"
-        },
-        {
-          config: prefix + "aliases",
-          type: "input",
-          message: "Module-aliases for grunt tasks (comma-separated):"
-        }
-      ],
+      ),
       then: function (answers) {
         function setAnswer(key, val) {
           grunt.config(prefix + key, answers[prefix + key] = val);
           return val;
         }
+
         var i;
+        // handle custom type
+        if (answers[prefix + "type.id"] === null) {
+          var customTypeId = answers[prefix + "customType.id"];
+          if (config.types[customTypeId] == null) {
+            var typesPath = path.join(config.cwd, "config", "types.json");
+            var typesJSON = grunt.file.readJSON(typesPath);
+            var t = typesJSON[customTypeId] = config.types[customTypeId] = {
+              setup: {
+                base: "initials/${type.id}",
+                metaReplace: {
+                  regex: "\\$\\{([^}]+)}",
+                  files: ["LICENSE", "package.json", "README.md", "theme.json", "plugin.json"]
+                }
+              },
+              compilation: {
+                dev: "defaultDev",
+                dist: "defaultDist"
+              },
+              meta: {}
+            };
+            _.each(customTypeMetaKeys, function (key) {
+              t.meta[key] = answers[prefix + "customType.meta." + key];
+            });
+            grunt.file.write(typesPath, JSON.stringify(typesJSON, null, 2));
+          }
+          setAnswer("type.id", "customType.id");
+        }
+        _.each(config.types[answers[prefix + "type.id"]].meta, addReplacer);
         // split keywords
         if (typeof answers[prefix + "keywords"] === "string") {
           var keywords = answers[prefix + "keywords"].split(",");
@@ -148,7 +203,7 @@ module.exports = function (config, helpers, gruntConfig) {
         }
         // split aliases
         var aliases = answers[prefix + "aliases"].trim();
-        if (aliases.length >= 0) {
+        if (aliases.length > 0) {
           aliases = aliases.split(",");
           for (i = 0; i < aliases.length; i++) {
             aliases[i] = aliases[i].trim().toLowerCase();
@@ -165,20 +220,15 @@ module.exports = function (config, helpers, gruntConfig) {
         }
         // add license-attribute to licenses.json if not found therefor the use may add the value later
         var license = answers[prefix + "license"];
-        var fPath = path.join(config.cwd, "config", "licenses.json");
-        var licenses = grunt.file.readJSON(fPath);
-        if (!licenses.hasOwnProperty(license)) {
-          licenses[license] = "";
-          grunt.file.write(fPath, JSON.stringify(licenses, null, 2));
+        var licensesPath = path.join(config.cwd, "config", "licenses.json");
+        var licensesJSON = grunt.file.readJSON(licensesPath);
+        if (!licensesJSON.hasOwnProperty(license)) {
+          licensesJSON[license] = "";
+          grunt.file.write(licensesPath, JSON.stringify(licensesJSON, null, 2));
         }
       }
     }
   };
-
-  var replacer = {};
-  _.each(["type", "id", "name", "version", "license", "author"], function (repl) {
-    replacer[repl] = new RegExp("\\$\\{" + repl + "\\}", "gi");
-  });
 
   function replace(obj) {
     if (obj == null) {
@@ -190,8 +240,8 @@ module.exports = function (config, helpers, gruntConfig) {
     if (typeof obj !== "string") {
       return _.mapObject(obj, replace);
     }
-    _.each(replacer, function (name, regex) {
-      obj = obj.replace(regex, grunt.config(prefix + "" + name));
+    _.each(replacer, function (r, name) {
+      obj = obj.replace(r.regex, typeof r.value === "function" ? r.value(name) : r.value);
     });
     return obj;
   }
@@ -199,7 +249,7 @@ module.exports = function (config, helpers, gruntConfig) {
   grunt.registerTask("initProject", "Creates an initial module as specified by the prompt:init task", function () {
     var id = grunt.config(prefix + "id");
     var name = grunt.config(prefix + "name");
-    var type = grunt.config(prefix + "type");
+    var type = grunt.config(prefix + "type.id");
     var keywords = replace(grunt.config(prefix + "keywords"));
     var git = replace(grunt.config(prefix + "git.url"));
     var module = {
@@ -212,26 +262,26 @@ module.exports = function (config, helpers, gruntConfig) {
       aliases: replace(grunt.config(prefix + "aliases"))
     };
 
+    // TODO if module-id or dest exists already: start prompt for overwrite-confirmation
+
     // write module-details
     grunt.file.write(path.join(config.cwd, "modules", id + ".json"), JSON.stringify(module, null, 2));
 
     // prepare options of further tasks
-    var dest = path.join(config.cwd, replace(config.paths.source.base));
-    var srcDir = path.join(config.cwd, "initials", type);
+    var destination = path.join(config.cwd, replace(config.paths.source.base));
+    var srcDir = path.join(config.cwd, replace(config.types[type].setup.base));
     if (!grunt.file.isDir(srcDir)) {
-      srcDir = path.join(config.cwd, "initials", "plugin");
+      // No setup specified. Create empty directory.
+      grunt.file.mkdir(destination);
+      return;
     }
-    grunt.config("copy.init.files", [
-      {
-        cwd: srcDir,
-        expand: true,
-        src: "**/*",
-        dest: dest
-      }
-    ]);
+    grunt.config("copy.init.cwd", srcDir);
+    grunt.config("copy.init.dest", destination);
     grunt.config("initProjectReplace.options", {
-      cwd: dest,
-      meta: _.extend(module, {
+      cwd: destination,
+      metaReplace: config.types[module.type].setup.metaReplace,
+      meta: _.extend({}, module, config.types[module.type].meta, {
+        "type.id": module.type,
         id: id,
         YYYY: new Date().getFullYear(),
         name: name,
@@ -243,30 +293,34 @@ module.exports = function (config, helpers, gruntConfig) {
       })
     });
     // copy module-template and replace its values
-    grunt.task.run(/*"copy:init", */"initProjectReplace");
+    grunt.task.run("copy:init", "initProjectReplace");
   });
 
   grunt.registerTask("initProjectReplace", "Replaces project-variables as specified by the initProject task", function () {
     var options = this.options();
     var meta = options.meta;
-    _.each(["theme.json", "plugin.json", "package.json"], function (file, idx) {
-      if (grunt.file.exists(file = path.join(options.cwd, file))) {
-        var contentJSON = grunt.file.readJSON(file);
-        if (!meta.git) {
-          delete contentJSON.repository;
-        }
-        if (idx === 2) {
-          // package.json
-          contentJSON.keywords = meta.keywords;
-        }
-        var contentString = JSON.stringify(contentJSON, null, 2);
-        grunt.file.write(file, contentString.replace(/\$\{([^}]+)}/g, function (match, name) {
+    var packagePath = path.join(options.cwd, "package.json");
+    if (grunt.file.exists(packagePath)) {
+      var packageJSON = grunt.file.readJSON(packagePath);
+      if (!meta.git) {
+        delete packageJSON.repository;
+      }
+      packageJSON.keywords = meta.keywords;
+      grunt.file.write(packagePath, JSON.stringify(packageJSON, null, 2));
+    }
+    var regex = new RegExp(options.metaReplace.regex, "g");
+    _.each(grunt.file.expand({cwd: options.cwd}, options.metaReplace.files), function (filePath) {
+      filePath = path.join(options.cwd, filePath);
+      if (grunt.file.isFile(filePath)) {
+        var content = grunt.file.read(filePath);
+        content = content.replace(regex, function (match, name) {
           //noinspection JSUnresolvedFunction
           if (meta.hasOwnProperty(name)) {
             return meta[name] || "";
           }
           return match;
-        }));
+        });
+        grunt.file.write(filePath, content);
       }
     });
   });

@@ -1,61 +1,49 @@
 {
-  "flows": {
-    "devFlow": [
-      {
-        "src": "**/*",
-        "compiler": "moduleMeta",
-        "regex": "@\\{NAME}"
-      },
-      {
-        "src": "coffee/**/*.coffee",
-        "compiler": "coffee",
-        "concat": "#{id}"
-      },
-      {
-        "cwd": "public/",
-        "src": "**/*.coffee",
-        "compiler": "coffee",
-        "wrap": true
-      },
-      {
-        "src": "**/*.coffee",
-        "compiler": "coffee"
-      }
-    ],
-    "distFlow": [
-      {
-        "src": "**/*",
-        "compiler": "moduleMeta",
-        "regex": "@\\{NAME}"
-      },
-      {
-        "src": "coffee/**/*.coffee",
-        "compiler": "coffee",
-        "concat": "#{id}",
-        "minify": true
-      },
-      {
-        "cwd": "public/",
-        "src": "**/*.coffee",
-        "compiler": "coffee",
-        "minify": {"ext": ".js"},
-        "wrap": true
-      },
-      {
-        "src": "**/*.coffee",
-        "compiler": "coffee",
-        "minify": true
-      }
-    ]
-  },
-  "dev": {
-    "plugin": "devFlow",
-    "theme": "devFlow",
-    "default": "devFlow"
-  },
-  "dist": {
-    "plugin": "distFlow",
-    "theme": "distFlow",
-    "default": "distFlow"
-  }
+  "defaultDev": [
+    {
+      "src": "**/*",
+      "compiler": "moduleMeta",
+      "regex": "@\\{NAME}"
+    },
+    {
+      "src": "coffee/**/*.coffee",
+      "compiler": "coffee",
+      "concat": "#{id}"
+    },
+    {
+      "cwd": "public/",
+      "src": "**/*.coffee",
+      "compiler": "coffee",
+      "wrap": true
+    },
+    {
+      "src": "**/*.coffee",
+      "compiler": "coffee"
+    }
+  ],
+  "defaultDist": [
+    {
+      "src": "**/*",
+      "compiler": "moduleMeta",
+      "regex": "@\\{NAME}"
+    },
+    {
+      "src": "coffee/**/*.coffee",
+      "compiler": "coffee",
+      "concat": "#{id}",
+      "minify": true
+    },
+    {
+      "cwd": "public/",
+      "src": "**/*.coffee",
+      "compiler": "coffee",
+      "minify": {"ext": ".js"},
+      "wrap": true
+    },
+    {
+      "src": "**/*.coffee",
+      "compiler": "coffee",
+      "minify": true
+    }
+  ]
 }

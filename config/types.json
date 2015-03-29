@@ -1,0 +1,47 @@
+{
+  "plugin": {
+    "setup": {
+      "base": "initials/${type.id}",
+      "metaReplace": {
+        "regex": "\\$\\{([^}]+)}",
+        "files": [
+          "LICENSE",
+          "package.json",
+          "README.md",
+          "plugin.json"
+        ]
+      }
+    },
+    "compilation": {
+      "dev": "defaultDev",
+      "dist": "defaultDist"
+    },
+    "meta": {
+      "type": "plugin",
+      "type.plural": "plugins"
+    }
+  },
+  "theme": {
+    "setup": {
+      "base": "initials/${type.id}",
+      "metaReplace": {
+        "regex": "\\$\\{([^}]+)}",
+        "files": [
+          "LICENSE",
+          "package.json",
+          "README.md",
+          "theme.json",
+          "plugin.json"
+        ]
+      }
+    },
+    "compilation": {
+      "dev": "defaultDev",
+      "dist": "defaultDist"
+    },
+    "meta": {
+      "type": "theme",
+      "type.plural": "themes"
+    }
+  }
+}

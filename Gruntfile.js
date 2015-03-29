@@ -16,7 +16,6 @@ module.exports = function (grunt) {
     var result = require(path.join(cwd, "services", name));
     if (typeof result === "function") {
       var args = Array.prototype.splice.call(arguments, 1);
-      args.unshift(grunt);
       result = result.apply(grunt, args);
     }
     return result;
@@ -33,6 +32,7 @@ module.exports = function (grunt) {
 
   helpers.loadTask("init/config", "config");
   helpers.loadTask("init/project", "initProject");
+  helpers.loadTask("init/copy", "copy.init");
   //loadTask("clean");
   //loadTask("watch");
   //loadTask("publish/git", "git");
@@ -40,16 +40,15 @@ module.exports = function (grunt) {
 
   /*--------------------------- load all compilers that may get needed by any module-type  ---------------------------*/
 
-  var compilation = config.compilation;
-
   function loadCompilers(val) {
-    _.each(_.compact(_.pluck(compilation.flows[val], "compiler")), function (name) {
+    var comp = config.compilation;
+    var compilers = _.pluck(comp[val.dev], "compiler").concat(_.pluck(comp[val.dist], "compiler"));
+    _.each(_.uniq(_.compact(compilers)), function (name) {
       helpers.loadDeepTask("compiler", name);
     });
   }
 
-  _.each(compilation.dev, loadCompilers);
-  _.each(compilation.dist, loadCompilers);
+  _.each(_.pluck(config.types, "compilation"), loadCompilers);
 
   /*---------------------------------------------- persist grunt-config ----------------------------------------------*/
 
