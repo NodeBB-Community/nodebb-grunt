@@ -3,7 +3,7 @@
   "version": "${version}",
   "name": "${name}",
   "description": "${description}",
-  "library": "@{ID}.js",
+  "library": "lib/${id}.js",
   "staticDirs": {},
   "less": [],
   "languages": "locales",

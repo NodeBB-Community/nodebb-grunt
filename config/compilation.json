@@ -10,7 +10,7 @@
   },
   "coffee": {
     "dev": [
-      "tools.meta.templates",
+      "default.dev",
       "tools.coffee"
     ],
     "dist": [
@@ -33,24 +33,26 @@
     },
     "minify": {
       "compiler": "minify",
-      "src": "**/*.js"
+      "src": [
+        "public/**/*.js",
+        "static/**/*.js"
+      ]
     },
     "coffee": [
       {
         "compiler": "coffee",
-        "src": "coffee/**/*.coffee",
-        "concat": "@{library}",
+        "cwd": "lib/",
+        "src": "**/*.coffee",
         "options": {
           "bare": true
         }
       },
       {
         "compiler": "coffee",
-        "cwd": "public/",
         "src": "**/*.coffee"
       },
       {
-        "compiler": "coffee",
+        "compiler": "clean",
         "src": "**/*.coffee"
       }
     ]

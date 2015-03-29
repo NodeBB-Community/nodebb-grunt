@@ -192,6 +192,7 @@ module.exports = function (config, helpers, gruntConfig) {
               t.meta[key] = answers[prefix + "customType.meta." + key];
             });
             grunt.file.write(typesPath, JSON.stringify(typesJSON, null, 2));
+            grunt.log.ok("Updated '" + path.relative(config.cwd, typesPath) + "' with new type '" + customTypeId + "'");
           }
           setAnswer("type.id", "customType.id");
         }
@@ -228,6 +229,7 @@ module.exports = function (config, helpers, gruntConfig) {
         if (!licensesJSON.hasOwnProperty(license)) {
           licensesJSON[license] = "";
           grunt.file.write(licensesPath, JSON.stringify(licensesJSON, null, 2));
+          grunt.log.ok("Add your license-templates into " + path.relative(config.cwd, licensesJSON));
         }
       }
     }
@@ -268,7 +270,9 @@ module.exports = function (config, helpers, gruntConfig) {
     // TODO if module-id or dest exists already: start prompt for overwrite-confirmation
 
     // write module-details
-    grunt.file.write(path.join(config.cwd, "modules", id + ".json"), JSON.stringify(module, null, 2));
+    var moduleFile = path.join(config.cwd, "modules", id + ".json");
+    grunt.file.write(moduleFile, JSON.stringify(module, null, 2));
+    grunt.log.ok("File '" + path.relative(config.cwd, moduleFile) + "' written.");
 
     // prepare options of further tasks
     var destination = path.join(config.cwd, replace(config.paths.source.base));
@@ -295,6 +299,11 @@ module.exports = function (config, helpers, gruntConfig) {
         git: git
       })
     });
+
+    var relativeSrc = path.relative(config.cwd, srcDir);
+    var relativeDest = path.relative(config.cwd, destination);
+    grunt.log.ok("Set-up copy-task 'copy:init': " + relativeSrc + " -> " + relativeDest);
+
     // copy module-template and replace its values
     grunt.task.run("copy:init", "initProjectReplace");
   });
@@ -320,17 +329,21 @@ module.exports = function (config, helpers, gruntConfig) {
     // write meta-replaces as specified within config/types.json
     _.each(grunt.file.expand({cwd: options.cwd}, options.metaReplace.files), function (filePath) {
       filePath = path.join(options.cwd, filePath);
-      var newFilePath = metaReplace(filePath);
       if (grunt.file.isFile(filePath)) {
-        var content = metaReplace(grunt.file.read(filePath));
-        if (newFilePath !== filePath) {
-          grunt.file.delete(filePath);
-        }
-        grunt.file.write(newFilePath, content);
-      } else if (grunt.file.isDir(filePath) && newFilePath !== filePath) {
+        grunt.file.write(filePath, metaReplace(grunt.file.read(filePath)));
+      }
+    });
+    // write meta-replaces for paths as specified within config/types.json
+    _.each(grunt.file.expand({cwd: options.cwd}, options.metaReplace.paths), function (filePath) {
+      filePath = path.join(options.cwd, filePath);
+      var newFilePath = metaReplace(filePath);
+      if (newFilePath !== filePath) {
         fs.renameSync(filePath, newFilePath);
       }
     });
+
+    grunt.log.ok("Your new NodeBB " + options.meta["type.id"] + " '" + options.meta.id + "' has been created.");
+    grunt.log.ok("It is placed within " + path.relative(config.cwd, options.cwd));
   });
 
   grunt.registerTask("init", ["prompt:init", "initProject"]);

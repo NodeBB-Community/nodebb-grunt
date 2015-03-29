@@ -9,7 +9,8 @@
           "README.md",
           "package.json",
           "plugin.json"
-        ]
+        ],
+        "paths": ["**/*"]
       }
     },
     "compilation": "default",
@@ -29,7 +30,8 @@
           "package.json",
           "plugin.json",
           "templates/**/*"
-        ]
+        ],
+        "paths": ["**/*"]
       }
     },
     "compilation": "coffee",
@@ -49,7 +51,8 @@
           "package.json",
           "theme.json",
           "plugin.json"
-        ]
+        ],
+        "paths": ["**/*"]
       }
     },
     "compilation": "default",
@@ -69,7 +72,8 @@
           "package.json",
           "theme.json",
           "plugin.json"
-        ]
+        ],
+        "paths": ["**/*"]
       }
     },
     "compilation": "coffee",
