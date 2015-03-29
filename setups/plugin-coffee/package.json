@@ -1,8 +1,8 @@
 {
-  "name": "nodebb-@{type}-@{id}",
-  "version": "${version}",
+  "name": "@{id}",
+  "version": "@{version}",
   "description": "@{description}",
-  "main": "@{main}",
+  "main": "@{library}",
   "repository": {
     "type": "git",
     "url": "${git}"

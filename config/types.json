@@ -1,44 +1,78 @@
 {
   "plugin": {
+    "name": "Plugin",
     "setup": {
-      "base": "initials/${type.id}",
+      "base": "setups/${type.id}",
       "metaReplace": {
         "regex": "\\$\\{([^}]+)}",
         "files": [
-          "LICENSE",
-          "package.json",
           "README.md",
+          "package.json",
           "plugin.json"
         ]
       }
     },
-    "compilation": {
-      "dev": "defaultDev",
-      "dist": "defaultDist"
+    "compilation": "default",
+    "meta": {
+      "type": "plugin",
+      "type.plural": "plugins"
+    }
+  },
+  "plugin-coffee": {
+    "name": "Plugin with CoffeeScript compilation",
+    "setup": {
+      "base": "setups/${type.id}",
+      "metaReplace": {
+        "regex": "\\$\\{([^}]+)}",
+        "files": [
+          "README.md",
+          "package.json",
+          "plugin.json",
+          "templates/**/*"
+        ]
+      }
     },
+    "compilation": "coffee",
     "meta": {
       "type": "plugin",
       "type.plural": "plugins"
     }
   },
   "theme": {
+    "name": "Theme",
     "setup": {
-      "base": "initials/${type.id}",
+      "base": "setups/${type.id}",
       "metaReplace": {
         "regex": "\\$\\{([^}]+)}",
         "files": [
-          "LICENSE",
-          "package.json",
           "README.md",
+          "package.json",
           "theme.json",
           "plugin.json"
         ]
       }
     },
-    "compilation": {
-      "dev": "defaultDev",
-      "dist": "defaultDist"
+    "compilation": "default",
+    "meta": {
+      "type": "theme",
+      "type.plural": "themes"
+    }
+  },
+  "theme-coffee": {
+    "name": "Theme with CoffeeScript compilation",
+    "setup": {
+      "base": "setups/${type.id}",
+      "metaReplace": {
+        "regex": "\\$\\{([^}]+)}",
+        "files": [
+          "README.md",
+          "package.json",
+          "theme.json",
+          "plugin.json"
+        ]
+      }
     },
+    "compilation": "coffee",
     "meta": {
       "type": "theme",
       "type.plural": "themes"

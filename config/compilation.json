@@ -1,49 +1,58 @@
 {
-  "defaultDev": [
-    {
-      "src": "**/*",
-      "compiler": "moduleMeta",
-      "regex": "@\\{NAME}"
+  "default": {
+    "dev": [
+      "tools.meta.templates"
+    ],
+    "dist": [
+      "default.dev",
+      "tools.minify"
+    ]
+  },
+  "coffee": {
+    "dev": [
+      "tools.meta.templates",
+      "tools.coffee"
+    ],
+    "dist": [
+      "coffee.dev",
+      "tools.minify"
+    ]
+  },
+  "tools": {
+    "meta": {
+      "all": {
+        "compiler": "moduleMeta",
+        "src": "**/*",
+        "regex": "@\\{([^}]+)}"
+      },
+      "templates": {
+        "compiler": "moduleMeta",
+        "src": "templates/**/*",
+        "regex": "@\\{([^}]+)}"
+      }
     },
-    {
-      "src": "coffee/**/*.coffee",
-      "compiler": "coffee",
-      "concat": "#{id}"
+    "minify": {
+      "compiler": "minify",
+      "src": "**/*.js"
     },
-    {
-      "cwd": "public/",
-      "src": "**/*.coffee",
-      "compiler": "coffee",
-      "wrap": true
-    },
-    {
-      "src": "**/*.coffee",
-      "compiler": "coffee"
-    }
-  ],
-  "defaultDist": [
-    {
-      "src": "**/*",
-      "compiler": "moduleMeta",
-      "regex": "@\\{NAME}"
-    },
-    {
-      "src": "coffee/**/*.coffee",
-      "compiler": "coffee",
-      "concat": "#{id}",
-      "minify": true
-    },
-    {
-      "cwd": "public/",
-      "src": "**/*.coffee",
-      "compiler": "coffee",
-      "minify": {"ext": ".js"},
-      "wrap": true
-    },
-    {
-      "src": "**/*.coffee",
-      "compiler": "coffee",
-      "minify": true
-    }
-  ]
+    "coffee": [
+      {
+        "compiler": "coffee",
+        "src": "coffee/**/*.coffee",
+        "concat": "@{library}",
+        "options": {
+          "bare": true
+        }
+      },
+      {
+        "compiler": "coffee",
+        "cwd": "public/",
+        "src": "**/*.coffee"
+      },
+      {
+        "compiler": "coffee",
+        "src": "**/*.coffee"
+      }
+    ]
+  }
 }

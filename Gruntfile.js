@@ -37,15 +37,14 @@ module.exports = function (grunt) {
 
   /*--------------------------- load all compilers that may get needed by any module-type  ---------------------------*/
 
-  function loadCompilers(val) {
-    var comp = config.compilation;
-    var compilers = _.pluck(comp[val.dev], "compiler").concat(_.pluck(comp[val.dist], "compiler"));
-    _.each(_.uniq(_.compact(compilers)), function (name) {
-      helpers.loadDeepTask("compiler", name);
-    });
+  function getCompilerNames(compilation) {
+    var arr = helpers.getCompilation(compilation, true).concat(helpers.getCompilation(compilation, false));
+    return _.pluck(arr, "compiler");
   }
 
-  _.each(_.pluck(config.types, "compilation"), loadCompilers);
+  _.each(_.uniq(_.flatten(_.map(_.pluck(config.types, "compilation"), getCompilerNames))), function (name) {
+    helpers.loadDeepTask("compiler", name);
+  });
 
   /*---------------------------------------------- persist grunt-config ----------------------------------------------*/
 

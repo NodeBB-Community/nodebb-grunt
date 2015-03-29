@@ -1,4 +1,4 @@
-<h1>@{name}</h1>
+<h1>${name} v@{version}</h1>
 <hr />
 
 <form>
@@ -9,9 +9,9 @@
   <div class="alert alert-info">
     <p>
       <label for="Setting 1">Setting 1</label>
-      <input type="text" data-field="@{id}:setting1" title="Setting 1" class="form-control" placeholder="Setting 1"><br />
+      <input type="text" data-field="${id}:setting1" title="Setting 1" class="form-control" placeholder="Setting 1"><br />
       <label for="Setting 2">Setting 2</label>
-      <input type="text" data-field="@{id}:setting2" title="Setting 2" class="form-control" placeholder="Setting 2">
+      <input type="text" data-field="${id}:setting2" title="Setting 2" class="form-control" placeholder="Setting 2">
     </p>
   </div>
 </form>

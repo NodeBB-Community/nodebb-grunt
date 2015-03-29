@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require("underscore");
+var fs = require("fs");
 var path = require("path");
 var semver = require("semver");
 var regexps = require("regexps");
@@ -39,7 +40,9 @@ module.exports = function (config, helpers, gruntConfig) {
             config: prefix + "type.id",
             type: "list",
             message: "Choose the NodeBB module-type:",
-            choices: _.clone(_.keys(config.types)).concat("---", {name: "custom", value: null})
+            choices: _.map(config.types, function (val, key) {
+              return {name: val.name, value: key};
+            }).concat("---", {name: "New Module-Type", value: null})
           },
           {
             config: prefix + "customType.id",
@@ -172,17 +175,17 @@ module.exports = function (config, helpers, gruntConfig) {
             var typesPath = path.join(config.cwd, "config", "types.json");
             var typesJSON = grunt.file.readJSON(typesPath);
             var t = typesJSON[customTypeId] = config.types[customTypeId] = {
+              name: customTypeId.replace(/(^|[^a-zA-Z])([a-z])/g, function (ignored, bound, letter) {
+                return bound + letter.toUpperCase();
+              }),
               setup: {
-                base: "initials/${type.id}",
+                base: "setups/${type.id}",
                 metaReplace: {
                   regex: "\\$\\{([^}]+)}",
                   files: ["LICENSE", "package.json", "README.md", "theme.json", "plugin.json"]
                 }
               },
-              compilation: {
-                dev: "defaultDev",
-                dist: "defaultDist"
-              },
+              compilation: _.first(_.keys(config.compilation)),
               meta: {}
             };
             _.each(customTypeMetaKeys, function (key) {
@@ -298,29 +301,34 @@ module.exports = function (config, helpers, gruntConfig) {
 
   grunt.registerTask("initProjectReplace", "Replaces project-variables as specified by the initProject task", function () {
     var options = this.options();
-    var meta = options.meta;
+    var metaReplace = helpers.getTextReplacer(new RegExp(options.metaReplace.regex, "g"), options.meta);
+    // write LICENSE
+    var licenseText = metaReplace(helpers.getLicenseText(options.meta.license));
+    if (licenseText) {
+      grunt.file.write(path.join(options.cwd, "LICENSE"), licenseText);
+    }
+    // edit package.json
     var packagePath = path.join(options.cwd, "package.json");
     if (grunt.file.exists(packagePath)) {
       var packageJSON = grunt.file.readJSON(packagePath);
-      if (!meta.git) {
+      if (!options.meta.git) {
         delete packageJSON.repository;
       }
-      packageJSON.keywords = meta.keywords;
+      packageJSON.keywords = options.meta.keywords;
       grunt.file.write(packagePath, JSON.stringify(packageJSON, null, 2));
     }
-    var regex = new RegExp(options.metaReplace.regex, "g");
+    // write meta-replaces as specified within config/types.json
     _.each(grunt.file.expand({cwd: options.cwd}, options.metaReplace.files), function (filePath) {
       filePath = path.join(options.cwd, filePath);
+      var newFilePath = metaReplace(filePath);
       if (grunt.file.isFile(filePath)) {
-        var content = grunt.file.read(filePath);
-        content = content.replace(regex, function (match, name) {
-          //noinspection JSUnresolvedFunction
-          if (meta.hasOwnProperty(name)) {
-            return meta[name] || "";
-          }
-          return match;
-        });
-        grunt.file.write(filePath, content);
+        var content = metaReplace(grunt.file.read(filePath));
+        if (newFilePath !== filePath) {
+          grunt.file.delete(filePath);
+        }
+        grunt.file.write(newFilePath, content);
+      } else if (grunt.file.isDir(filePath) && newFilePath !== filePath) {
+        fs.renameSync(filePath, newFilePath);
       }
     });
   });

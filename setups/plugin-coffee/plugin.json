@@ -1,8 +1,9 @@
 {
   "id": "nodebb-${type}-${id}",
+  "version": "${version}",
   "name": "${name}",
   "description": "${description}",
-  "library": "@{main}",
+  "library": "@{ID}.js",
   "staticDirs": {},
   "less": [],
   "languages": "locales",

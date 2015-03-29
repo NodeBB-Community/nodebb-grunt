@@ -139,6 +139,39 @@ module.exports = function (config, gruntConfig, loadService) {
           return helpers.readModule(path.basename(file, ".json"));
         }
       }));
+    },
+
+    getLicenseText: function (name) {
+      return (config.licenses[name] || "").replace(/\n/g, grunt.util.linefeed);
+    },
+
+    getTextReplacer: function (regex, content) {
+      return function (text) {
+        return text.replace(regex, function (match, name) {
+          if (content.hasOwnProperty(name)) {
+            return content[name] || "";
+          }
+          return match;
+        });
+      };
+    },
+
+    getCompilation: function (key, dev) {
+      return _.flatten(helpers.populateCompilation(key + (dev ? ".dev" : ".dist")));
+    },
+
+    populateCompilation: function (obj) {
+      var type = typeof obj;
+      if (type === "string") {
+        return helpers.populateCompilation(helpers.getByKey(config.compilation, obj));
+      }
+      if (type !== "object") {
+        throw new Error("Compilation-Config invalid.");
+      }
+      if (obj instanceof Array) {
+        return _.map(obj, helpers.populateCompilation);
+      }
+      return [obj];
     }
 
   };
