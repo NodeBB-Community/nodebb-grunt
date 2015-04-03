@@ -83,6 +83,12 @@ module.exports = function (config, helpers, gruntConfig) {
               return true;
             }
             return grunt.file.isDir(path.join(config.cwd, dir)) ? true : "The given path is no directory.";
+          },
+          filter: function (str) {
+            if (!/\$\{.*}/.test(str)) {
+              return path.join(str, "nodebb-${type.name}-${id}");
+            }
+            return str;
           }
         }
       ],

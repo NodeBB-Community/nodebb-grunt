@@ -1,183 +1,152 @@
-# NodeBB Grunt Development - 0.4-1
+# NodeBB Grunt Development - 1.0.0-alpha1
 
-## Features
+This Grunt-Setup simplifies the creation and development workflow on [NodeBB](https://nodebb.org/) plugins, themes and widgets (further called *modules*).
 
- + Allows you to separate your development module-states from the actual NodeBB Forum while keeping the development-process simple and comfortable.
- + Allows you to use coffee-script instead of plain javascript :smile:
- + Simplifies the process of creating new plugins/themes.
+## License
 
-## Example Modules
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+[![Dependency Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development)
+[![optionalDependencies Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/optional-status.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development#info=optionalDependencies)
 
-+ [nodebb-plugin-emoji-extended](https://github.com/frissdiegurke/nodebb-plugin-emoji-extended)
-+ [nodebb-plugin-shortcuts](https://github.com/frissdiegurke/nodebb-plugin-shortcuts)
-+ [nodebb-plugin-livereload](https://github.com/frissdiegurke/nodebb-plugin-livereload)
-+ [nodebb-theme-dark-rectangles](https://github.com/frissdiegurke/nodebb-theme-dark-rectangles)
+## Not implemented yet
 
-As you can see the `plugin.json` references to `"library": "./index.js"` that will get compiled out of all files within the `coffee`-dir which is a great way to split long one-file scripts into different files :wink:.
+ + The compilation- and publish-tasks
+ + A smart clean-task that accepts module-id as parameter
+ + Basic theme- and widgets-setup with CoffeeScript-usage
+ + Basic plugin-, theme- and widgets-setups without CoffeeScript
+ + Allow different setups for same type (additional setup-selection within init-task)
+ + Read config/*.custom.json to overwrite configuration without changing git-content
+ + Some tasks for adding git-providers and other config-modifications
 
-Also you may notice that even within other directories all `.coffee`-files will get compiled to same-named `.js` files.
+## Features (once it's out of alpha)
 
-## Installation
+ + Interactive NodeBB setup for new plugins, themes and widgets.
+ + Removes duplication of meta-data like `version`, `name`, etc. within *package.json*, *plugin.json*, *theme.json* and any other files you need it.
+ + Allows you to treat CoffeeScript-files just like JavaScript-files since they get in-place-compiled within grunt-tasks.
+ + Advanced file-watchers for different file-types for great integration with NodeBBs file-watchers.
+ + The setups give you a few structure-conventions that help other developers reviewing your modules.
+ + Easy to extend grunt-task structure that allows you to add custom compilers if needed.
 
- + run `wget https://raw.github.com/frissdiegurke/nodebb-grunt-development/master/Gruntfile.coffee`
-   to download the *Gruntfile.coffee* from this project. Move it into
-   your NodeBB-Forums directory or any directory containing the Forum
-   as sub-directory (clone of this repository would overwrite the nice
-   README.md file of NodeBB).
- + run `wget https://raw.github.com/frissdiegurke/nodebb-grunt-development/master/grunt-development.json`
-   to download the default-configuration for this project. Move it into
-   the same firectory as your *Gruntfile.coffee*. Remove the sample
-   module-entries from within *grunt-development.json*.
- + run `npm install grunt grunt-coffee grunt-contrib-clean grunt-contrib-copy grunt-contrib-coffee`
-   `grunt-contrib-uglify grunt-contrib-watch`
-   from within your NodeBB-directory
- + setup your module-directory, eg. by creating custom_modules/
-   directory containing themes/ and plugins/. You may change the
-   pathnames within *grunt-development.json* ;)
+## Tasks
+
+The most interesting tasks you need to know ( *my-module* may either be an existing module-name or an alias for any existing module):
+
+ + `grunt config`: Initial setup of configuration (e.g. default value for `author` and GitHub username, etc.)
+ + `grunt` or `grunt init`: Setup a new module.
+ + `grunt dev:my-module`: Run development-compilation of *my-module* and start blocking file-watchers.
+ + `grunt dev_stop:my-module`: Run development-compilation of *my-module* (without file-watchers).
+ + `grunt dev_skip:my-module`: Run file-watchers for *my-module* (without preceding development-compilation).
+ + `grunt deploy:my-module`: Run deployment-compilation of *my-module*.
+ + `grunt publish:my-module:commit-message`: Run deployment-compilation of *my-module* and publish it to npm/git (as specified for module). If *commit-message* is specified a `git commit` will get executed within the module-directory.
+ + `grunt clean`: Clean temporary data (you'll need to restart full compilation afterwards, **no** `dev_skip`).
+
+## Workflow (not working yet)
+
+My personal workflow should look like this once out of alpha:
+
+ 1. Create a new module if needed by `grunt`.
+ 2. Start `grunt` within NodeBB-root within separated terminal (since it's blocking).
+ 3. Start `grunt dev:my-module` or `grunt dev_skip:my-module` (the former if there have been any changes since last workflow within that module).
+ 4. Do my work on the module, for some changes NodeBB needs to get restarted (hook-changes, etc.).
+ 5. Once a new version is ready to get published:
+   a) Interrupt the command of step 3.
+   b) Run `grunt deploy:my-module`, restart NodeBB entirely and refresh within browser.
+   c) If that worked without problems run `grunt publish:my-module:'v0.0.2: some message for the latest changes'`
+
+## Structure
+
+### Modules
+
+Despite configuration the meta-data for internal usage of your module gets located at *modules/my-module.json*.
 
 ### Configuration
 
-The configuration (containing an entry per module) can be found within
-the *grunt-development.json*-file.
+#### config/paths.json
 
-The structure should be self-explaining ;)
+    {
+      "source": {
+        "base": "modules/${type.path}/${id}" // The path to setup and expect your modules within. E.g. modules/plugins/my-plugin/
+      },
+      "deploy": "node_modules/nodebb-${type.name}-${id}", // This path should point into your NodeBBs node_modules/ directory
+      "tmp": "modules/.tmp/${id}", // For internal use (temporary data)
+      "clean": {
+        "tmp": "modules/.tmp" // Remove this directory when clean gets run
+      }
+    }
 
-**Some notes:**
+#### config/licenses.json
 
- + You should replace the `author` and `github` attributes by your own values to get the `grunt init` command working properly ;)
- + Paths have to end with `/`
- + Module-names must not begin with `.`
- + Files to uglify are relative to the modules root-directory
- + `"liveReload": false` will disable live-reload
+    {
+      "key": "value" // any license-names with their appropriate text to be added into LICENSE-file of modules
+    }
 
-**Sample meanings:**
+#### config/types.json
 
-There are 3 plugins:
+TODO
 
- + The plugin within the directory *custom_modules/plugins/emoji/* gets
-   mapped to a NodeBB-plugin called **nodebb-plugin-emoji-extended**
- + The plugin within the directory *custom_modules/plugins/livereload/*
-   gets mapped to a NodeBB-plugin called **nodebb-plugin-livereload**
- + The plugin within the directory *custom_modules/plugins/shortcuts/*
-   gets mapped to a NodeBB-plugin called **nodebb-plugin-shortcuts**
+#### config/compilation.json
 
-There is one theme:
+Let's define an `{compilation object}` as following:
 
- + The theme within the directory *custom_modules/themes/dark_rectangles/*
-   gets mapped to a NodeBB-plugin called **nodebb-theme-dark-rectangles**
+    [ Object | Array | String ]
+      If Object: {"compiler": "someCompilerName", [data]} - the compiler-name needs to match any compiler within tasks/compiler/
+      If String: resolve compilation-set by value as compilation-set-ID.
+      If Array: recursive expand each item as {compilation object}.
 
-The sample uglify-entries mean that no uglification gets used within the
-`grunt dev`-tasks and within the `grunt dist`-tasks any *.js*-file that
-is **not** within any *node_modules*-(sub-)directory gets uglified (compressed).
+So now the *config/compilation.json*:
 
-### Update
+    {
+      "default": { // The keys generate the compilation-set-ID, if it gets referred from any config/types.json (compilation-attribute) it needs to contain dev- and dist-attributes
+        "dev": {compilation object}, // compilation-set-ID: "default.dev"
+        "dist": {compilation object}
+      },
+      "tools": { // If it doesn't get referred from any type-definition it doesn't need any specific attributes.
+        "meta": {
+          "default": {compilation object} // compilation-set-ID: "tools.meta.default"
+        },
+        "minify": {compilation object} // compilation-set-ID: "tools.minify"
+      }
+    }
 
-**Note:** Minor releases like `0.2-1` to `0.2-2` don't need any update of the
-*grunt-development.json*-file.
+#### config/meta.json
 
-Overwrite your *Gruntfile.coffee* and the initial-folders with the up-to-date ones.
-Now look up the file-format of the up-to-date *grunt-development.json* and
-manually update your *grunt-development.json*-file to match the needed
-structure.
+These are just some default values for the `grunt init` task.
 
-## Usage
+    {
+      "author": "Ole Reglitzki",
+      "keywords": [
+        "nodebb",
+        "@{type.name}"
+      ]
+    }
 
-### New Theme
+#### config/publish.json
 
-#### Automated
+    {
+      "git": {
+        "providers": { // Those will be available for choice within project-init
+          "GitHub": "https://github.com/frissdiegurke/nodebb-${type.name}-${id}.git"
+        },
+        "beforeCommit": "git add -u", // Gets executed before any git-commit
+        "defaultProvider": "GitHub" // Refers any key of config/publish.json:git.providers
+      }
+    }
 
- + Run `grunt init:t:theme-id:theme-name:theme-description` (theme-arguments are optional, but will simplify your life).
-   This command creates a new theme called `nodebb-theme-theme-id`. If you want to have a different theme-initialization
-   just edit the files within *custom_modules/initial/theme/*, you may use `@{id}`, `@{name}`, `@{desc}`, `@{author}`,
-   `@{gh}` (github profile-name as specified within *grunt-development.json*) as placeholders (even within path-names ;)
+## Contribution
 
-#### By hand
+If you create a new type (and/or setup) that may be useful to others and you agree to the license-conditions, don't mind sending a Pull Request containing your changes.
 
- + Create a new directory within the *custom_modules/themes* directory
- + Add a new entry within your *grunt-development.json* to `modules.themes`
-   like `"DIRNAME": "THEME-NAME"` where `DIRNAME` is the name of the folder
-   within *custom_modules/themes/* and `THEME-NAME` is the name of the theme
-   as you wish to publish it (without `nodebb-theme-` prefix)
+## References
 
-### New Plugin
+### Plugins
 
-#### Automated
+ + [NodeBB Docs: Writing Plugins for NodeBB](https://docs.nodebb.org/en/latest/plugins/create.html)
+ + [NodeBB Wiki: Hooks](https://github.com/NodeBB/NodeBB/wiki/Hooks)
 
- + Run `grunt init::plugin-id:plugin-name:plugin-description` (plugin-arguments are optional, but will simplify your
-   life). This command creates a new plugin called `nodebb-plugin-plugin-id`. If you want to have a different
-   plugin-initialization just edit the files within *custom_modules/initial/plugin/*, you may use `@{id}`, `@{name}`,
-   `@{desc}`, `@{author}`, `@{gh}` (github profile-name as specified within *grunt-development.json*) as placeholders
-   (even within path-names ;)
- + **Notice the two `::` behind `grunt init`!** (first argument decides theme or plugin, everything else than `:t:` and
-   `:theme:` determines a plugin, even empty argument `::`.
+### Themes
 
-#### By hand
+ + [NodeBB Docs: Creating a new NodeBB Theme](https://docs.nodebb.org/en/latest/themes/create.html)
 
- + Create a new directory within the *custom_modules/plugins* directory
- + Add a new entry within your *grunt-development.json* to `modules.plugins`
-   like `"DIRNAME": "PLUGIN-NAME"` where `DIRNAME` is the name of the folder
-   within *custom_modules/plugins/* and `PLUGIN-NAME` is the name of the
-   plugin as you wish to publish it (without `nodebb-plugin-` prefix)
+### Widgets
 
-### Using coffee-script
-
- + Create a new directory named *coffee* within your module-directory
- + Now you may create any *.coffee*-files within this directory and/or
-   sub-directories. These files will get concentrated (in alphabetically
-   order) into one *index.js*-file within the modules root-directory.
- + Every *.coffee*-file not within the *coffee*-directory will be compiled
-   separately to a *.js*-file of same name.
-
-### Grunt-Tasks
-
- + `grunt dev` - builds your modules and listens for activity that triggers
-   rebuilds
- + `grunt dist` - builds your modules and uglifies them if configured
-   (within *Gruntfile.coffee*)
- + `grunt publ` - runs `grunt dist` and publishes changes into NPM.
- + `grunt clean` - removes the *.tmp*-directory
- + `grunt init` - initializes a new theme or plugin as described above.
-
-For each of the tasks you may add `:MODULENAME` to just use one module (`dev` does only work for all modules or a single
-module).
-
- + `grunt publ:MODULENAME:COMMIT-MSG:PUSH`
-    1. runs `grunt dist:MODULENAME`
-    2. publishes changes into NPM
-    3. commits changes to git-repository if `COMMIT_MSG` is given
-    4. pushes commits to git-repository if `PUSH` is not "false"
-
-## Typical Workflow
-
-### Multiple plugins / themes
-
- + `grunt dev`
- + work on modules, refresh browser, work on modules, [...]
- + `grunt publ` (no git calls) OR `grunt "publ:I have done some changes"` (commits each module with same message)
-
-### Single plugin / theme
-
- + `grunt dev:MODULENAME`
- + work on module, refresh browser, work on module, [...]
- + `grunt "publ:MODULENAME:I have done some changes"`
-
-## Changelog
-
-### Version 0.4
-
- + fixed no git-push if false given
- + added `grunt init` command to initialize a new theme or plugin based on initial-folders
-
-### Version 0.3
-
- + added npm publish
- + added git add+commit, push
- + moved dist-path to config
- + since `grunt publ` runs all necessary tasks to publish your work within short time there is no more need to kill the
-   `grunt dev` task anymore.
-
-### Version 0.2
-
- + improved configuration
- + added build-in compilation of any *.coffee*-files within modules to equivalent *.js*-files
- + moved configuration to json-file
+ + [NodeBB Docs: Writing Widgets for NodeBB](https://docs.nodebb.org/en/latest/widgets/create.html)

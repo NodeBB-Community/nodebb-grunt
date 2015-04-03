@@ -19,4 +19,6 @@ module.exports = function (config, helpers) {
     grunt.task.run("copy:tmp");
   });
 
+  // TODO create copy_deploy task
+
 };

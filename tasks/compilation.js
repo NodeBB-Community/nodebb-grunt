@@ -13,7 +13,7 @@ module.exports = function (config, helpers) {
 
     grunt.task.run(_.flatten(_.compact(_.map(helpers.getCompilation(compilationId, dev), function (step) {
       var compiler = helpers.loadCompiler(step.compiler);
-      return compiler.process(step);
+      return compiler.process(moduleData, step);
     }))));
   });
 
