@@ -1,6 +1,6 @@
 {
   "source": {
-    "base": "modules/${type.plural}/${id}/"
+    "base": "modules/${type.path}/${id}/"
   },
   "deploy": "node_modules/",
   "tmp": "modules/.tmp/"

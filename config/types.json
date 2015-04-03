@@ -16,8 +16,9 @@
     },
     "compilation": "default",
     "meta": {
-      "type": "plugin",
-      "type.plural": "plugins"
+      "Name": "Plugin",
+      "name": "plugin",
+      "path": "plugins"
     }
   },
   "plugin-coffee": {
@@ -38,8 +39,9 @@
     },
     "compilation": "coffee",
     "meta": {
-      "type": "plugin",
-      "type.plural": "plugins"
+      "Name": "CoffeeScript Plugin",
+      "name": "plugin",
+      "path": "plugins"
     }
   },
   "theme": {
@@ -60,8 +62,9 @@
     },
     "compilation": "default",
     "meta": {
-      "type": "theme",
-      "type.plural": "themes"
+      "Name": "Theme",
+      "name": "theme",
+      "path": "themes"
     }
   },
   "theme-coffee": {
@@ -82,8 +85,9 @@
     },
     "compilation": "coffee",
     "meta": {
-      "type": "theme",
-      "type.plural": "themes"
+      "Name": "CoffeeScript Theme",
+      "name": "theme",
+      "path": "themes"
     }
   }
 }

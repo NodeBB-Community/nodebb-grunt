@@ -5,6 +5,13 @@ var fs = require("fs");
 var path = require("path");
 var childProcess = require("child_process");
 
+var now = new Date();
+var MODULE_META_STATICS = {
+  YYYY: now.getFullYear(),
+  DD: now.getDay() >= 10 ? now.getDay() : "0" + now.getDay(),
+  MM: now.getMonth() >= 10 ? now.getMonth() : "0" + now.getMonth()
+};
+
 module.exports = function (config, gruntConfig, loadService) {
   var grunt = this;
   var dependencies = config.pkg.dependencies || {}, optionalDependencies = config.pkg.optionalDependencies || {};
@@ -141,19 +148,49 @@ module.exports = function (config, gruntConfig, loadService) {
       }));
     },
 
+    camelCase: function (str) {
+      return str.replace(/[^a-zA-Z\d]+([a-zA-Z\d])/g, function (match, char) {
+        return char.toUpperCase();
+      });
+    },
+
+    idToName: function (id) {
+      return id.replace(/(^|[^a-zA-Z])([a-z])/g, function (ignored, bound, letter) {
+        return bound + letter.toUpperCase();
+      });
+    },
+
     getLicenseText: function (name) {
       return (config.licenses[name] || "").replace(/\n/g, grunt.util.linefeed);
     },
 
-    getTextReplacer: function (regex, content) {
-      return function (text) {
-        return text.replace(regex, function (match, name) {
-          // TODO split name with "."
-          if (content.hasOwnProperty(name)) {
-            return content[name] || "";
+    getMetaData: function (moduleId, data) {
+      var iD = helpers.camelCase(moduleId),
+          Id = iD[0].toUpperCase() + iD.substring(1),
+          ID = iD.replace(/([A-Z])/g, "_$1").toUpperCase();
+      var meta = _.extend({id: moduleId, Id: Id, iD: iD, ID: ID}, MODULE_META_STATICS, data);
+      meta.type = _.extend({id: data.type}, config.types[data.type].meta);
+      return meta;
+    },
+
+    getReplacer: function (regex, content) {
+      return function replaceObj(obj) {
+        if (obj == null) {
+          return obj;
+        }
+        if (typeof obj === "object") {
+          if (obj instanceof Array) {
+            return _.map(obj, replaceObj);
           }
-          return match;
-        });
+          return _.mapObject(obj, replaceObj);
+        }
+        if (typeof obj === "string") {
+          return obj.replace(regex, function (match, name) {
+            var result = helpers.getByKey(content, name);
+            return _.isUndefined(result) ? match : result || "";
+          });
+        }
+        return obj;
       };
     },
 

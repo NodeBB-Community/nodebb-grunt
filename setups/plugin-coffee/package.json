@@ -1,5 +1,5 @@
 {
-  "name": "nodebb-${type.meta.type}-${id}",
+  "name": "nodebb-${type.name}-${id}",
   "version": "${version}",
   "description": "${description}",
   "main": "lib/main.js",
@@ -12,9 +12,10 @@
     "url": "${git}"
   },
   "nbbpm": {
-    "id": "${id}",
-    "type": "${type.meta.type}",
     "name": "${name}",
+    "id": "@{id}",
+    "type": "@{type.name}",
+    "build": "@{build}",
     "compatibility": "^0.7.0"
   }
 }
