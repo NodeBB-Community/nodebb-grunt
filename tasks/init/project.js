@@ -105,11 +105,11 @@ module.exports = function (config, helpers, gruntConfig) {
     publish: [
       {
         config: prefix + "publish.npm", type: "confirm",
-        message: "Enable npm-publish (trigger a npm publish within deploy-dir while grunt publ):", default: true
+        message: "Enable npm-publish (trigger a npm publish within deploy-dir while grunt publish):", default: true
       },
       {
         config: prefix + "publish.git", type: "confirm",
-        message: "Enable git-push (trigger a push within module-dir while grunt publ):", default: true
+        message: "Enable git-push (trigger a push within module-dir while grunt publish):", default: true
       }
     ],
 

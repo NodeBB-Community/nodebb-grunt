@@ -87,8 +87,12 @@ module.exports = function (config, gruntConfig, loadService) {
       return result;
     },
 
-    loadDeepTask: function (dir, name) {
-      return helpers.loadTask(path.join(dir, name), name);
+    loadDeepTask: function (dir, name, attrName) {
+      return helpers.loadTask(path.join(dir, name), attrName || name);
+    },
+
+    loadCompiler: function (name, attrName) {
+      return helpers.loadTask(path.join("compiler", name), attrName || name + "Compiler");
     },
 
     exec: function (cmd, options, cb) {
@@ -146,6 +150,26 @@ module.exports = function (config, gruntConfig, loadService) {
           return helpers.readModule(path.basename(file, ".json"));
         }
       }));
+    },
+
+    findModule: function (alias) {
+      var p = path.join(config.cwd, "modules");
+      if (!grunt.file.isDir(p)) {
+        return;
+      }
+      var moduleFile = path.join(p, alias + ".json");
+      if (grunt.file.exists(moduleFile)) {
+        return moduleFile;
+      }
+      var files = fs.readdirSync(p);
+      var file = _.find(files, function (file) {
+        return path.extname(file) === ".json" &&
+            (~_.indexOf(helpers.readModule(path.basename(file, ".json")).aliases, alias)) &&
+            file;
+      });
+      if (file) {
+        return path.join(p, file);
+      }
     },
 
     camelCase: function (str) {

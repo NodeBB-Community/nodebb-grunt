@@ -1,30 +1,19 @@
 "use strict";
 
-var path = require("path");
-
 module.exports = function (config, helpers) {
   var grunt = this;
 
-  grunt.registerTask("copy_tmp", "Copies a specified module into the tmp-dir for further processing", function (id) {
-    var moduleFile = path.join(config.cwd, "modules", id + ".json");
-    if (!grunt.file.exists(moduleFile)) {
-      grunt.fail.fatal("Module '" + id + "' not found.");
-    }
+  helpers.loadNpmTask("grunt-contrib-copy");
 
-    var meta = helpers.getMetaData(id, grunt.file.readJSON(moduleFile));
-    var type = config.types[meta.type.id];
-
-    var metaReplaceData = type.setup.metaReplace,
-        metaReplace = helpers.getReplacer(new RegExp(metaReplaceData.regex, "g"), meta);
-
-    var source = path.join(config.cwd, metaReplace(config.paths.source.base));
-    var destination = path.join(config.cwd, metaReplace(config.paths.tmp));
+  grunt.registerTask("copy_tmp", "Copies the active module into the tmp-dir for further processing", function () {
+    grunt.task.requires("set_active_module");
+    var moduleData = grunt.config.get("modules.active");
 
     grunt.config.set("copy.tmp", {
       expand: true,
-      cwd: source,
+      cwd: moduleData.paths.source,
       src: "**/*",
-      dest: destination
+      dest: moduleData.paths.tmp
     });
 
     grunt.task.run("copy:tmp");

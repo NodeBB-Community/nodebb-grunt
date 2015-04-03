@@ -30,11 +30,21 @@ module.exports = function (grunt) {
 
   /*--------------------------------------------------- load tasks ---------------------------------------------------*/
 
-  helpers.loadTask("init/config", "config");
-  helpers.loadTask("init/project", "initProject");
-  helpers.loadTask("init/copy", "copy.init");
+  // init
+  helpers.loadDeepTask("init", "config");
+  helpers.loadDeepTask("init", "project", "initProject");
+  helpers.loadDeepTask("init", "copy", "copy.init");
+  // compile
+  helpers.loadTask("compilation");
+  helpers.loadTask("modules");
+  // watch
+  helpers.loadTask("watch");
+  // mixed
+  helpers.loadTask("clean");
   helpers.loadTask("copy");
-  // TODO implement other tasks
+  // publish
+  helpers.loadDeepTask("publish", "git");
+  helpers.loadDeepTask("publish", "npm");
 
   /*--------------------------- load all compilers that may get needed by any module-type  ---------------------------*/
 
@@ -44,15 +54,46 @@ module.exports = function (grunt) {
   }
 
   _.each(_.uniq(_.flatten(_.map(_.pluck(config.types, "compilation"), getCompilerNames))), function (name) {
-    helpers.loadDeepTask("compiler", name);
+    helpers.loadCompiler(name);
   });
 
   /*---------------------------------------------- persist grunt-config ----------------------------------------------*/
 
   grunt.initConfig(gruntConfig);
 
-  /*------------------------------------------------ add alias tasks  ------------------------------------------------*/
+  /*--------------------------------------------- add some (alias-)tasks ---------------------------------------------*/
 
-  // TODO create some aliases (e.g. default)
+  grunt.registerTask("compile", ["copy_tmp", "compilation", "copy_deploy"]);
+
+  grunt.registerTask("set_commit_msg", function (msg) {
+    grunt.config.set("git.commit", msg || null);
+  });
+
+  grunt.registerTask("set_development", "Enables/Sets development task-settings", function (val) {
+    grunt.config.set("development", val !== "off" && val !== "false");
+  });
+
+  grunt.registerTask("dev", "Starts development-mode of specified module [compilation, watch]", function (id) {
+    grunt.task.run("set_development", "set_active_module:" + id, "compile", "watch");
+  });
+  grunt.registerTask("dev_stop", "Starts development-mode of specified module [compilation]", function (id) {
+    grunt.task.run("set_development", "set_active_module:" + id, "compile");
+  });
+  grunt.registerTask("dev_skip", "Starts development-mode of specified module [watch]", function (id) {
+    grunt.task.run("set_development", "set_active_module:" + id, "watch");
+  });
+
+  grunt.registerTask("deploy", "Triggers deployment of specified module", function (id) {
+    grunt.task.run("set_development:false", "set_active_module:" + id, "compile");
+  });
+
+  grunt.registerTask("publish", "Triggers publishing of specified module", function (id, commit) {
+    if (commit != null) {
+      grunt.config.set("git.commit", commit || null);
+    }
+    grunt.task.run("deploy:" + id, "npm", "git");
+  });
+
+  grunt.registerTask("default", "init");
 
 };
