@@ -33,6 +33,7 @@ module.exports = function (grunt) {
   helpers.loadTask("init/config", "config");
   helpers.loadTask("init/project", "initProject");
   helpers.loadTask("init/copy", "copy.init");
+  helpers.loadTask("copy");
   // TODO implement other tasks
 
   /*--------------------------- load all compilers that may get needed by any module-type  ---------------------------*/
