@@ -6,6 +6,7 @@
       "metaReplace": {
         "regex": "\\$\\{([^}]+)}",
         "files": [
+          "LICENSE",
           "README.md",
           "package.json",
           "plugin.json"
@@ -26,6 +27,7 @@
       "metaReplace": {
         "regex": "\\$\\{([^}]+)}",
         "files": [
+          "LICENSE",
           "README.md",
           "package.json",
           "plugin.json",
@@ -47,6 +49,7 @@
       "metaReplace": {
         "regex": "\\$\\{([^}]+)}",
         "files": [
+          "LICENSE",
           "README.md",
           "package.json",
           "theme.json",
@@ -68,6 +71,7 @@
       "metaReplace": {
         "regex": "\\$\\{([^}]+)}",
         "files": [
+          "LICENSE",
           "README.md",
           "package.json",
           "theme.json",

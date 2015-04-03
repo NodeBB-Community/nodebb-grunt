@@ -1,28 +1,26 @@
 {
-  "id": "nodebb-${type}-${id}",
-  "version": "${version}",
-  "name": "${name}",
-  "description": "${description}",
-  "library": "lib/${id}.js",
-  "staticDirs": {},
-  "less": [],
-  "languages": "locales",
-  "templates": "templates",
+  "id": "@{name}",
+  "version": "@{version}",
+  "name": "@{nbbpm.name}",
+  "description": "@{description}",
+  "library": "@{main}",
+  "less": ["public/styles/main.less"],
+  "scripts": ["public/scripts/"],
+  "staticDirs": {"static": "public/static/"},
+  "languages": "public/locales",
+  "templates": "public/templates",
   "hooks": [
     {
+      "hook": "static:app.load",
+      "method": "init"
+    },
+    {
       "hook": "action:plugin.activate",
-      "method": "pluginActivation"
+      "method": "activation"
     },
     {
       "hook": "filter:admin.header.build",
-      "method": "addAdminNavigation"
-    },
-    {
-      "hook": "action:app.load",
-      "method": "init"
+      "method": "adminMenu"
     }
-  ],
-  "nbbpm": {
-    "compatibility": "^0.7.0"
-  }
+  ]
 }

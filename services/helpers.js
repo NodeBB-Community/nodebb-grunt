@@ -148,6 +148,7 @@ module.exports = function (config, gruntConfig, loadService) {
     getTextReplacer: function (regex, content) {
       return function (text) {
         return text.replace(regex, function (match, name) {
+          // TODO split name with "."
           if (content.hasOwnProperty(name)) {
             return content[name] || "";
           }

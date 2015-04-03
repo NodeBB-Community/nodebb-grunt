@@ -284,12 +284,15 @@ module.exports = function (config, helpers, gruntConfig) {
     }
     grunt.config("copy.init.cwd", srcDir);
     grunt.config("copy.init.dest", destination);
+    var iD = id.replace(/[^a-zA-Z\d]+([a-zA-Z\d])/g, function (match, letter) {
+      return letter.toUpperCase();
+    });
     grunt.config("initProjectReplace.options", {
       cwd: destination,
       metaReplace: config.types[module.type].setup.metaReplace,
       meta: _.extend({}, module, config.types[module.type].meta, {
-        "type.id": module.type,
-        id: id,
+        type: _.extend({}, config.types[module.type], {id: module.type}),
+        id: id, Id: iD[0].toUpperCase() + iD.substring(1), iD: iD, ID: iD.replace(/([A-Z])/g, "_$1").toUpperCase(),
         YYYY: new Date().getFullYear(),
         name: name,
         author: grunt.config(prefix + "author"),

@@ -1,20 +1,20 @@
-# [NodeBB](https://nodebb.org/) ${type}: ${name}
+# [NodeBB](https://nodebb.org/) ${type.meta.type}: ${name}
 
 ${description}
 
 ## Installation
 
-To ensure compatibility with your NodeBB instance you should install nodebb-${type}-${id} via the NodeBB Admin Control Panel.
+To ensure compatibility with your NodeBB instance you should install nodebb-${type.meta.type}-${id} via the NodeBB Admin Control Panel.
 
 ### Manual installation
 
 The manual installation via [NPM](https://www.npmjs.com/) may result in version-conflicts with NodeBB.
 
-    npm install nodebb-${type}-${id}
+    npm install nodebb-${type.meta.type}-${id}
 
 ## Development
 
-This ${type} gets developed using the [NodeBB Grunt Development](https://github.com/frissdiegurke/nodebb-grunt-development) Framework.
+This ${type.name} gets developed using the [NodeBB Grunt Development](https://github.com/frissdiegurke/nodebb-grunt-development) Framework.
 
 ## License
 

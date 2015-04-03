@@ -1,7 +1,7 @@
 {
   "default": {
     "dev": [
-      "tools.meta.templates"
+      "tools.meta.default"
     ],
     "dist": [
       "default.dev",
@@ -20,14 +20,14 @@
   },
   "tools": {
     "meta": {
-      "all": {
+      "default": {
         "compiler": "moduleMeta",
-        "src": "**/*",
-        "regex": "@\\{([^}]+)}"
-      },
-      "templates": {
-        "compiler": "moduleMeta",
-        "src": "templates/**/*",
+        "src": [
+          "plugin.json",
+          "theme.json",
+          "lib/settings.*",
+          "public/**/*"
+        ],
         "regex": "@\\{([^}]+)}"
       }
     },
@@ -46,6 +46,10 @@
         "options": {
           "bare": true
         }
+      },
+      {
+        "compiler": "clean",
+        "src": "lib/**/*.coffee"
       },
       {
         "compiler": "coffee",
