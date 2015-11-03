@@ -1,6 +1,15 @@
-"use strict";
+module.exports = function (config, helpers, gruntConfig) {
+  "use strict";
 
-module.exports.process = function (module, options) {
-  //var grunt = this;
-  // TODO implement
+  var grunt = this;
+  helpers.loadNpmTask("grunt-contrib-coffee");
+
+  gruntConfig.coffee = {};
+
+  return {
+    process: function (module, options) {
+      grunt.config.set("coffee.step", options);
+      return "coffee:step";
+    }
+  };
 };

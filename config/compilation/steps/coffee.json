@@ -3,8 +3,9 @@
     "coffee": [
       {
         "compiler": "coffee",
-        "cwd": "lib/",
-        "src": "**/*.coffee",
+        "expand": true,
+        "src": "lib/**/*.coffee",
+        "ext": ".js",
         "options": {
           "bare": true
         }
@@ -15,7 +16,9 @@
       },
       {
         "compiler": "coffee",
-        "src": "**/*.coffee"
+        "expand": true,
+        "src": "**/*.coffee",
+        "ext": ".js"
       },
       {
         "compiler": "clean",
