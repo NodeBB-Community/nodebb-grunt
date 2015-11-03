@@ -1,0 +1,26 @@
+{
+  "plugin-coffee": {
+    "name": "Plugin with CoffeeScript compilation",
+    "sort": 150,
+    "setup": {
+      "base": "setups/${type.id}",
+      "metaReplace": {
+        "regex": "\\$\\{([^}]+)}",
+        "files": [
+          "LICENSE",
+          "README.md",
+          "package.json",
+          "plugin.json",
+          "templates/**/*"
+        ],
+        "paths": ["**/*"]
+      }
+    },
+    "compilation": "coffee",
+    "meta": {
+      "Name": "CoffeeScript Plugin",
+      "name": "plugin",
+      "path": "plugins"
+    }
+  }
+}

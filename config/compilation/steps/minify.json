@@ -1,0 +1,11 @@
+{
+  "steps": {
+    "minify": {
+      "compiler": "minify",
+      "src": [
+        "public/**/*.js",
+        "!public/**/vendor/**/*.js"
+      ]
+    }
+  }
+}

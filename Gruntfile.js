@@ -33,7 +33,7 @@ module.exports = function (grunt) {
   // init
   helpers.loadDeepTask("init", "config");
   helpers.loadDeepTask("init", "project", "initProject");
-  helpers.loadDeepTask("init", "copy", "copy.init");
+  helpers.loadDeepTask("init", "copy");
   // compile
   helpers.loadTask("compilation");
   helpers.loadTask("modules");

@@ -3,7 +3,7 @@
 module.exports = function (config, helpers) {
   var grunt = this;
 
-  grunt.registerTask("compilation_iteratee", "Runs iterative all compilation steps from config", function () {
+  grunt.registerTask("compilation_step", "Runs iterative all compilation steps from config", function () {
     var moduleData = grunt.config.get("modules.active");
     if (moduleData == null) {
       return grunt.fail.fatal("set_active_module must be run first");
@@ -17,7 +17,7 @@ module.exports = function (config, helpers) {
       grunt.task.run(result);
     }
     if (steps.length) {
-      grunt.task.run("compilation_iteratee");
+      grunt.task.run("compilation_step");
     }
   });
 
@@ -32,7 +32,7 @@ module.exports = function (config, helpers) {
     grunt.task.run("increment_module_build");
     grunt.config.set("compilation.stack", helpers.getCompilation(compilationId, dev));
     if (grunt.config.get("compilation.stack").length) {
-      grunt.task.run("compilation_iteratee");
+      grunt.task.run("compilation_step");
     }
   });
 

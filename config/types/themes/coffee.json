@@ -1,0 +1,26 @@
+{
+  "theme-coffee": {
+    "name": "Theme with CoffeeScript compilation",
+    "sort": 1150,
+    "setup": {
+      "base": "setups/${type.id}",
+      "metaReplace": {
+        "regex": "\\$\\{([^}]+)}",
+        "files": [
+          "LICENSE",
+          "README.md",
+          "package.json",
+          "theme.json",
+          "plugin.json"
+        ],
+        "paths": ["**/*"]
+      }
+    },
+    "compilation": "coffee",
+    "meta": {
+      "Name": "CoffeeScript Theme",
+      "name": "theme",
+      "path": "themes"
+    }
+  }
+}

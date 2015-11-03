@@ -3,4 +3,4 @@
 node_modules/
 modules/
 NodeBB
-config/*.local.json
+config/**/*.local.json

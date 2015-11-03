@@ -1,0 +1,25 @@
+{
+  "plugin": {
+    "name": "Plugin",
+    "sort": 100,
+    "setup": {
+      "base": "setups/${type.id}",
+      "metaReplace": {
+        "regex": "\\$\\{([^}]+)}",
+        "files": [
+          "LICENSE",
+          "README.md",
+          "package.json",
+          "plugin.json"
+        ],
+        "paths": ["**/*"]
+      }
+    },
+    "compilation": "default",
+    "meta": {
+      "Name": "Plugin",
+      "name": "plugin",
+      "path": "plugins"
+    }
+  }
+}

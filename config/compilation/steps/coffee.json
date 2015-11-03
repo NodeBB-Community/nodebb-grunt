@@ -1,0 +1,26 @@
+{
+  "steps": {
+    "coffee": [
+      {
+        "compiler": "coffee",
+        "cwd": "lib/",
+        "src": "**/*.coffee",
+        "options": {
+          "bare": true
+        }
+      },
+      {
+        "compiler": "clean",
+        "src": "lib/**/*.coffee"
+      },
+      {
+        "compiler": "coffee",
+        "src": "**/*.coffee"
+      },
+      {
+        "compiler": "clean",
+        "src": "**/*.coffee"
+      }
+    ]
+  }
+}

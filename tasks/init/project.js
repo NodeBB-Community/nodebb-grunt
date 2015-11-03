@@ -24,8 +24,10 @@ module.exports = function (config, helpers, gruntConfig) {
     type: [
       {
         config: prefix + "type.id", type: "list", message: "Choose the NodeBB module-type:",
-        choices: _.map(config.types, function (val, key) {
-          return {name: val.name, value: key};
+        choices: _.map(_.sortBy(_.map(config.types, function (t, k) {
+          return {key: k, sort: t.sort, name: t.name};
+        }), "sort"), function (t) {
+          return {name: t.name, value: t.key};
         }).concat("---", {name: "New Module-Type", value: null})
       },
       {
@@ -35,14 +37,14 @@ module.exports = function (config, helpers, gruntConfig) {
         }
       }
     ].concat(_.map(customTypeMetaKeys, function (key) {
-          return {
-            config: prefix + "customType.meta." + key, type: "input",
-            message: "Insert the value for '" + key + "' of the new custom module:",
-            when: function (answers) {
-              return answers[prefix + "type.id"] === null && config.types[answers[prefix + "customType.id"]] == null;
-            }
-          };
-        })),
+      return {
+        config: prefix + "customType.meta." + key, type: "input",
+        message: "Insert the value for '" + key + "' of the new custom module:",
+        when: function (answers) {
+          return answers[prefix + "type.id"] === null && config.types[answers[prefix + "customType.id"]] == null;
+        }
+      };
+    })),
 
     id: [{
       config: prefix + "id", type: "input",
@@ -76,7 +78,7 @@ module.exports = function (config, helpers, gruntConfig) {
 
     meta: [
       {
-        config: prefix + "version", type: "input", message: "Initial version:", default: "0.0.1",
+        config: prefix + "version", type: "input", message: "Initial version:", default: "0.1.0",
         validate: function (version) {
           if (!semver.valid(version)) {
             return "Version needs to be semver-valid.";
@@ -139,10 +141,16 @@ module.exports = function (config, helpers, gruntConfig) {
     if (answers[prefix + "type.id"] === null) {
       var customTypeId = answers[prefix + "customType.id"];
       if (config.types[customTypeId] == null) {
-        var typesPath = path.join(config.cwd, "config", "types.json");
-        var typesJSON = grunt.file.readJSON(typesPath);
+        var typesPath = path.join(config.cwd, "config/types", helpers.camelCase(customTypeId) + ".local.json");
+        var typesJSON;
+        if (grunt.file.exists(typesPath)) {
+          typesJSON = grunt.file.readJSON(typesPath);
+        } else {
+          typesJSON = {};
+        }
         var t = typesJSON[customTypeId] = config.types[customTypeId] = {
           name: helpers.idToName(customTypeId),
+          sort: 2000,
           setup: {
             base: "setups/${type.id}",
             metaReplace: {
@@ -215,7 +223,7 @@ module.exports = function (config, helpers, gruntConfig) {
       questions: questionsArray,
       then: function (answers) {
         var setAnswer = function (key, val) {
-          grunt.config(prefix + key, answers[prefix + key] = val);
+          grunt.config.set(prefix + key, answers[prefix + key] = val);
           return val;
         };
         processTypeId(answers, setAnswer);
@@ -263,7 +271,7 @@ module.exports = function (config, helpers, gruntConfig) {
         relDestination = path.relative(config.cwd, destination);
 
     if (!grunt.file.exists(moduleFile) && grunt.file.exists(destination)) {
-      grunt.fail.warn("The module-destination '" + relDestination + "' exists already.");
+      grunt.log.ok("The module-destination '" + relDestination + "' exists already. Overwriting.");
     }
 
     // write module-details
@@ -277,9 +285,15 @@ module.exports = function (config, helpers, gruntConfig) {
       return;
     }
 
-    grunt.config("copy.init.cwd", source);
-    grunt.config("copy.init.dest", destination);
-    grunt.config("initProjectReplace.options", {
+    grunt.config.set("copy.init", {
+      files: [{
+        expand: true,
+        cwd: source,
+        src: "**/*",
+        dest: destination
+      }]
+    });
+    grunt.config.set("initProjectReplace.options", {
       cwd: destination,
       meta: meta,
       metaReplace: metaReplace,
@@ -287,6 +301,7 @@ module.exports = function (config, helpers, gruntConfig) {
     });
 
     grunt.log.ok("Set-up copy-task 'copy:init': " + path.relative(config.cwd, source) + " -> " + relDestination);
+    grunt.task.run(["copy:init", "initProjectReplace"]);
   });
 
   /*---------------------------- Run static replace-meta task for module pre-compilation  ----------------------------*/
@@ -326,6 +341,6 @@ module.exports = function (config, helpers, gruntConfig) {
 
   /*------------------------------- Define entry-point task for project-initialization -------------------------------*/
 
-  grunt.registerTask("init", ["prompt:init", "initProject", "copy:init", "initProjectReplace"]);
+  grunt.registerTask("init", ["prompt:init", "initProject"]);
   return {};
 };

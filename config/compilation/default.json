@@ -1,0 +1,11 @@
+{
+  "default": {
+    "dev": [
+      "steps.meta.default"
+    ],
+    "dist": [
+      "default.dev",
+      "steps.minify"
+    ]
+  }
+}
