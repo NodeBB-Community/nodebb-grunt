@@ -1,6 +1,6 @@
 "use strict";
 
-var _ = require("underscore");
+var _ = require("lodash");
 var fs = require("fs");
 var path = require("path");
 var childProcess = require("child_process");
@@ -219,7 +219,7 @@ module.exports = function (config, gruntConfig, loadService) {
     },
 
     getCompilation: function (key, dev) {
-      return _.flatten(helpers.populateCompilation(key + (dev ? ".dev" : ".dist")));
+      return _.flattenDeep(helpers.populateCompilation(key + (dev ? ".dev" : ".dist")));
     },
 
     populateCompilation: function (obj) {

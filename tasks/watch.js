@@ -6,4 +6,5 @@ module.exports = function (config, helpers) {
   helpers.loadNpmTask("grunt-contrib-watch");
 
   // TODO rename watch-task, create custom watch-task
+  return {};
 };

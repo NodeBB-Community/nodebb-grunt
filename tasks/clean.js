@@ -1,6 +1,6 @@
 "use strict";
 
-var _ = require("underscore");
+var _ = require("lodash");
 
 module.exports = function (config, helpers) {
   var grunt = this;

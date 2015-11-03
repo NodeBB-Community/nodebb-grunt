@@ -1,6 +1,6 @@
 "use strict";
 
-var _ = require("underscore");
+var _ = require("lodash");
 var fs = require("fs");
 var path = require("path");
 var semver = require("semver");
@@ -239,7 +239,7 @@ module.exports = function (config, helpers, gruntConfig) {
         npm: grunt.config(prefix + "publish.npm"),
         git: grunt.config(prefix + "publish.git")
       },
-      build: 1
+      build: 0
     };
 
     var meta = _.extend(helpers.getMetaData(grunt.config(prefix + "id"), module), {

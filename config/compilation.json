@@ -23,6 +23,7 @@
       "default": {
         "compiler": "moduleMeta",
         "src": [
+          "package.json",
           "plugin.json",
           "theme.json",
           "lib/settings.*",
