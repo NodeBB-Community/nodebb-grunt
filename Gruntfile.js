@@ -63,7 +63,7 @@ module.exports = function (grunt) {
 
   /*--------------------------------------------- add some (alias-)tasks ---------------------------------------------*/
 
-  grunt.registerTask("compile", ["copy_tmp", "compilation", "copy_deploy"]);
+  grunt.registerTask("compile", ["clean_tmp", "copy_tmp", "compilation", "clean_deploy", "copy_deploy"]);
 
   grunt.registerTask("set_commit_msg", function (msg) {
     grunt.config.set("git.commit", msg || null);
