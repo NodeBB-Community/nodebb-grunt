@@ -26,8 +26,7 @@ exports.addNavigation = (header, cb) ->
   cb null, header
 
 initPageRoute = (router, uiMiddleware, page) ->
-  templateData = page.template?(req, res) || {}
-  renderFn = (req, res) -> res.render "admin/#{page.route}", templateData
+  renderFn = (req, res) -> res.render "admin/#{page.route}", page.template?(req, res) || {}
   router.get "/admin/#{page.route}", uiMiddleware, renderFn
   router.get "/api/admin/#{page.route}", renderFn
 

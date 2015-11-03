@@ -1,7 +1,7 @@
 settings = require './settings'
 
-SocketModules = module.main.require './src/socket.io/modules'
-SocketAdmin = module.main.require './src/socket.io/admin'
+SocketModules = require.main.require './src/socket.io/modules'
+SocketAdmin = require.main.require './src/socket.io/admin'
 
 initSockets = ->
   # called by clients to fetch plugin-data

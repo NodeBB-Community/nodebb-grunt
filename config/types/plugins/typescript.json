@@ -1,0 +1,26 @@
+{
+  "plugin-typescript": {
+    "name": "Plugin with TypeScript compilation",
+    "sort": 125,
+    "setup": {
+      "base": "setups/${type.id}",
+      "metaReplace": {
+        "regex": "\\$\\{([^}]+)}",
+        "files": [
+          "LICENSE",
+          "README.md",
+          "package.json",
+          "plugin.json",
+          "templates/**/*"
+        ],
+        "paths": ["**/*"]
+      }
+    },
+    "compilation": "typescript",
+    "meta": {
+      "Name": "TypeScript Plugin",
+      "name": "plugin",
+      "path": "plugins"
+    }
+  }
+}

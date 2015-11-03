@@ -15,11 +15,9 @@ exports = module.exports = new Settings packageJSON.name, packageJSON.version, d
 
 #=================================================== Extend exports ===================================================#
 
-exports[key] = value for key, value of data
-
 exports.id = "@{id}" # my-plugin
 exports.Id = "@{Id}" # MyPlugin
 exports.iD = "@{iD}" # myPlugin
 exports.ID = "@{ID}" # MY_PLUGIN
-exports.dev = data.dev
+exports.dev = dev
 exports.pkg = packageJSON

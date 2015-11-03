@@ -1,0 +1,26 @@
+{
+  "theme-typescript": {
+    "name": "Theme with TypeScript compilation",
+    "sort": 1125,
+    "setup": {
+      "base": "setups/${type.id}",
+      "metaReplace": {
+        "regex": "\\$\\{([^}]+)}",
+        "files": [
+          "LICENSE",
+          "README.md",
+          "package.json",
+          "theme.json",
+          "plugin.json"
+        ],
+        "paths": ["**/*"]
+      }
+    },
+    "compilation": "typescript",
+    "meta": {
+      "Name": "TypeScript Theme",
+      "name": "theme",
+      "path": "themes"
+    }
+  }
+}
