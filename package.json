@@ -1,6 +1,7 @@
 {
   "name": "nodebb-grunt-development",
   "version": "1.0.0-alpha1",
+  "private": true,
   "dependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "^0.6.0",
@@ -10,12 +11,12 @@
     "grunt-prompt": "^1.3.0",
     "lodash": "^3.10.1",
     "regexps": "^0.1.0",
-    "semver": "^4.3.2"
+    "semver": "^5.0.3"
   },
   "optionalDependencies": {
     "grunt-contrib-coffee": "^0.13.0",
     "grunt-contrib-concat": "^0.13.0",
-    "grunt-contrib-uglify": "^0.8.0",
+    "grunt-contrib-uglify": "^0.10.0",
     "grunt-publish": "0.0.5"
   }
 }

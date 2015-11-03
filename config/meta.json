@@ -2,6 +2,7 @@
   "author": "Ole Reglitzki",
   "keywords": [
     "nodebb",
-    "@{type.name}"
+    "@{type.name}",
+    "@{id}"
   ]
 }

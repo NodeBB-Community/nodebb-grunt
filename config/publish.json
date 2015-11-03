@@ -1,7 +1,7 @@
 {
   "git": {
     "providers": {
-      "GitHub": "https://github.com/frissdiegurke/nodebb-${type.name}-${id}.git"
+      "GitHub": "https://github.com/frissdiegurke/@{name}.git"
     },
     "beforeCommit": "git add -u",
     "defaultProvider": "GitHub"

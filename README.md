@@ -5,22 +5,23 @@ This Grunt-Setup simplifies the creation and development workflow on [NodeBB](ht
 ## License
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
-[![Dependency Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development)
-[![optionalDependencies Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/optional-status.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development#info=optionalDependencies)
+[![Dependency Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework)
+[![optionalDependencies Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework/optional-status.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework#info=optionalDependencies)
 
 ## Not implemented yet
 
- + The compilation- and publish-tasks
+ + Custom compilation step worker (autoprefixer, coffee, concat, copy, less, minify)
+ + The publish task
  + A smart clean-task that accepts module-id as parameter
  + Basic theme- and widgets-setup with CoffeeScript-usage
  + Basic plugin-, theme- and widgets-setups without CoffeeScript
  + Allow different setups for same type (additional setup-selection within init-task)
- + Read config/*.custom.json to overwrite configuration without changing git-content
  + Some tasks for adding git-providers and other config-modifications
 
 ## Features (once it's out of alpha)
 
  + Interactive NodeBB setup for new plugins, themes and widgets.
+ + Non-tracked configuration files (config/\*\*/\*.local.json).
  + Removes duplication of meta-data like `version`, `name`, etc. within *package.json*, *plugin.json*, *theme.json* and any other files you need it.
  + Allows you to treat CoffeeScript-files just like JavaScript-files since they get in-place-compiled within grunt-tasks.
  + Advanced file-watchers for different file-types for great integration with NodeBBs file-watchers.
@@ -80,11 +81,11 @@ Despite configuration the meta-data for internal usage of your module gets locat
       "key": "value" // any license-names with their appropriate text to be added into LICENSE-file of modules
     }
 
-#### config/types.json
+#### config/types/\*\*/\*.json
 
 TODO
 
-#### config/compilation.json
+#### config/compilation/\*\*/\*.json
 
 Let's define an `{compilation object}` as following:
 
@@ -93,7 +94,7 @@ Let's define an `{compilation object}` as following:
       If String: resolve compilation-set by value as compilation-set-ID.
       If Array: recursive expand each item as {compilation object}.
 
-So now the *config/compilation.json*:
+So now a simple sample *config/compilation/\*\*/\*.json*:
 
     {
       "default": { // The keys generate the compilation-set-ID, if it gets referred from any config/types.json (compilation-attribute) it needs to contain dev- and dist-attributes
@@ -116,7 +117,8 @@ These are just some default values for the `grunt init` task.
       "author": "Ole Reglitzki",
       "keywords": [
         "nodebb",
-        "@{type.name}"
+        "@{type.name}",
+        "@{id}"
       ]
     }
 
@@ -125,7 +127,7 @@ These are just some default values for the `grunt init` task.
     {
       "git": {
         "providers": { // Those will be available for choice within project-init
-          "GitHub": "https://github.com/frissdiegurke/nodebb-${type.name}-${id}.git"
+          "GitHub": "https://github.com/frissdiegurke/@{name}.git"
         },
         "beforeCommit": "git add -u", // Gets executed before any git-commit
         "defaultProvider": "GitHub" // Refers any key of config/publish.json:git.providers

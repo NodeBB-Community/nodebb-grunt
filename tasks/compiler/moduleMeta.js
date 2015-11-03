@@ -1,5 +1,3 @@
-// replaces all occurrences of @{id}, etc. (regex specified in options) within files and file-names
-
 "use strict";
 
 var _ = require("lodash");
@@ -22,4 +20,5 @@ module.exports.process = function (module, options, helpers) {
       grunt.file.write(filePath, metaReplace(grunt.file.read(filePath)));
     }
   });
+  // TODO replace occurrences within file-names
 };

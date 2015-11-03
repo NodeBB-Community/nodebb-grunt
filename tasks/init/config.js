@@ -39,8 +39,7 @@ module.exports = function (config, helpers, gruntConfig) {
           config: prefix + "repository.url",
           type: "input",
           message: "Insert the git-repository URL schema of your providers public-access URLs." + grunt.util.linefeed +
-          "  You may use the placeholders @{type} (e.g. 'plugin') and @{id} (e.g. 'my-plugin')." + grunt.util.linefeed +
-          "  Sample: https://github.com/frissdiegurke/nodebb-@{type}-@{id}.git" + grunt.util.linefeed +
+          "  Sample: https://github.com/frissdiegurke/@{name}.git" + grunt.util.linefeed +
           "  Keep empty if you don't want it to be set within package.json of your modules." + grunt.util.linefeed,
           when: function (answers) {
             return answers[prefix + "github.use"] === false;
@@ -78,12 +77,6 @@ module.exports = function (config, helpers, gruntConfig) {
           type: "input",
           message: "Specify the path to deploy the modules, e.g. node_modules/ within your NodeBB root:",
           default: config.paths.deploy,
-          validate: function (dir) {
-            if (!dir.trim().length) {
-              return true;
-            }
-            return grunt.file.isDir(path.join(config.cwd, dir)) ? true : "The given path is no directory.";
-          },
           filter: function (str) {
             if (!/\$\{.*}/.test(str)) {
               return path.join(str, "nodebb-${type.name}-${id}");
@@ -106,7 +99,7 @@ module.exports = function (config, helpers, gruntConfig) {
           publish.git.providers = {};
         }
         if (answers[prefix + "github.use"]) {
-          publish.git.providers.GitHub = "https://github.com/" + answers[prefix + "github.name"] + "/nodebb-@{type}-@{id}.git";
+          publish.git.providers.GitHub = "https://github.com/" + answers[prefix + "github.name"] + "/@{name}.git";
           publish.git.defaultProvider = "GitHub";
         } else if (answers[prefix + "repository.url"] != null) {
           var providerName = answers[prefix + "repository.providerName"];
