@@ -122,7 +122,7 @@ module.exports = function (config, gruntConfig, loadService) {
           //noinspection JSUnresolvedFunction
           if (optionalDependencies.hasOwnProperty(name)) {
             grunt.log.error(new Error("According to your configuration you need to install '" + name +
-            "'. Try 'npm install " + name + "'"));
+                "'. Try 'npm install " + name + "'"));
             process.exit(14);
           }
           grunt.log.warn("grunt-task '" + name + "' could not get resolved");
@@ -202,6 +202,20 @@ module.exports = function (config, gruntConfig, loadService) {
 
     getReplacer: function (regex, content) {
       return function replaceObj(obj) {
+        function replaceMatch(match, name) {
+          var recursive = name[0] === ">";
+          if (recursive) {
+            name = name.substring(1);
+          }
+          var result = helpers.getByKey(content, name);
+          if (_.isUndefined(result)) {
+            return match;
+          } else if (typeof result === "string" && recursive) {
+            return result.replace(regex, replaceMatch);
+          }
+          return result || "";
+        }
+
         if (obj == null) {
           return obj;
         }
@@ -212,10 +226,7 @@ module.exports = function (config, gruntConfig, loadService) {
           return _.mapObject(obj, replaceObj);
         }
         if (typeof obj === "string") {
-          return obj.replace(regex, function (match, name) {
-            var result = helpers.getByKey(content, name);
-            return _.isUndefined(result) ? match : result || "";
-          });
+          return obj.replace(regex, replaceMatch);
         }
         return obj;
       };
