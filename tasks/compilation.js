@@ -12,10 +12,12 @@ module.exports = function (config, helpers) {
     var step = steps.shift();
     grunt.config.set("compilation.stack", steps);
     var compiler = helpers.loadCompiler(step.compiler);
+    grunt.file.setBase(moduleData.paths.tmp);
     var result = compiler.process.call(grunt, moduleData, step, helpers);
     if (result instanceof Array || typeof result === "string") {
       grunt.task.run(result);
     }
+    grunt.task.run("compilation_step_done");
     if (steps.length) {
       grunt.task.run("compilation_step");
     }
@@ -35,6 +37,8 @@ module.exports = function (config, helpers) {
       grunt.task.run("compilation_step");
     }
   });
+
+  grunt.registerTask("compilation_step_done", "Resets the cwd", function () { grunt.file.setBase(config.cwd); });
 
   return {};
 };
