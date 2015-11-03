@@ -1,10 +1,10 @@
 {
   "id": "nodebb-theme-@{id}",
-  "library": "./index.js",
+  "library": "./lib/main.js",
   "staticDirs": {
-    "@{id}": "static/@{id}/lib"
+    "@{id}": "public/@{id}/lib"
   },
   "scripts": [
-    "static/@{id}/@{id}.js"
+    "public/@{id}/@{id}.js"
   ]
 }
