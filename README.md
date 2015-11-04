@@ -32,7 +32,7 @@ The most interesting tasks you need to know ( *my-module* may either be the name
 |`grunt dist:my-module`|**TODO** Run distribution compilation of *my-module*|
 |`grunt publish:my-module`|**TODO** Publish *my-module* to npm/git (as specified for *my-module*).|
 |`grunt deploy:my-module`|**TODO** Run distribution compilation of *my-module* and publish (alias for `dist` and `publish`).|
-|`grunt clean`|Clean temporary data (you'll need to restart full compilation afterwards, **no** `dev_skip`).|
+|`grunt clean`|Clean temporary data.|
 
 ## TODO
 
