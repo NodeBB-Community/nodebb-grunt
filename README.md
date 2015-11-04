@@ -20,17 +20,21 @@ This Grunt-Setup simplifies the creation and development workflow on [NodeBB](ht
 
 ## Tasks
 
-The most interesting tasks you need to know ( *my-module* may either be an existing module-name or an alias for any existing module):
+Grunt tasks may be run from command-line like `grunt task-name:argument`.
 
- + `grunt config`: Initial setup of configuration (e.g. default value for `author` and GitHub username, etc.)
- + `grunt` or `grunt init`: Setup a new module.
- + `grunt dev:my-module`: Run development-compilation of *my-module* and start blocking file-watchers.
- + `grunt dev_stop:my-module`: Run development-compilation of *my-module* (without file-watchers).
- + `grunt dev_skip:my-module`: Run file-watchers for *my-module* (without preceding development-compilation).
- + TODO `grunt deploy:my-module[:commit-message]`: Run deployment-compilation of *my-module* and publish (alias for `dist` and `publish`).
- + TODO `grunt dist:my-module`
- + TODO `grunt publish:my-module[:commit-message]`: Run deployment-compilation of *my-module* and publish it to npm/git (as specified for module). If *commit-message* is specified a `git commit` will get executed within the module-directory.
- + `grunt clean`: Clean temporary data (you'll need to restart full compilation afterwards, **no** `dev_skip`).
+The most interesting tasks you need to know ( *my-module* may either be the name or an alias of any existing module):
+
+|Task definition|Meaning|
+|---|---|
+|`config`|Initial setup of configuration (e.g. default value for `author` and GitHub username, etc.)|
+|`init` (default task)|Setup a new module.|
+|`dev:my-module`|Run development-compilation of *my-module* and start blocking file-watchers.|
+|`dev_stop:my-module`|Run development-compilation of *my-module* (without file-watchers).|
+|`dev_skip:my-module`|Run file-watchers for *my-module* (without preceding development-compilation).|
+|`dist:my-module`|**TODO** Run distribution compilation of *my-module*|
+|`publish:my-module`|**TODO** Publish *my-module* to npm/git (as specified for *my-module*).|
+|`deploy:my-module`|**TODO** Run distribution compilation of *my-module* and publish (alias for `dist` and `publish`).|
+|`clean`|Clean temporary data.|
 
 ## TODO
 
