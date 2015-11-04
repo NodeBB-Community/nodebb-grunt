@@ -2,9 +2,18 @@
   "steps": {
     "minify": {
       "compiler": "minify",
-      "src": [
-        "public/**/*.js",
-        "!public/**/vendor/**/*.js"
+      "options": {
+        "preserveComments": "some",
+        "maxLineLen": 4000
+      },
+      "files": [
+        {
+          "expand": true,
+          "src": [
+            "public/**/*.js",
+            "!public/**/vendor/**/*.js"
+          ]
+        }
       ]
     }
   }
