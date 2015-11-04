@@ -1,3 +1,15 @@
+/*
+ * Compiler: moduleMeta - Perform in-file and -path replacements with module-specific meta-data.
+ *
+ * Options:
+ *  + "src" - File selector array as accepted by grunt.file.expand().
+ *            Specifies which files (and paths) to process.
+ *  + "regex" - String to be accepted by RegExp constructor.
+ *              Defines the matcher for replacements, needs to specify exactly one matching group for the variable name.
+ *
+ * TODO specify which meta-data is available
+ */
+
 "use strict";
 
 var _ = require("lodash");

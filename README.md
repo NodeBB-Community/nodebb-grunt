@@ -37,7 +37,7 @@ The most interesting tasks you need to know ( *my-module* may either be an exist
 ### until release
 
  + Publish task(s), featuring detection if commit is needed and uses `git commit -e`
- + Custom compilation step worker (concat, copy, minify)
+ + CodeQuality compiler
  + Basic plugin-, theme- and widgets-setups with and without TypeScript- or CoffeeScript-usage
  
 ### Nice to have
