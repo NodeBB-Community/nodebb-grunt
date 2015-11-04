@@ -49,6 +49,7 @@ module.exports = function (grunt) {
   /*--------------------------- load all compilers that may get needed by any module-type  ---------------------------*/
 
   function getCompilerNames(compilation) {
+    compilation = "sets." + compilation;
     var arr = helpers.getCompilation(compilation, true).concat(helpers.getCompilation(compilation, false));
     return _.pluck(arr, "compiler");
   }

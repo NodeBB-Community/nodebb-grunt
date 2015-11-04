@@ -1,0 +1,14 @@
+{
+  "sets": {
+    "coffee": {
+      "dev": [
+        "sets.default.dev",
+        "steps.coffee"
+      ],
+      "dist": [
+        "sets.coffee.dev",
+        "steps.minify"
+      ]
+    }
+  }
+}

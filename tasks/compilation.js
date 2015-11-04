@@ -29,7 +29,7 @@ module.exports = function (config, helpers) {
       return grunt.fail.fatal("set_active_module must be run first");
     }
     var dev = grunt.config.get("development");
-    var compilationId = config.types[moduleData.meta.type.id].compilation;
+    var compilationId = "sets." + config.types[moduleData.meta.type.id].compilation;
 
     grunt.task.run("increment_module_build");
     grunt.config.set("compilation.stack", helpers.getCompilation(compilationId, dev));

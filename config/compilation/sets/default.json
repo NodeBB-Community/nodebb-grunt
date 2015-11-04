@@ -1,0 +1,13 @@
+{
+  "sets": {
+    "default": {
+      "dev": [
+        "steps.meta.default"
+      ],
+      "dist": [
+        "sets.default.dev",
+        "steps.minify"
+      ]
+    }
+  }
+}

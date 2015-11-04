@@ -1,0 +1,14 @@
+{
+  "sets": {
+    "typescript": {
+      "dev": [
+        "sets.default.dev",
+        "steps.typescript"
+      ],
+      "dist": [
+        "sets.typescript.dev",
+        "steps.minify"
+      ]
+    }
+  }
+}
