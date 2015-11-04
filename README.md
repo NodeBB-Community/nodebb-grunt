@@ -3,7 +3,7 @@
 [![optionalDependencies Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework/optional-status.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework#info=optionalDependencies)
 ![Version 1.0.0-alpha.1](https://img.shields.io/badge/version-1.0.0--alpha.1-lightgrey.svg)
 
-# NodeBB Grunt Development- Rework
+# NodeBB Grunt Development - Rework
 
 **This project is in alpha phase**
 
