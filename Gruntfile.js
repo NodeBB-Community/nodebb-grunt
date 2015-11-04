@@ -84,7 +84,7 @@ module.exports = function (grunt) {
     grunt.task.run("set_development", "set_active_module:" + id, "watch_module");
   });
 
-  grunt.registerTask("deploy", "Triggers deployment of specified module", function (id) {
+  grunt.registerTask("build", "Triggers distribution of specified module", function (id) {
     grunt.task.run("set_development:false", "set_active_module:" + id, "compile");
   });
 
