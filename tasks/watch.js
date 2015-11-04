@@ -15,7 +15,7 @@ module.exports = function (config, helpers) {
     grunt.config.set("watch.module", {
       files: [path.join(moduleData.paths.source, "**/*"), path.join(moduleData.paths.info)],
       tasks: ["set_active_module:" + moduleData.id, "compile"],
-      options: {interrupt: true, debounceDelay: 200, livereload: 35729}
+      options: {interrupt: true, debounceDelay: 200}
     });
     grunt.task.run("watch:module");
   });
