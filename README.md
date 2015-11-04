@@ -8,21 +8,25 @@ This Grunt-Setup simplifies the creation and development workflow on [NodeBB](ht
 
 ## Not implemented yet
 
- + Custom compilation step worker (autoprefixer, coffee, concat, copy, less, minify)
- + The publish task
+### To be done til release
+
+ + Publish task(s), featuring detection if commit is needed and uses `git commit -e`
+ + Custom compilation step worker (concat, copy, minify)
+ + Basic plugin-, theme- and widgets-setups with and without TypeScript- or CoffeeScript-usage
+ 
+### Nice to have
+
  + A smart clean-task that accepts module-id as parameter
- + Basic theme- and widgets-setup with CoffeeScript-usage
- + Basic plugin-, theme- and widgets-setups without CoffeeScript
  + Allow different setups for same type (additional setup-selection within init-task)
  + Some tasks for adding git-providers and other config-modifications
 
-## Features (once it's out of alpha)
+## Features
 
  + Interactive NodeBB setup for new plugins, themes and widgets.
  + Non-tracked configuration files (config/\*\*/\*.local.json).
- + Removes duplication of meta-data like `version`, `name`, etc. within *package.json*, *plugin.json*, *theme.json* and any other files you need it.
- + Allows you to treat CoffeeScript-files just like JavaScript-files since they get in-place-compiled within grunt-tasks.
- + The setups give you a few structure-conventions that help other developers reviewing your modules.
+ + Allows simple meta-replacements while compilation to keep consistency of data like `version`, `name`, etc.
+ + Native support for CoffeeScript- and TypeScript-projects with in-place compilation.
+ + Default setups for applying code-style and structural conventions chosen by NodeBB module developers.
  + Easy to extend grunt-task structure that allows you to add custom compilers if needed.
 
 ## Tasks
