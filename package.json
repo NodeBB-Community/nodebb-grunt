@@ -1,5 +1,5 @@
 {
-  "name": "nodebb-grunt-development",
+  "name": "nodebb-grunt",
   "version": "1.0.0-alpha.1",
   "private": true,
   "dependencies": {

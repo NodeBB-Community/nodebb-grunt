@@ -3,7 +3,7 @@
 [![optionalDependencies Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework/optional-status.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework#info=optionalDependencies)
 ![Version 1.0.0-alpha.1](https://img.shields.io/badge/version-1.0.0--alpha.1-lightgrey.svg)
 
-# NodeBB Grunt Development - Rework
+# NodeBB Grunt - Rework
 
 **This project is in alpha phase, see below for TODO tasks**
 
@@ -31,9 +31,9 @@ The most interesting tasks you need to know ( *my-module* may either be the name
 |`dev:my-module`|Run development-compilation of *my-module* and start blocking file-watchers.|
 |`dev_stop:my-module`|Run development-compilation of *my-module* (without file-watchers).|
 |`dev_skip:my-module`|Run file-watchers for *my-module* (without preceding development-compilation).|
-|`dist:my-module`|**TODO** Run distribution compilation of *my-module*|
+|`build:my-module`|**TODO** Run distribution compilation of *my-module*|
 |`publish:my-module`|**TODO** Publish *my-module* to npm/git (as specified for *my-module*).|
-|`deploy:my-module`|**TODO** Run distribution compilation of *my-module* and publish (alias for `dist` and `publish`).|
+|`deploy:my-module`|**TODO** Run distribution compilation of *my-module* and publish (alias for `build` and `publish`).|
 |`clean`|Clean temporary data.|
 
 ## TODO
