@@ -20,19 +20,21 @@ This Grunt-Setup simplifies the creation and development workflow on [NodeBB](ht
 
 ## Tasks
 
+Grunt tasks may be run from command-line like `grunt task-name:argument`.
+
 The most interesting tasks you need to know ( *my-module* may either be the name or an alias of any existing module):
 
-|Command|Meaning|
+|Task definition|Meaning|
 |---|---|
-|`grunt config`|Initial setup of configuration (e.g. default value for `author` and GitHub username, etc.)|
-|`grunt init` \| `grunt`|Setup a new module.|
-|`grunt dev:my-module`|Run development-compilation of *my-module* and start blocking file-watchers.|
-|`grunt dev_stop:my-module`|Run development-compilation of *my-module* (without file-watchers).|
-|`grunt dev_skip:my-module`|Run file-watchers for *my-module* (without preceding development-compilation).|
-|`grunt dist:my-module`|**TODO** Run distribution compilation of *my-module*|
-|`grunt publish:my-module`|**TODO** Publish *my-module* to npm/git (as specified for *my-module*).|
-|`grunt deploy:my-module`|**TODO** Run distribution compilation of *my-module* and publish (alias for `dist` and `publish`).|
-|`grunt clean`|Clean temporary data.|
+|`config`|Initial setup of configuration (e.g. default value for `author` and GitHub username, etc.)|
+|`init` (default task)|Setup a new module.|
+|`dev:my-module`|Run development-compilation of *my-module* and start blocking file-watchers.|
+|`dev_stop:my-module`|Run development-compilation of *my-module* (without file-watchers).|
+|`dev_skip:my-module`|Run file-watchers for *my-module* (without preceding development-compilation).|
+|`dist:my-module`|**TODO** Run distribution compilation of *my-module*|
+|`publish:my-module`|**TODO** Publish *my-module* to npm/git (as specified for *my-module*).|
+|`deploy:my-module`|**TODO** Run distribution compilation of *my-module* and publish (alias for `dist` and `publish`).|
+|`clean`|Clean temporary data.|
 
 ## TODO
 
