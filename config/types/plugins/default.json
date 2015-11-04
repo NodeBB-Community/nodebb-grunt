@@ -2,6 +2,7 @@
   "plugin": {
     "name": "Plugin",
     "sort": 100,
+    "compilation": "default",
     "setup": {
       "base": "setups/${type.id}",
       "metaReplace": {
@@ -13,13 +14,12 @@
           "plugin.json"
         ],
         "paths": ["**/*"]
+      },
+      "meta": {
+        "Name": "Plugin",
+        "name": "plugin",
+        "path": "plugins"
       }
-    },
-    "compilation": "default",
-    "meta": {
-      "Name": "Plugin",
-      "name": "plugin",
-      "path": "plugins"
     }
   }
 }

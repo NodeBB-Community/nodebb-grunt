@@ -2,6 +2,7 @@
   "theme-typescript": {
     "name": "Theme with TypeScript compilation",
     "sort": 1125,
+    "compilation": "typescript",
     "setup": {
       "base": "setups/${type.id}",
       "metaReplace": {
@@ -14,13 +15,12 @@
           "plugin.json"
         ],
         "paths": ["**/*"]
+      },
+      "meta": {
+        "Name": "TypeScript Theme",
+        "name": "theme",
+        "path": "themes"
       }
-    },
-    "compilation": "typescript",
-    "meta": {
-      "Name": "TypeScript Theme",
-      "name": "theme",
-      "path": "themes"
     }
   }
 }

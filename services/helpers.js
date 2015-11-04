@@ -196,7 +196,7 @@ module.exports = function (config, gruntConfig, loadService) {
           Id = iD[0].toUpperCase() + iD.substring(1),
           ID = iD.replace(/([A-Z])/g, "_$1").toUpperCase();
       var meta = _.extend({id: moduleId, Id: Id, iD: iD, ID: ID}, MODULE_META_STATICS, data);
-      meta.type = _.extend({id: data.type}, config.types[data.type].meta);
+      meta.type = _.extend({id: data.type}, config.types[data.type].setup.meta);
       return meta;
     },
 

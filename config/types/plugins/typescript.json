@@ -2,6 +2,7 @@
   "plugin-typescript": {
     "name": "Plugin with TypeScript compilation",
     "sort": 125,
+    "compilation": "typescript",
     "setup": {
       "base": "setups/${type.id}",
       "metaReplace": {
@@ -14,13 +15,12 @@
           "templates/**/*"
         ],
         "paths": ["**/*"]
+      },
+      "meta": {
+        "Name": "TypeScript Plugin",
+        "name": "plugin",
+        "path": "plugins"
       }
-    },
-    "compilation": "typescript",
-    "meta": {
-      "Name": "TypeScript Plugin",
-      "name": "plugin",
-      "path": "plugins"
     }
   }
 }

@@ -151,19 +151,19 @@ module.exports = function (config, helpers, gruntConfig) {
         var t = typesJSON[customTypeId] = config.types[customTypeId] = {
           name: helpers.idToName(customTypeId),
           sort: 2000,
+          compilation: _.first(_.keys(config.compilation)),
           setup: {
             base: "setups/${type.id}",
             metaReplace: {
               regex: "\\$\\{([^}]+)}",
               files: ["LICENSE", "README.md", "package.json", "theme.json", "plugin.json"],
               paths: ["**/*"]
-            }
-          },
-          compilation: _.first(_.keys(config.compilation)),
-          meta: {}
+            },
+            meta: {}
+          }
         };
         _.each(customTypeMetaKeys, function (key) {
-          t.meta[key] = answers[prefix + "customType.meta." + key];
+          t.setup.meta[key] = answers[prefix + "customType.meta." + key];
         });
         grunt.file.write(typesPath, JSON.stringify(typesJSON, null, 2));
         grunt.log.ok("Updated '" + path.relative(config.cwd, typesPath) + "' with new type '" + customTypeId + "'");

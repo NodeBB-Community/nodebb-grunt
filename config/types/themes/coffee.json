@@ -2,6 +2,7 @@
   "theme-coffee": {
     "name": "Theme with CoffeeScript compilation",
     "sort": 1150,
+    "compilation": "coffee",
     "setup": {
       "base": "setups/${type.id}",
       "metaReplace": {
@@ -14,13 +15,12 @@
           "plugin.json"
         ],
         "paths": ["**/*"]
+      },
+      "meta": {
+        "Name": "CoffeeScript Theme",
+        "name": "theme",
+        "path": "themes"
       }
-    },
-    "compilation": "coffee",
-    "meta": {
-      "Name": "CoffeeScript Theme",
-      "name": "theme",
-      "path": "themes"
     }
   }
 }

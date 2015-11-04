@@ -2,6 +2,7 @@
   "theme": {
     "name": "Theme",
     "sort": 1100,
+    "compilation": "default",
     "setup": {
       "base": "setups/${type.id}",
       "metaReplace": {
@@ -14,13 +15,12 @@
           "plugin.json"
         ],
         "paths": ["**/*"]
+      },
+      "meta": {
+        "Name": "Theme",
+        "name": "theme",
+        "path": "themes"
       }
-    },
-    "compilation": "default",
-    "meta": {
-      "Name": "Theme",
-      "name": "theme",
-      "path": "themes"
     }
   }
 }

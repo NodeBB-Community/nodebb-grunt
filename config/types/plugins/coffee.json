@@ -2,6 +2,7 @@
   "plugin-coffee": {
     "name": "Plugin with CoffeeScript compilation",
     "sort": 150,
+    "compilation": "coffee",
     "setup": {
       "base": "setups/${type.id}",
       "metaReplace": {
@@ -14,13 +15,12 @@
           "templates/**/*"
         ],
         "paths": ["**/*"]
+      },
+      "meta": {
+        "Name": "CoffeeScript Plugin",
+        "name": "plugin",
+        "path": "plugins"
       }
-    },
-    "compilation": "coffee",
-    "meta": {
-      "Name": "CoffeeScript Plugin",
-      "name": "plugin",
-      "path": "plugins"
     }
   }
 }
