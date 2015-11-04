@@ -12,6 +12,7 @@ module.exports = function (config, helpers) {
     var step = steps.shift();
     grunt.config.set("compilation.stack", steps);
     var compiler = helpers.loadCompiler(step.compiler);
+    grunt.log.ok("Process '" + step.compiler + "' compilation");
     grunt.file.setBase(moduleData.paths.tmp);
     var result = compiler.process.call(grunt, moduleData, step, helpers);
     if (result instanceof Array || typeof result === "string") {
