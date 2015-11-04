@@ -73,14 +73,14 @@ module.exports = function (grunt) {
     grunt.config.set("development", val !== "off" && val !== "false");
   });
 
-  grunt.registerTask("dev", "Starts development-mode of specified module [compilation, watch]", function (id) {
+  grunt.registerTask("dev", "Starts development-mode of specified module [compilation, watch_module]", function (id) {
     grunt.task.run("set_development", "set_active_module:" + id, "compile", "watch_module");
   });
   grunt.registerTask("dev_stop", "Starts development-mode of specified module [compilation]", function (id) {
     grunt.task.run("set_development", "set_active_module:" + id, "compile");
   });
-  grunt.registerTask("dev_skip", "Starts development-mode of specified module [watch]", function (id) {
-    grunt.task.run("set_development", "set_active_module:" + id, "watch");
+  grunt.registerTask("dev_skip", "Starts development-mode of specified module [watch_module]", function (id) {
+    grunt.task.run("set_development", "set_active_module:" + id, "watch_module");
   });
 
   grunt.registerTask("deploy", "Triggers deployment of specified module", function (id) {

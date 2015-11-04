@@ -1,12 +1,10 @@
-# NodeBB Grunt Development - 1.0.0-alpha1
-
-This Grunt-Setup simplifies the creation and development workflow on [NodeBB](https://nodebb.org/) plugins, themes and widgets (further called *modules*).
-
-## License
-
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 [![Dependency Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework)
 [![optionalDependencies Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework/optional-status.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework#info=optionalDependencies)
+
+# NodeBB Grunt Development - 1.0.0-alpha.1
+
+This Grunt-Setup simplifies the creation and development workflow on [NodeBB](https://nodebb.org/) plugins, themes and widgets (further called *modules*).
 
 ## Not implemented yet
 
@@ -24,7 +22,6 @@ This Grunt-Setup simplifies the creation and development workflow on [NodeBB](ht
  + Non-tracked configuration files (config/\*\*/\*.local.json).
  + Removes duplication of meta-data like `version`, `name`, etc. within *package.json*, *plugin.json*, *theme.json* and any other files you need it.
  + Allows you to treat CoffeeScript-files just like JavaScript-files since they get in-place-compiled within grunt-tasks.
- + Advanced file-watchers for different file-types for great integration with NodeBBs file-watchers.
  + The setups give you a few structure-conventions that help other developers reviewing your modules.
  + Easy to extend grunt-task structure that allows you to add custom compilers if needed.
 
