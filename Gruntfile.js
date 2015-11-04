@@ -74,7 +74,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask("dev", "Starts development-mode of specified module [compilation, watch]", function (id) {
-    grunt.task.run("set_development", "set_active_module:" + id, "compile", "watch");
+    grunt.task.run("set_development", "set_active_module:" + id, "compile", "watch_module");
   });
   grunt.registerTask("dev_stop", "Starts development-mode of specified module [compilation]", function (id) {
     grunt.task.run("set_development", "set_active_module:" + id, "compile");
