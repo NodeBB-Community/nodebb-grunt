@@ -29,9 +29,9 @@ The most interesting tasks you need to know ( *my-module* may either be the name
 |`grunt dev:my-module`|Run development-compilation of *my-module* and start blocking file-watchers.|
 |`grunt dev_stop:my-module`|Run development-compilation of *my-module* (without file-watchers).|
 |`grunt dev_skip:my-module`|Run file-watchers for *my-module* (without preceding development-compilation).|
-|`grunt dist:my-module`|TODO Run distribution compilation of *my-module*|
-|`grunt publish:my-module`|TODO Publish *my-module* to npm/git (as specified for *my-module*).|
-|`grunt deploy:my-module`|TODO Run distribution compilation of *my-module* and publish (alias for `dist` and `publish`).|
+|`grunt dist:my-module`|**TODO** Run distribution compilation of *my-module*|
+|`grunt publish:my-module`|**TODO** Publish *my-module* to npm/git (as specified for *my-module*).|
+|`grunt deploy:my-module`|**TODO** Run distribution compilation of *my-module* and publish (alias for `dist` and `publish`).|
 |`grunt clean`|Clean temporary data (you'll need to restart full compilation afterwards, **no** `dev_skip`).|
 
 ## TODO
