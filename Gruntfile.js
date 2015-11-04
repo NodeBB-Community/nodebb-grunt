@@ -87,12 +87,15 @@ module.exports = function (grunt) {
   grunt.registerTask("build", "Triggers distribution of specified module", function (id) {
     grunt.task.run("set_development:false", "set_active_module:" + id, "compile");
   });
-
   grunt.registerTask("publish", "Triggers publishing of specified module", function (id, commit) {
     if (commit != null) {
       grunt.config.set("git.commit", commit || null);
     }
     grunt.task.run("deploy:" + id, "npm", "git");
+  });
+
+  grunt.registerTask("deploy", "Triggers build and publish of specified module", function (id) {
+    grunt.task.run("build:" + id, "publish:" + id);
   });
 
   grunt.registerTask("default", "init");
