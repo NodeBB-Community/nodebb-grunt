@@ -40,12 +40,13 @@ The most interesting tasks you need to know ( *my-module* may either be the name
 
 ### until release
 
+ + include dot-files (skip *.git/*) for copy-tasks (will get superseded within nice to have)
  + Publish task(s), featuring detection if commit is needed and uses `git commit -e`
- + CodeQuality compiler
  + Basic plugin-, theme- and widgets-setups with and without TypeScript- or CoffeeScript-usage
  
 ### Nice to have
 
+ + Use https://www.npmjs.com/package/ignore (fork, add https://github.com/grob/fnmatch rules - skip {x..y} for simplicity) for detection of files to copy into tmp- and dest-directories
  + A smart clean-task that accepts module-id as parameter
  + Allow different setups for same type (additional setup-selection within init-task)
  + Save last npm published version to throw an early error within publish task

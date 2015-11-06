@@ -1,0 +1,14 @@
+{
+  "steps": {
+    "codeQuality": {
+      "default": {
+        "compiler": "codeQuality",
+        "ignoreDirs": ["vendor"],
+        "files": [
+          "lib/**/*",
+          "public/**/*"
+        ]
+      }
+    }
+  }
+}

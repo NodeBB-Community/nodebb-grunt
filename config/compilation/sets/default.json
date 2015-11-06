@@ -5,6 +5,7 @@
         "steps.meta.default"
       ],
       "dist": [
+        "steps.codeQuality.default",
         "sets.default.dev",
         "steps.minify"
       ]

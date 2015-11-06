@@ -6,6 +6,7 @@
         "steps.typescript"
       ],
       "dist": [
+        "steps.codeQuality.default",
         "sets.typescript.dev",
         "steps.minify"
       ]
