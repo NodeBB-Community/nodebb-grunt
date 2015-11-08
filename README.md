@@ -40,7 +40,6 @@ The most interesting tasks you need to know ( *my-module* may either be the name
 
 ### until release
 
- + include dot-files (skip *.git/*) for copy-tasks (will get superseded within nice to have)
  + Publish task(s), featuring detection if commit is needed and uses `git commit -e`
  + Basic plugin-, theme- and widgets-setups with and without TypeScript- or CoffeeScript-usage
  

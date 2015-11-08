@@ -14,8 +14,9 @@ module.exports = function (config, helpers) {
     grunt.config.set("copy.tmp", {
       files: [{
         expand: true,
+        dot: true,
         cwd: moduleData.paths.source,
-        src: "**/*",
+        src: ["**/*", "!.git/"], // TODO replace with mask within modules .npmignore or .gitignore
         dest: moduleData.paths.tmp
       }]
     });
@@ -32,8 +33,9 @@ module.exports = function (config, helpers) {
     grunt.config.set("copy.deploy", {
       files: [{
         expand: true,
+        dot: true,
         cwd: moduleData.paths.tmp,
-        src: "**/*",
+        src: ["**/*", "!.git/"], // TODO replace with mask within modules .npmignore or .gitignore
         dest: moduleData.paths.destination
       }]
     });
