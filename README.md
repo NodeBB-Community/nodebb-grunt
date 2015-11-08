@@ -31,7 +31,7 @@ The most interesting tasks you need to know ( *my-module* may either be the name
 |`dev:my-module`|Run development-compilation of *my-module* and start blocking file-watchers.|
 |`dev_stop:my-module`|Run development-compilation of *my-module* (without file-watchers).|
 |`dev_skip:my-module`|Run file-watchers for *my-module* (without preceding development-compilation).|
-|`build:my-module`|**TODO** Run distribution compilation of *my-module*|
+|`build:my-module`|Run distribution compilation of *my-module*|
 |`publish:my-module`|**TODO** Publish *my-module* to npm/git (as specified for *my-module*).|
 |`deploy:my-module`|**TODO** Run distribution compilation of *my-module* and publish (alias for `build` and `publish`).|
 |`clean`|Clean temporary data.|
@@ -45,7 +45,7 @@ The most interesting tasks you need to know ( *my-module* may either be the name
  
 ### Nice to have
 
- + Use https://www.npmjs.com/package/ignore (fork, add https://github.com/grob/fnmatch rules - skip {x..y} for simplicity) for detection of files to copy into tmp- and dest-directories
+ + Use https://www.npmjs.com/package/ignore (fork, add https://github.com/grob/fnmatch rules - maybe skip {x..y} for simplicity) for detection of files to copy into tmp- and dest-directories
  + A smart clean-task that accepts module-id as parameter
  + Allow different setups for same type (additional setup-selection within init-task)
  + Save last npm published version to throw an early error within publish task
