@@ -6,6 +6,5 @@
   ],
   "distribute": [
     {"cmd": "npm", "args": ["publish"]}
-  ],
-  "info": []
+  ]
 }

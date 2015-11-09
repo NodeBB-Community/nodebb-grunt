@@ -232,7 +232,7 @@ module.exports = function (config, helpers, gruntConfig) {
     var module = {
       type: typeId,
       license: grunt.config(prefix + "license"),
-      publish: {info: true, source: true, distribute: true},
+      publish: {source: true, distribute: true},
       build: 0
     };
 

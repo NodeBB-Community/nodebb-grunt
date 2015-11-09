@@ -5,7 +5,6 @@ module.exports = function (config, helpers) {
   var grunt = this;
 
   _.each({
-    info: "info",
     source: "source",
     distribution: "destination"
   }, function (pathKey, configKey) {
