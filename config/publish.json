@@ -4,7 +4,7 @@
     {"cmd": "git", "args": ["commit", "-e"]},
     {"cmd": "git", "args": ["push"]}
   ],
-  "distribute": [
+  "distribution": [
     {"cmd": "npm", "args": ["publish"]}
   ]
 }
