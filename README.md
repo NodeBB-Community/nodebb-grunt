@@ -32,8 +32,8 @@ The most interesting tasks you need to know ( *my-module* may either be the name
 |`dev_stop:my-module`|Run development-compilation of *my-module* (without file-watchers).|
 |`dev_skip:my-module`|Run file-watchers for *my-module* (without preceding development-compilation).|
 |`build:my-module`|Run distribution compilation of *my-module*|
-|`publish:my-module`|**TODO** Publish *my-module* to npm/git (as specified for *my-module*).|
-|`deploy:my-module`|**TODO** Run distribution compilation of *my-module* and publish (alias for `build` and `publish`).|
+|`publish:my-module`|Publish *my-module* as specified for *my-module* (npm and git via default config).|
+|`deploy:my-module`|Run distribution compilation of *my-module* and publish (alias for `build` and `publish`).|
 |`clean`|Clean temporary data.|
 
 ## TODO
