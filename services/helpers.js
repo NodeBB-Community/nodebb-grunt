@@ -112,10 +112,10 @@ module.exports = function (config, gruntConfig, loadService) {
 
       var res = childProcess.spawnSync(cmd.cmd, cmd.args, options);
       if (res.error != null && res.status === 0) {
-        grunt.log.error("command failed with exit-code [" + res.status + "]");
-        grunt.log.error(res.error.message);
+        grunt.log.error(" >> command failed with exit-code [" + res.status + "]");
+        grunt.log.error(" >> >> " + res.error.message);
       } else {
-        grunt.log.ok("command succeeded");
+        grunt.log.ok(" >> command succeeded");
       }
       return res;
     },
