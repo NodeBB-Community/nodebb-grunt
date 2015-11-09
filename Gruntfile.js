@@ -43,8 +43,7 @@ module.exports = function (grunt) {
   helpers.loadTask("clean");
   helpers.loadTask("copy");
   // publish
-  helpers.loadDeepTask("publish", "git");
-  helpers.loadDeepTask("publish", "npm");
+  helpers.loadTask("publish");
 
   /*--------------------------- load all compilers that may get needed by any module-type  ---------------------------*/
 
@@ -71,7 +70,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask("set_development", "Enables/Sets development task-settings", function (val) {
-    grunt.config.set("development", val !== "off" && val !== "false");
+    grunt.config.set("development", val !== "false");
   });
 
   grunt.registerTask("dev", "Starts development-mode of specified module [compilation, watch_module]", function (id) {
@@ -87,11 +86,8 @@ module.exports = function (grunt) {
   grunt.registerTask("build", "Triggers distribution of specified module", function (id) {
     grunt.task.run("set_development:false", "set_active_module:" + id, "compile");
   });
-  grunt.registerTask("publish", "Triggers publishing of specified module", function (id, commit) {
-    if (commit != null) {
-      grunt.config.set("git.commit", commit || null);
-    }
-    grunt.task.run("deploy:" + id, "npm", "git");
+  grunt.registerTask("publish", "Triggers publishing of specified module", function (id) {
+    grunt.task.run("set_active_module:" + id, "publish_info", "publish_source", "publish_distribution");
   });
 
   grunt.registerTask("deploy", "Triggers build and publish of specified module", function (id) {
@@ -99,5 +95,4 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask("default", "init");
-
 };

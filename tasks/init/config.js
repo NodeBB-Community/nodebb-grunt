@@ -6,7 +6,7 @@ var prefix = "config.prompt.";
 
 module.exports = function (config, helpers, gruntConfig) {
   var grunt = this, nameOverwriteConfirm = null;
-  var ghName = /github\.com\/([^\/]+)\//.exec(config.publish.git.providers && config.publish.git.providers.GitHub);
+  var ghName = /github\.com\/([^\/]+)\//.exec(config.git.providers && config.git.providers.GitHub);
   ghName = ghName ? ghName[1] : "";
 
   helpers.loadNpmTask("grunt-prompt");
@@ -24,7 +24,7 @@ module.exports = function (config, helpers, gruntConfig) {
           config: prefix + "github.use",
           type: "confirm",
           message: "Do you use GitHub?",
-          default: config.publish.git.defaultProvider === "GitHub"
+          default: config.git.defaultProvider === "GitHub"
         },
         {
           config: prefix + "github.name",
@@ -88,31 +88,31 @@ module.exports = function (config, helpers, gruntConfig) {
       then: function (answers) {
         var metaFile = path.join(config.cwd, "config", "meta.json");
         var pathsFile = path.join(config.cwd, "config", "paths.json");
-        var publishFile = path.join(config.cwd, "config", "publish.json");
+        var gitFile = path.join(config.cwd, "config", "git.json");
         var meta = grunt.file.readJSON(metaFile);
         var paths = grunt.file.readJSON(pathsFile);
-        var publish = grunt.file.readJSON(publishFile);
+        var git = grunt.file.readJSON(gitFile);
         // add meta-info
         meta.author = answers[prefix + "author"];
-        // add publish-info
-        if (publish.git.providers == null) {
-          publish.git.providers = {};
+        // add git-info
+        if (git.providers == null) {
+          git.providers = {};
         }
         if (answers[prefix + "github.use"]) {
-          publish.git.providers.GitHub = "https://github.com/" + answers[prefix + "github.name"] + "/@{name}.git";
-          publish.git.defaultProvider = "GitHub";
+          git.providers.GitHub = "https://github.com/" + answers[prefix + "github.name"] + "/@{name}.git";
+          git.defaultProvider = "GitHub";
         } else if (answers[prefix + "repository.url"] != null) {
           var providerName = answers[prefix + "repository.providerName"];
-          publish.git.providers[providerName] = answers[prefix + "repository.url"];
-          publish.git.defaultProvider = providerName;
+          git.providers[providerName] = answers[prefix + "repository.url"];
+          git.defaultProvider = providerName;
         } else {
-          delete publish.git.defaultProvider;
+          delete git.defaultProvider;
         }
         // add paths-info
         paths.deploy = answers[prefix + "paths.deploy"].trim() || "node_modules/";
         grunt.file.write(metaFile, JSON.stringify(meta, null, 2));
         grunt.file.write(pathsFile, JSON.stringify(paths, null, 2));
-        grunt.file.write(publishFile, JSON.stringify(publish, null, 2));
+        grunt.file.write(gitFile, JSON.stringify(git, null, 2));
       }
     }
   };

@@ -104,17 +104,6 @@ module.exports = function (config, helpers, gruntConfig) {
       {config: prefix + "author", type: "input", message: "Author:", default: config.meta.author}
     ],
 
-    publish: [
-      {
-        config: prefix + "publish.npm", type: "confirm",
-        message: "Enable npm-publish (trigger a npm publish within deploy-dir while grunt publish):", default: true
-      },
-      {
-        config: prefix + "publish.git", type: "confirm",
-        message: "Enable git-push (trigger a push within module-dir while grunt publish):", default: true
-      }
-    ],
-
     keywords: {
       config: prefix + "keywords", type: "input", message: "Keywords to associate with the module (comma-separated):",
       default: keywords.join(", ")
@@ -123,17 +112,17 @@ module.exports = function (config, helpers, gruntConfig) {
     git: [{
       config: prefix + "git.provider", type: "list",
       message: "Choose the git-provider to use for the package.json entry:",
-      choices: _.map(config.publish.git.providers, function (url, name) {
+      choices: _.map(config.git.providers, function (url, name) {
         return {name: name};
       }).concat("---", {name: "None", value: "$$none"}),
-      default: config.publish.git.defaultProvider || "$$none"
+      default: config.git.defaultProvider || "$$none"
     }],
 
     aliases: [{config: prefix + "aliases", type: "input", message: "Module-aliases for grunt tasks (comma-separated):"}]
   };
 
-  var questionsArray = [].concat(questions.type, questions.id, questions.meta, questions.license, questions.publish,
-      questions.keywords, questions.git, questions.aliases);
+  var questionsArray = [].concat(questions.type, questions.id, questions.meta, questions.license, questions.keywords,
+      questions.git, questions.aliases);
 
   /*-------------------------------------------- Question post-processing --------------------------------------------*/
 
@@ -199,7 +188,7 @@ module.exports = function (config, helpers, gruntConfig) {
     if (answers[prefix + "git.provider"] === "$$none") {
       setAnswer("git.provider", null);
     } else {
-      setAnswer("git.url", config.publish.git.providers[answers[prefix + "git.provider"]]);
+      setAnswer("git.url", config.git.providers[answers[prefix + "git.provider"]]);
     }
   }
 
@@ -243,10 +232,7 @@ module.exports = function (config, helpers, gruntConfig) {
     var module = {
       type: typeId,
       license: grunt.config(prefix + "license"),
-      publish: {
-        npm: grunt.config(prefix + "publish.npm"),
-        git: grunt.config(prefix + "publish.git")
-      },
+      publish: {info: true, source: true, distribute: true},
       build: 0
     };
 

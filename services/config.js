@@ -3,7 +3,7 @@
 var _ = require("lodash");
 var path = require("path");
 
-var _cfg = ["compilation", "licenses", "meta", "paths", "publish", "types"];
+var _cfg = ["compilation", "types", "git", "licenses", "meta", "paths", "publish"];
 
 module.exports = function (cwd) {
   var grunt = this, config = {}, current;

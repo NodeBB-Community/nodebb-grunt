@@ -16,6 +16,7 @@ module.exports = function (config, gruntConfig, loadService) {
   var grunt = this;
   var dependencies = config.pkg.dependencies || {}, optionalDependencies = config.pkg.optionalDependencies || {};
 
+  //noinspection JSUnusedGlobalSymbols
   var helpers = {
     services: {
       config: config,
@@ -95,35 +96,39 @@ module.exports = function (config, gruntConfig, loadService) {
       return helpers.loadTask(path.join("compiler", name), attrName || name + "Compiler");
     },
 
-    exec: function (cmd, options, cb) {
-      if (typeof options === "function") {
-        cb = options;
+    exec: function (cmd, options) {
+      if (options == null) {
         options = {};
       }
-      grunt.log.ok("executing: " + cmd);
-      grunt.log.ok("(within '" + process.cwd() + "')");
-      childProcess.exec(cmd, options, function (err) {
-        if (err != null) {
-          grunt.log.error("command failed with exit-code [" + err.code + "]");
-          grunt.log.error(err.message);
-        } else {
-          grunt.log.ok("command succeeded");
-        }
-        cb.apply(this, arguments);
-      });
+      if (!options.hasOwnProperty("stdio")) {
+        options.stdio = "inherit";
+      }
+      var cwd = process.cwd();
+      if (options.hasOwnProperty("cwd")) {
+        cwd = path.resolve(cwd, options.cwd);
+      }
+      grunt.log.ok("executing: " + cmd.cmd + " " + (cmd.args || []).join(" "));
+      grunt.log.ok(" >> within '" + cwd + "'");
+
+      var res = childProcess.spawnSync(cmd.cmd, cmd.args, options);
+      if (res.error != null && res.status === 0) {
+        grunt.log.error("command failed with exit-code [" + res.status + "]");
+        grunt.log.error(res.error.message);
+      } else {
+        grunt.log.ok("command succeeded");
+      }
+      return res;
     },
 
     loadNpmTask: function (name) {
       if (!grunt.file.exists(path.join(path.resolve("node_modules"), name, "package.json"))) {
         if (dependencies.hasOwnProperty(name)) {
-          grunt.log.error(new Error("You need to run 'npm install' first."));
-          process.exit(13);
+          return grunt.fail.fatal("You need to run 'npm install' first.");
         } else {
           //noinspection JSUnresolvedFunction
           if (optionalDependencies.hasOwnProperty(name)) {
-            grunt.log.error(new Error("According to your configuration you need to install '" + name +
-                "'. Try 'npm install " + name + "'"));
-            process.exit(14);
+            return grunt.fail.fatal("According to your configuration you need to install '" + name +
+                "'. Try 'npm install " + name + "'");
           }
           grunt.log.warn("grunt-task '" + name + "' could not get resolved");
         }
@@ -190,7 +195,7 @@ module.exports = function (config, gruntConfig, loadService) {
 
     getMetaData: function (moduleId, data) {
       if (!config.types.hasOwnProperty(data.type)) {
-        throw new Error("Type '" + data.type + "' not found.");
+        return grunt.fail.fatal("Type '" + data.type + "' not found.");
       }
       var iD = helpers.camelCase(moduleId),
           Id = iD[0].toUpperCase() + iD.substring(1),
@@ -223,7 +228,7 @@ module.exports = function (config, gruntConfig, loadService) {
           if (obj instanceof Array) {
             return _.map(obj, replaceObj);
           }
-          return _.mapObject(obj, replaceObj);
+          return _.mapValues(obj, replaceObj);
         }
         if (typeof obj === "string") {
           return obj.replace(regex, replaceMatch);
@@ -242,7 +247,7 @@ module.exports = function (config, gruntConfig, loadService) {
         return helpers.populateCompilation(helpers.getByKey(config.compilation, obj));
       }
       if (type !== "object") {
-        throw new Error("Compilation-Config invalid.");
+        return grunt.fail.fatal("Compilation-Config invalid.");
       }
       if (obj instanceof Array) {
         return _.map(obj, helpers.populateCompilation);

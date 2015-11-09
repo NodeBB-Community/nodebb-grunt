@@ -1,0 +1,6 @@
+{
+  "providers": {
+    "GitHub": "https://github.com/frissdiegurke/@{name}.git"
+  },
+  "defaultProvider": "GitHub"
+}

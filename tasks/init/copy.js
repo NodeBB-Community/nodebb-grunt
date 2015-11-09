@@ -1,7 +1,5 @@
-"use strict";
-
-module.exports = function (config, helpers) {
-  helpers.loadNpmTask("grunt-contrib-copy");
+module.exports = function () {
+  "use strict";
 
   return {};
 };

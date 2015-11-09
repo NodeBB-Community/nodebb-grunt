@@ -1,9 +1,11 @@
 {
-  "git": {
-    "providers": {
-      "GitHub": "https://github.com/frissdiegurke/@{name}.git"
-    },
-    "beforeCommit": "git add -u",
-    "defaultProvider": "GitHub"
-  }
+  "source": [
+    {"cmd": "git", "args": ["add", "-u"]},
+    {"cmd": "git", "args": ["commit", "-e"]},
+    {"cmd": "git", "args": ["push"]}
+  ],
+  "distribute": [
+    {"cmd": "npm", "args": ["publish"]}
+  ],
+  "info": []
 }
