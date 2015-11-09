@@ -16,7 +16,7 @@ module.exports = function (config, helpers) {
         expand: true,
         dot: true,
         cwd: moduleData.paths.source,
-        src: ["**/*", "!.git/"], // TODO replace with mask within modules .npmignore or .gitignore
+        src: ["**/*", "!.git/**/*", "!.git"], // TODO replace with mask within modules .npmignore or .gitignore
         dest: moduleData.paths.tmp
       }]
     });
@@ -35,7 +35,7 @@ module.exports = function (config, helpers) {
         expand: true,
         dot: true,
         cwd: moduleData.paths.tmp,
-        src: ["**/*", "!.git/"], // TODO replace with mask within modules .npmignore or .gitignore
+        src: ["**/*", "!.git/**/*", "!.git"], // TODO replace with mask within modules .npmignore or .gitignore
         dest: moduleData.paths.destination
       }]
     });
