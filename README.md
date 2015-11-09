@@ -36,6 +36,8 @@ The most interesting tasks you need to know ( *my-module* may either be the name
 |`deploy:my-module`|Run distribution compilation of *my-module* and publish (alias for `build` and `publish`).|
 |`clean`|Clean temporary data.|
 
+*Note:* For the `publish` task you need to be running a real shell to be able to use `git commit -e` for commit message input since. The task-manager of your IDE may not provide this (e.g. JetBrains IDEA does not).
+
 ## TODO
 
 ### until release
