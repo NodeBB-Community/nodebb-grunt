@@ -24,6 +24,6 @@ function initAdminSockets(Socket) {
 }
 
 module.exports.init = function () {
-  //initUserSockets(require.main.require("./src/socket.io/modules"));
+  //initUserSockets(require.main.require("./src/socket.io/plugins"));
   initAdminSockets(require.main.require("./src/socket.io/admin"));
 };
