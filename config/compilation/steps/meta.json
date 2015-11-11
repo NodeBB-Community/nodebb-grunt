@@ -8,7 +8,11 @@
           "plugin.json",
           "theme.json",
           "lib/settings.*",
-          "public/**/*",
+          "public/locales/**/*",
+          "public/scripts/meta/**/*",
+          "public/static/scripts/**/*",
+          "public/styles/variables.*",
+          "public/templates/**/*",
           "!public/**/vendor/**/*"
         ],
         "regex": "@\\{([^}]+)}"

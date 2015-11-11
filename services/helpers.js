@@ -12,6 +12,8 @@ var MODULE_META_STATICS = {
   MM: now.getMonth() >= 10 ? now.getMonth() : "0" + now.getMonth()
 };
 
+// TODO separate into multiple services (in the this file should be removed)
+
 module.exports = function (config, gruntConfig, loadService) {
   var grunt = this;
   var dependencies = config.pkg.dependencies || {}, optionalDependencies = config.pkg.optionalDependencies || {};

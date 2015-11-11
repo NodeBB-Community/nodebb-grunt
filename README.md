@@ -40,14 +40,19 @@ The most interesting tasks you need to know ( *my-module* may either be the name
 
 ## TODO
 
-### until release
+ + Basic plugin-, theme- and widgets-setups
 
- + Basic plugin-, theme- and widgets-setups with and without TypeScript- or CoffeeScript-usage
- 
 ### Nice to have
 
- + Use https://www.npmjs.com/package/ignore (fork, add https://github.com/grob/fnmatch rules - maybe skip {x..y} for simplicity) for detection of files to copy into tmp- and dest-directories
+ + Create wiki step-by-step guides for
+    * NodeBB Grunt setup
+    * Module setup creation (incl. what to keep in mind regarding `${x}`, `@{x}` and `@{>x}`)
+ + Wiki: list sample meta-replace variables (for init- and compile-time)
+ + Add defaults for Linter configurations
+ + Use https://www.npmjs.com/package/ignore (fork, add https://github.com/grob/fnmatch rules - maybe skip {x..y} for simplicity) for detection of files to copy into tmp- (.gitignore and ".git*") and dest- (.npmignore or .gitignore and ".git*") directories
+ + Basic plugin-, theme- and widgets-setups with TypeScript-, CoffeeScript- and SASS-usage
  + A smart clean-task that accepts module-id as parameter
  + Allow different setups for same type (additional setup-selection within init-task)
  + Save last npm published version to throw an early error within publish task
  + Some tasks for adding git-providers and other config-modifications
+ + Figure out why `"preserveComments": "some"` in options of minify-task doesn't work properly (does preserve `"all"` comments)

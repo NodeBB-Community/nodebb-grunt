@@ -6,8 +6,7 @@ var prefix = "config.prompt.";
 
 module.exports = function (config, helpers, gruntConfig) {
   var grunt = this, nameOverwriteConfirm = null;
-  var ghName = /github\.com\/([^\/]+)\//.exec(config.git.providers && config.git.providers.GitHub);
-  ghName = ghName ? ghName[1] : "";
+  var metaService = helpers.loadService("meta");
 
   helpers.loadNpmTask("grunt-prompt");
 
@@ -18,7 +17,15 @@ module.exports = function (config, helpers, gruntConfig) {
           config: prefix + "author",
           type: "input",
           message: "Specify the default author-value:",
-          default: config.meta.author
+          default: metaService.authorObjectToString(config.meta.author),
+          validate: function (str) {
+            return metaService.authorStringToObject(str) == null ? "An author needs at least a name." : true;
+          },
+          filter: function (str) {
+            var obj = metaService.authorStringToObject(str);
+            obj.full = str;
+            return obj;
+          }
         },
         {
           config: prefix + "github.use",
@@ -30,7 +37,7 @@ module.exports = function (config, helpers, gruntConfig) {
           config: prefix + "github.name",
           type: "input",
           message: "Specify your GitHub username:",
-          default: ghName,
+          default: config.meta.GitHubAuthor,
           when: function (answers) {
             return answers[prefix + "github.use"] === true;
           }
@@ -99,6 +106,7 @@ module.exports = function (config, helpers, gruntConfig) {
           git.providers = {};
         }
         if (answers[prefix + "github.use"]) {
+          meta.GitHubAuthor = answers[prefix + "github.name"];
           git.providers.GitHub = "https://github.com/" + answers[prefix + "github.name"] + "/@{name}.git";
           git.defaultProvider = "GitHub";
         } else if (answers[prefix + "repository.url"] != null) {

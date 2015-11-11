@@ -1,8 +1,16 @@
 {
-  "author": "Ole Reglitzki",
+  "author": {
+    "name": "Ole Reglitzki",
+    "email": "frissdiegurke@protonmail.com",
+    "url": "https://github.com/frissdiegurke"
+  },
+  "GitHubAuthor": "frissdiegurke",
   "keywords": [
     "nodebb",
     "@{type.name}",
     "@{id}"
-  ]
+  ],
+  "nbbpm": {
+    "compatibility": "~0.9.0"
+  }
 }

@@ -65,10 +65,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask("compile", ["clean_tmp", "copy_tmp", "compilation", "clean_deploy", "copy_deploy"]);
 
-  grunt.registerTask("set_commit_msg", function (msg) {
-    grunt.config.set("git.commit", msg || null);
-  });
-
   grunt.registerTask("set_development", "Enables/Sets development task-settings", function (val) {
     grunt.config.set("development", val !== "false");
   });

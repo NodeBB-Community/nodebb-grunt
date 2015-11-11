@@ -11,6 +11,7 @@ var prefix = "init.prompt.";
 module.exports = function (config, helpers, gruntConfig) {
   var grunt = this, idOverwriteConfirm = null;
   var keywords = config.meta.keywords instanceof Array ? config.meta.keywords : ["nodebb", "@{type.name}"];
+  var metaService = helpers.loadService("meta");
 
   helpers.loadNpmTask("grunt-prompt");
 
@@ -101,7 +102,20 @@ module.exports = function (config, helpers, gruntConfig) {
           return answers[prefix + "license"] === "Others";
         }
       },
-      {config: prefix + "author", type: "input", message: "Author:", default: config.meta.author}
+      {
+        config: prefix + "author",
+        type: "input",
+        message: "Author:",
+        default: metaService.authorObjectToString(config.meta.author),
+        validate: function (str) {
+          return metaService.authorStringToObject(str) == null ? "An author needs at least a name." : true;
+        },
+        filter: function (str) {
+          var obj = metaService.authorStringToObject(str);
+          obj.full = str;
+          return obj;
+        }
+      }
     ],
 
     keywords: {
@@ -122,7 +136,7 @@ module.exports = function (config, helpers, gruntConfig) {
   };
 
   var questionsArray = [].concat(questions.type, questions.id, questions.meta, questions.license, questions.keywords,
-      questions.git, questions.aliases);
+                                 questions.git, questions.aliases);
 
   /*-------------------------------------------- Question post-processing --------------------------------------------*/
 
@@ -231,12 +245,12 @@ module.exports = function (config, helpers, gruntConfig) {
 
     var module = {
       type: typeId,
-      license: grunt.config(prefix + "license"),
+      license: {id: grunt.config(prefix + "license")},
       publish: {source: true, distribution: true},
       build: 0
     };
 
-    var meta = _.extend(helpers.getMetaData(grunt.config(prefix + "id"), module), {
+    var meta = _.extend({}, config.meta, helpers.getMetaData(grunt.config(prefix + "id"), module), {
       name: grunt.config(prefix + "name"),
       author: grunt.config(prefix + "author"),
       version: grunt.config(prefix + "version"),
@@ -247,7 +261,7 @@ module.exports = function (config, helpers, gruntConfig) {
         metaReplace = helpers.getReplacer(new RegExp(metaReplaceData.regex, "g"), meta);
 
     meta.git = metaReplace(grunt.config(prefix + "git.url"));
-    meta.licenseText = metaReplace(helpers.getLicenseText(meta.license));
+    var licenseText = metaReplace(helpers.getLicenseText(meta.license.id));
     meta.keywords = metaReplace(grunt.config(prefix + "keywords"));
     meta.aliases = module.aliases = metaReplace(grunt.config(prefix + "aliases"));
 
@@ -264,6 +278,9 @@ module.exports = function (config, helpers, gruntConfig) {
     grunt.file.write(moduleFile, JSON.stringify(module, null, 2));
     grunt.log.ok("File '" + path.relative(config.cwd, moduleFile) + "' written.");
 
+    // add some properties for project-init meta-replace but don't store within project-meta
+    meta.license.text = licenseText;
+
     // prepare options of further tasks
     if (!grunt.file.isDir(source)) {
       // No setup specified. Create empty directory.
@@ -274,6 +291,7 @@ module.exports = function (config, helpers, gruntConfig) {
     grunt.config.set("copy.init", {
       files: [{
         expand: true,
+        dot: true,
         cwd: source,
         src: "**/*",
         dest: destination

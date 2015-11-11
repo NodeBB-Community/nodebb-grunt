@@ -1,0 +1,23 @@
+{
+  "browser": true,
+  "devel": true,
+  "eqnull": true,
+  "curly": true,
+  "globalstrict": true,
+  "strict": true,
+  "boss": true,
+  "undef": true,
+  "expr": true,
+  "nonew": true,
+  "unused": true,
+  "noarg": true,
+  "noempty": true,
+  "newcap": true,
+  "nonbsp": true,
+  "quotmark": "double",
+  "globals": [
+    "currentModuleID",
+    "$", "socket", "app", "RELATIVE_PATH", "io", "templates", "translator", "ajaxify", "utils", "bootbox", "overrides",
+    "socket", "config", "Visibility", "define", "require", "componentHandler", "Mousetrap", "Hammer", "Slideout"
+  ]
+}
