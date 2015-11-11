@@ -1,6 +1,6 @@
 {
   "name": "@{nbbpm.name}",
-  "version": "v@{>version}",
+  "version": "@{>version}",
   "settings.setting1": "Sample Attribute 1",
   "settings.custom": "Sample Attribute 2"
 }

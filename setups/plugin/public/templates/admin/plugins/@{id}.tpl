@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-12 col-lg-9">
       <div class="panel panel-default">
-        <div class="panel-heading">[[@{id}:name]] [[@{id}:version]] [[plugins:settings]]</div>
+        <div class="panel-heading">[[@{id}:name]] [[@{id}:version]] / [[plugins:settings]]</div>
 
         <div class="panel-body">
 
