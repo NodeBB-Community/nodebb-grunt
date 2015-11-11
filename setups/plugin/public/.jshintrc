@@ -16,7 +16,6 @@
   "nonbsp": true,
   "quotmark": "double",
   "globals": {
-    "currentModuleID": false,
     "RELATIVE_PATH": false,
     "$": false,
     "app": false,
