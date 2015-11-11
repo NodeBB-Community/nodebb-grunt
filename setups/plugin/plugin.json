@@ -5,7 +5,7 @@
   "description": "@{description}",
   "library": "@{main}",
   "less": ["public/styles/main.less"],
-  "scripts": ["public/scripts/meta/", "public/scripts/"],
+  "scripts": ["public/scripts/"],
   "staticDirs": {"static": "public/static/"},
   "languages": "public/locales",
   "templates": "public/templates",

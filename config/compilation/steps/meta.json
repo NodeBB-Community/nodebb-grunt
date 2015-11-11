@@ -9,7 +9,7 @@
           "theme.json",
           "lib/settings.*",
           "public/locales/**/*",
-          "public/scripts/meta/**/*",
+          "public/scripts/**/*",
           "public/static/scripts/**/*",
           "public/styles/variables.*",
           "public/templates/**/*",
