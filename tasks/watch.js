@@ -12,9 +12,10 @@ module.exports = function (config, helpers) {
     if (moduleData == null) {
       return grunt.fail.fatal("set_active_module must be run first");
     }
+    var dev = grunt.config.get("development") || false;
     grunt.config.set("watch.module", {
-      files: [path.join(moduleData.paths.source, "**/*"), path.join(moduleData.paths.info)],
-      tasks: ["set_active_module:" + moduleData.id, "compile"],
+      files: [path.join(moduleData.paths.source, "**/*")],
+      tasks: ["set_development:" + dev, "set_active_module:" + moduleData.id, "compile"],
       options: {interrupt: true, debounceDelay: 200}
     });
     grunt.task.run("watch:module");
