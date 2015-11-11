@@ -8,7 +8,7 @@ var _cfg = ["compilation", "types", "git", "licenses", "meta", "paths", "publish
 module.exports = function (cwd) {
   var grunt = this, config = {}, current;
 
-  function readConfigFile(filePath) { current = _.merge(current, grunt.file.readJSON(filePath)); }
+  var mergeFile = function (file) { current = _.merge(current, grunt.file.readJSON(file)); };
 
   for (var i = 0; i < _cfg.length; i++) {
     current = null;
@@ -22,12 +22,8 @@ module.exports = function (cwd) {
       if (current == null) {
         current = {};
       }
-      _.each(grunt.file.expand([path.join(dirPath, "**/*.json"), "!**/*.local.json"]), function (file) {
-        current = _.merge(current, grunt.file.readJSON(file));
-      });
-      _.each(grunt.file.expand([path.join(dirPath, "**/*.local.json")]), function (file) {
-        current = _.merge(current, grunt.file.readJSON(file));
-      });
+      _.each(grunt.file.expand([path.join(dirPath, "**/*.json"), "!**/*.local.json"]), mergeFile);
+      _.each(grunt.file.expand([path.join(dirPath, "**/*.local.json")]), mergeFile);
     }
     if (grunt.file.exists(filePathLocal)) {
       if (current == null) {

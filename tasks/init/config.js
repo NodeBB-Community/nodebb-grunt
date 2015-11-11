@@ -22,9 +22,7 @@ module.exports = function (config, helpers, gruntConfig) {
             return metaService.authorStringToObject(str) == null ? "An author needs at least a name." : true;
           },
           filter: function (str) {
-            var obj = metaService.authorStringToObject(str);
-            obj.full = str;
-            return obj;
+            return metaService.authorStringToObject(str);
           }
         },
         {
@@ -93,12 +91,10 @@ module.exports = function (config, helpers, gruntConfig) {
         }
       ],
       then: function (answers) {
-        var metaFile = path.join(config.cwd, "config", "meta.json");
-        var pathsFile = path.join(config.cwd, "config", "paths.json");
-        var gitFile = path.join(config.cwd, "config", "git.json");
-        var meta = grunt.file.readJSON(metaFile);
-        var paths = grunt.file.readJSON(pathsFile);
-        var git = grunt.file.readJSON(gitFile);
+        var configDir = path.join(config.cwd, "config");
+        var meta = grunt.file.readJSON(path.join(configDir, "meta.json"));
+        var paths = grunt.file.readJSON(path.join(configDir, "paths.json"));
+        var git = grunt.file.readJSON(path.join(configDir, "git.json"));
         // add meta-info
         meta.author = answers[prefix + "author"];
         // add git-info
@@ -118,9 +114,9 @@ module.exports = function (config, helpers, gruntConfig) {
         }
         // add paths-info
         paths.deploy = answers[prefix + "paths.deploy"].trim() || "node_modules/";
-        grunt.file.write(metaFile, JSON.stringify(meta, null, 2));
-        grunt.file.write(pathsFile, JSON.stringify(paths, null, 2));
-        grunt.file.write(gitFile, JSON.stringify(git, null, 2));
+        grunt.file.write(path.join(configDir, "meta.local.json"), JSON.stringify(meta, null, 2));
+        grunt.file.write(path.join(configDir, "paths.local.json"), JSON.stringify(paths, null, 2));
+        grunt.file.write(path.join(configDir, "git.local.json"), JSON.stringify(git, null, 2));
       }
     }
   };

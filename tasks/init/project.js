@@ -144,14 +144,14 @@ module.exports = function (config, helpers, gruntConfig) {
     if (answers[prefix + "type.id"] === null) {
       var customTypeId = answers[prefix + "customType.id"];
       if (config.types[customTypeId] == null) {
-        var typesPath = path.join(config.cwd, "config/types", helpers.camelCase(customTypeId) + ".local.json");
-        var typesJSON;
-        if (grunt.file.exists(typesPath)) {
-          typesJSON = grunt.file.readJSON(typesPath);
+        var typePath = path.join(config.cwd, "config/types", helpers.camelCase(customTypeId) + ".local.json");
+        var typeJSON;
+        if (grunt.file.exists(typePath)) {
+          typeJSON = grunt.file.readJSON(typePath);
         } else {
-          typesJSON = {};
+          typeJSON = {};
         }
-        var t = typesJSON[customTypeId] = config.types[customTypeId] = {
+        var t = typeJSON[customTypeId] = config.types[customTypeId] = {
           name: helpers.idToName(customTypeId),
           sort: 2000,
           compilation: _.first(_.keys(config.compilation)),
@@ -168,8 +168,8 @@ module.exports = function (config, helpers, gruntConfig) {
         _.each(customTypeMetaKeys, function (key) {
           t.setup.meta[key] = answers[prefix + "customType.meta." + key];
         });
-        grunt.file.write(typesPath, JSON.stringify(typesJSON, null, 2));
-        grunt.log.ok("Updated '" + path.relative(config.cwd, typesPath) + "' with new type '" + customTypeId + "'");
+        grunt.file.write(typePath, JSON.stringify(typeJSON, null, 2));
+        grunt.log.ok("Updated '" + path.relative(config.cwd, typePath) + "' with new type '" + customTypeId + "'");
       }
       setAnswer("type.id", customTypeId);
     }
@@ -208,12 +208,17 @@ module.exports = function (config, helpers, gruntConfig) {
 
   function processLicense(answers) {
     var license = answers[prefix + "license"];
-    var licensesPath = path.join(config.cwd, "config", "licenses.json");
-    var licensesJSON = grunt.file.readJSON(licensesPath);
-    if (!licensesJSON.hasOwnProperty(license)) {
-      licensesJSON[license] = "";
-      grunt.file.write(licensesPath, JSON.stringify(licensesJSON, null, 2));
-      grunt.log.ok("Add your license-templates into " + path.relative(config.cwd, licensesJSON));
+    var configDir = path.join(config.cwd, "config");
+    var localLicensesPath = path.join(configDir, "licenses.json");
+    var licensesJSON = grunt.file.readJSON(path.join(configDir, "licenses.json"));
+    var localLicensesJSON = {};
+    if (grunt.file.exists(localLicensesPath)) {
+      localLicensesJSON = grunt.file.readJSON(localLicensesPath);
+    }
+    if (!licensesJSON.hasOwnProperty(license) && !localLicensesJSON.hasOwnProperty(license)) {
+      localLicensesJSON[license] = "";
+      grunt.file.write(localLicensesPath, JSON.stringify(localLicensesJSON, null, 2));
+      grunt.log.ok("Add your license-templates into " + path.relative(config.cwd, localLicensesPath));
     }
   }
 
