@@ -15,9 +15,26 @@
   "newcap": true,
   "nonbsp": true,
   "quotmark": "double",
-  "globals": [
-    "currentModuleID",
-    "$", "socket", "app", "RELATIVE_PATH", "io", "templates", "translator", "ajaxify", "utils", "bootbox", "overrides",
-    "socket", "config", "Visibility", "define", "require", "componentHandler", "Mousetrap", "Hammer", "Slideout"
-  ]
+  "globals": {
+    "currentModuleID": false,
+    "RELATIVE_PATH": false,
+    "$": false,
+    "app": false,
+    "socket": false,
+    "io": false,
+    "templates": false,
+    "translator": false,
+    "ajaxify": false,
+    "utils": false,
+    "bootbox": false,
+    "overrides": false,
+    "config": false,
+    "Visibility": false,
+    "define": false,
+    "require": false,
+    "componentHandler": false,
+    "Mousetrap": false,
+    "Hammer": false,
+    "Slideout": false
+  }
 }
