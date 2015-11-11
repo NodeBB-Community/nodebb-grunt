@@ -16,7 +16,7 @@ var currentModuleID = "@{type.name}/@{id}"; // jshint ignore:line
 console.log("Registering module", currentModuleID);
 
 define(currentModuleID, function () {
-  var version = "@{version}".split("+");
+  var version = "@{>version}".split("+");
 
   return {
     id: "@{name}",

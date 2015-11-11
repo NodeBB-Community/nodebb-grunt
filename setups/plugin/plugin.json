@@ -11,7 +11,6 @@
   "templates": "public/templates",
   "hooks": [
     {"hook": "static:app.load", "method": "init"},
-    {"hook": "action:plugin.activate", "method": "activation"},
     {"hook": "filter:admin.header.build", "method": "adminMenu"}
   ]
 }

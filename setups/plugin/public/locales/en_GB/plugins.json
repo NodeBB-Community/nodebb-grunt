@@ -1,0 +1,7 @@
+{
+  "settings": "Settings",
+  "actions.title": "Action panel",
+  "actions.save": "Save settings",
+  "actions.reset": "Reset Form",
+  "actions.purge": "Reset to default settings"
+}

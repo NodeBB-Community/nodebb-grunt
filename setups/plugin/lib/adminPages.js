@@ -10,7 +10,7 @@ var pages = [
   {
     name: settings.pkg.nbbpm.name,
     icon: "fa-chevron-circle-right",
-    route: "plugins/" + settings.id,
+    route: "/plugins/" + settings.id,
     template: function () {
       return {
         id: settings.pkg.name,
@@ -24,11 +24,11 @@ var pages = [
 
 function initPageRoute(router, UIMiddleware, page) {
   function renderPage(req, res) {
-    res.render("admin/" + page.route, (typeof page.template === "function" ? page.template(req, res) : false) || {});
+    res.render("admin" + page.route, (typeof page.template === "function" ? page.template(req, res) : false) || {});
   }
 
-  router.get("/admin/" + page.route, UIMiddleware, renderPage);
-  router.get("/api/admin/" + page.route, renderPage);
+  router.get("/admin" + page.route, UIMiddleware, renderPage);
+  router.get("/api/admin" + page.route, renderPage);
 }
 
 exports.addNavigation = function (header, cb) {
