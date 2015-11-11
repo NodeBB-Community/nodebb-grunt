@@ -245,14 +245,14 @@ module.exports = function (config, helpers, gruntConfig) {
 
     var module = {
       type: typeId,
-      license: {id: grunt.config(prefix + "license")},
       publish: {source: true, distribution: true},
-      build: 0
+      meta: {build: 0}
     };
 
     var meta = _.extend({}, config.meta, helpers.getMetaData(grunt.config(prefix + "id"), module), {
       name: grunt.config(prefix + "name"),
       author: grunt.config(prefix + "author"),
+      license: {id: grunt.config(prefix + "license")},
       version: grunt.config(prefix + "version"),
       description: grunt.config(prefix + "description")
     });
@@ -260,8 +260,8 @@ module.exports = function (config, helpers, gruntConfig) {
     var metaReplaceData = type.setup.metaReplace,
         metaReplace = helpers.getReplacer(new RegExp(metaReplaceData.regex, "g"), meta);
 
+    meta.license.text = metaReplace(helpers.getLicenseText(meta.license.id));
     meta.git = metaReplace(grunt.config(prefix + "git.url"));
-    var licenseText = metaReplace(helpers.getLicenseText(meta.license.id));
     meta.keywords = metaReplace(grunt.config(prefix + "keywords"));
     meta.aliases = module.aliases = metaReplace(grunt.config(prefix + "aliases"));
 
@@ -277,9 +277,6 @@ module.exports = function (config, helpers, gruntConfig) {
     // write module-details
     grunt.file.write(moduleFile, JSON.stringify(module, null, 2));
     grunt.log.ok("File '" + path.relative(config.cwd, moduleFile) + "' written.");
-
-    // add some properties for project-init meta-replace but don't store within project-meta
-    meta.license.text = licenseText;
 
     // prepare options of further tasks
     if (!grunt.file.isDir(source)) {

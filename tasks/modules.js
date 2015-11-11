@@ -46,7 +46,7 @@ module.exports = function (config, helpers) {
       return grunt.fail.fatal("set_active_module must be run first");
     }
     var info = grunt.file.readJSON(moduleData.paths.info);
-    info.build = ++moduleData.meta.build;
+    info.meta.build = ++moduleData.meta.build;
     grunt.config.set("modules.active", moduleData);
     grunt.file.write(moduleData.paths.info, JSON.stringify(info, null, 2));
   });

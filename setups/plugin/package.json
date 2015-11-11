@@ -7,7 +7,7 @@
   "contributors": [
     "${author.full}"
   ],
-  "license": "@{license.id}",
+  "license": "${license.id}",
   "repository": {
     "type": "git",
     "url": "${git}"
