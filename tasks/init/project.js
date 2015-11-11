@@ -25,9 +25,9 @@ module.exports = function (config, helpers, gruntConfig) {
     type: [
       {
         config: prefix + "type.id", type: "list", message: "Choose the NodeBB module-type:",
-        choices: _.map(_.sortBy(_.map(config.types, function (t, k) {
-          return {key: k, sort: t.sort, name: t.name};
-        }), "sort"), function (t) {
+        choices: _.map(_.sortBy(_.compact(_.map(config.types, function (t, k) {
+          return t && {key: k, sort: t.sort, name: t.name};
+        })), "sort"), function (t) {
           return {name: t.name, value: t.key};
         }).concat("---", {name: "New Module-Type", value: null})
       },

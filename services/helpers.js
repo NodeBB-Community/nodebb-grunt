@@ -196,7 +196,7 @@ module.exports = function (config, gruntConfig, loadService) {
     },
 
     getMetaData: function (moduleId, moduleFile) {
-      if (!config.types.hasOwnProperty(moduleFile.type)) {
+      if (!config.types.hasOwnProperty(moduleFile.type) || config.types[moduleFile.type] == null) {
         return grunt.fail.fatal("Type '" + moduleFile.type + "' not found.");
       }
       var iD = helpers.camelCase(moduleId),

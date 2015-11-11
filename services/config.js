@@ -22,7 +22,12 @@ module.exports = function (cwd) {
       if (current == null) {
         current = {};
       }
-      grunt.file.recurse(dirPath, readConfigFile);
+      _.each(grunt.file.expand([path.join(dirPath, "**/*.json"), "!**/*.local.json"]), function (file) {
+        current = _.merge(current, grunt.file.readJSON(file));
+      });
+      _.each(grunt.file.expand([path.join(dirPath, "**/*.local.json")]), function (file) {
+        current = _.merge(current, grunt.file.readJSON(file));
+      });
     }
     if (grunt.file.exists(filePathLocal)) {
       if (current == null) {

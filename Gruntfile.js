@@ -53,9 +53,9 @@ module.exports = function (grunt) {
     return _.pluck(arr, "compiler");
   }
 
-  _.each(_.uniq(_.flatten(_.map(_.pluck(config.types, "compilation"), getCompilerNames))), function (name) {
-    helpers.loadCompiler(name);
-  });
+  // load all compilers that may be executed by any existing type-definition (not null)
+  _.each(_.uniq(_.flatten(_.map(_.pluck(_.compact(_.map(config.types, _.identity)), "compilation"), getCompilerNames))),
+         function (name) { helpers.loadCompiler(name); });
 
   /*---------------------------------------------- persist grunt-config ----------------------------------------------*/
 
