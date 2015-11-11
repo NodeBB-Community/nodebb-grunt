@@ -250,11 +250,11 @@ module.exports = function (config, helpers, gruntConfig) {
 
     var module = {
       type: typeId,
-      publish: {source: true, distribution: true},
-      meta: {build: 0}
+      publish: {source: true, distribution: true}
     };
+    var moduleMeta = {build: 0};
 
-    var meta = _.extend({}, config.meta, helpers.getMetaData(grunt.config(prefix + "id"), module), {
+    var meta = _.extend({}, config.meta, helpers.getMetaData(grunt.config(prefix + "id"), module.type, moduleMeta), {
       name: grunt.config(prefix + "name"),
       author: grunt.config(prefix + "author"),
       license: {id: grunt.config(prefix + "license")},
@@ -302,6 +302,7 @@ module.exports = function (config, helpers, gruntConfig) {
     grunt.config.set("initProjectReplace.options", {
       cwd: destination,
       meta: meta,
+      moduleMeta: moduleMeta,
       metaReplace: metaReplace,
       metaReplaceData: metaReplaceData
     });
@@ -316,6 +317,13 @@ module.exports = function (config, helpers, gruntConfig) {
     var options = this.options();
     var meta = options.meta;
     var metaReplace = options.metaReplace;
+    var moduleMeta = options.moduleMeta;
+    var moduleMetaFile = path.join(options.cwd, ".meta.json");
+    // edit .meta.json
+    if (grunt.file.exists(moduleMetaFile)) {
+      moduleMeta = _.merge(grunt.file.readJSON(moduleMetaFile), moduleMeta);
+    }
+    grunt.file.write(moduleMetaFile, JSON.stringify(moduleMeta, null, 2));
     // edit package.json
     var packagePath = path.join(options.cwd, "package.json");
     if (grunt.file.exists(packagePath)) {

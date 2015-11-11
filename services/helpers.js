@@ -195,15 +195,15 @@ module.exports = function (config, gruntConfig, loadService) {
       return (config.licenses[name] || "").replace(/\n/g, grunt.util.linefeed);
     },
 
-    getMetaData: function (moduleId, moduleFile) {
-      if (!config.types.hasOwnProperty(moduleFile.type) || config.types[moduleFile.type] == null) {
-        return grunt.fail.fatal("Type '" + moduleFile.type + "' not found.");
+    getMetaData: function (moduleId, moduleType, moduleMeta) {
+      if (!config.types.hasOwnProperty(moduleType) || config.types[moduleType] == null) {
+        return grunt.fail.fatal("Type '" + moduleType + "' not found.");
       }
       var iD = helpers.camelCase(moduleId),
           Id = iD[0].toUpperCase() + iD.substring(1),
           ID = iD.replace(/([A-Z])/g, "_$1").toUpperCase();
-      var meta = _.extend({id: moduleId, Id: Id, iD: iD, ID: ID}, MODULE_META_STATICS, moduleFile.meta);
-      meta.type = _.extend({id: moduleFile.type}, config.types[moduleFile.type].setup.meta);
+      var meta = _.extend({id: moduleId, Id: Id, iD: iD, ID: ID}, MODULE_META_STATICS, moduleMeta);
+      meta.type = _.extend({id: moduleType}, config.types[moduleType].setup.meta);
       return meta;
     },
 

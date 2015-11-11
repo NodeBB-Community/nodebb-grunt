@@ -1,5 +1,6 @@
 "use strict";
 
+var _ = require("lodash");
 var path = require("path");
 
 module.exports = function (config, helpers) {
@@ -14,11 +15,17 @@ module.exports = function (config, helpers) {
 
     var data;
     if ((data = grunt.config.get("modules.byId." + id)) == null) {
-      var meta = helpers.getMetaData(id, grunt.file.readJSON(moduleFile));
+      var meta = helpers.getMetaData(id, grunt.file.readJSON(moduleFile).type);
       var type = config.types[meta.type.id];
 
       var metaReplaceData = type.setup.metaReplace,
           metaReplace = helpers.getReplacer(new RegExp(metaReplaceData.regex, "g"), meta);
+
+      var sourcePath = path.join(config.cwd, metaReplace(config.paths.source.base));
+      var moduleMetaFile = path.join(sourcePath, ".meta.json");
+      if (grunt.file.exists(moduleMetaFile)) {
+        _.extend(meta, grunt.file.readJSON(moduleMetaFile));
+      }
 
       data = {
         id: id,
@@ -28,7 +35,7 @@ module.exports = function (config, helpers) {
         metaReplaceData: metaReplaceData,
         paths: {
           info: moduleFile,
-          source: path.join(config.cwd, metaReplace(config.paths.source.base)),
+          source: sourcePath,
           tmp: path.join(config.cwd, metaReplace(config.paths.tmp)),
           destination: path.join(config.cwd, metaReplace(config.paths.deploy))
         }
@@ -45,10 +52,16 @@ module.exports = function (config, helpers) {
     if (moduleData == null) {
       return grunt.fail.fatal("set_active_module must be run first");
     }
-    var info = grunt.file.readJSON(moduleData.paths.info);
-    info.meta.build = ++moduleData.meta.build;
+
+    var moduleMetaFile = path.join(moduleData.paths.source, ".meta.json");
+    var moduleMetaTmpFile = path.join(moduleData.paths.tmp, ".meta.json");
+    var moduleMeta = grunt.file.readJSON(moduleMetaFile);
+    moduleMeta.build = ++moduleData.meta.build;
     grunt.config.set("modules.active", moduleData);
-    grunt.file.write(moduleData.paths.info, JSON.stringify(info, null, 2));
+    grunt.file.write(moduleMetaFile, JSON.stringify(moduleMeta, null, 2));
+    if (grunt.file.exists(moduleMetaTmpFile)) {
+      grunt.file.write(moduleMetaTmpFile, JSON.stringify(moduleMeta, null, 2));
+    }
   });
 
   return {};
