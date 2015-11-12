@@ -79,10 +79,11 @@ print_version() {
 }
 
 print_git() {
-  status="`cd $2 && git status`"
+  # get git status and remove parenthesized lines
+  status="`cd $2 && git status | sed "/^\s*(.*$/d"`"
   lines=`echo "$status" | wc -l`
   # crop status at first empty line
-  status="`echo "$status" | sed -n '/^On branch/,/^$/p'`"
+  status="`echo "$status" | sed -n "/^On branch/,/^$/p"`"
   # if cropped (status contained empty line), add [...] to the end.
   if [ ${lines} -ne `echo "$status" | wc -l` ]; then
     status="$status\n[...]"
