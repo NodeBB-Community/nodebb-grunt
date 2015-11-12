@@ -114,6 +114,7 @@ if [ $# -eq 1 ]; then
     "v"|"version")
       print_version "NodeBB-Grunt" "$CWD" "$URL_NBB_GRUNT/BRANCH/package.json"
       print_version "NodeBB" "$NBB_ROOT" "$URL_NBB/BRANCH/package.json"
+      echo -e "---\nNote that 'up to date' in this regard only states that\nthe version string is the same.\nFor detailed git status use the 'git' option instead."
       ;;
 
     "g"|"git")
