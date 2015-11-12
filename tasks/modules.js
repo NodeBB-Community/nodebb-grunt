@@ -27,6 +27,8 @@ module.exports = function (config, helpers) {
         _.extend(meta, grunt.file.readJSON(moduleMetaFile));
       }
 
+      meta.paths = config.paths;
+
       data = {
         id: id,
         alias: alias,
@@ -37,9 +39,14 @@ module.exports = function (config, helpers) {
           info: moduleFile,
           source: sourcePath,
           tmp: path.join(config.cwd, metaReplace(config.paths.tmp)),
-          destination: path.join(config.cwd, metaReplace(config.paths.deploy))
+          destination: path.join(config.cwd,
+                                 metaReplace(config.paths.nodeBB.root),
+                                 metaReplace(config.paths.nodeBB.deploy),
+                                 metaReplace("nodebb-${type.name}-${id}"))
         }
       };
+
+      delete meta.paths;
 
       grunt.config.set("modules.byId." + id, data);
     }

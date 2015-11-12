@@ -2,7 +2,10 @@
   "source": {
     "base": "modules/${type.path}/${id}"
   },
-  "deploy": "NodeBB/node_modules/nodebb-${type.name}-${id}",
+  "nodeBB": {
+    "root": "NodeBB",
+    "deploy": "node_modules"
+  },
   "tmp": "modules/.tmp/${id}",
   "clean": {
     "tmp": "modules/.tmp"

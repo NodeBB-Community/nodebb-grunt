@@ -78,16 +78,16 @@ module.exports = function (config, helpers, gruntConfig) {
           }
         },
         {
-          config: prefix + "paths.deploy",
+          config: prefix + "paths.nodeBB.root",
           type: "input",
-          message: "Specify the path to deploy the modules, e.g. node_modules/ within your NodeBB root:",
-          default: config.paths.deploy,
-          filter: function (str) {
-            if (!/\$\{.*}/.test(str)) {
-              return path.join(str, "nodebb-${type.name}-${id}");
-            }
-            return str;
-          }
+          message: "Specify the path to your NodeBB root:",
+          default: config.paths.nodeBB.root
+        },
+        {
+          config: prefix + "paths.nodeBB.deploy",
+          type: "input",
+          message: "Specify the path to deploy the modules to (relative to NodeBB root):",
+          default: config.paths.nodeBB.deploy
         }
       ],
       then: function (answers) {
@@ -113,7 +113,10 @@ module.exports = function (config, helpers, gruntConfig) {
           delete git.defaultProvider;
         }
         // add paths-info
-        paths.deploy = answers[prefix + "paths.deploy"].trim() || "node_modules/";
+        paths.nodeBB = {
+          root: answers[prefix + "paths.nodeBB.root"].trim(),
+          deploy: answers[prefix + "paths.nodeBB.deploy"].trim()
+        };
         grunt.file.write(path.join(configDir, "meta.local.json"), JSON.stringify(meta, null, 2));
         grunt.file.write(path.join(configDir, "paths.local.json"), JSON.stringify(paths, null, 2));
         grunt.file.write(path.join(configDir, "git.local.json"), JSON.stringify(git, null, 2));
