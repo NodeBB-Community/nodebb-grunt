@@ -13,6 +13,8 @@
 #    Starts the grunt init-task for new module setup.
 #  s | stop
 #    Stops any production instance of NodeBB (just calls `./nodebb stop` within NodeBB root).
+#  l | log
+#    Shows logging of production instance of NodeBB (just calls `./nodebb log` within NodeBB root).
 #  v | version
 #    Outputs the version of nodebb-grunt as well as of NodeBB
 #  g | git
@@ -29,6 +31,8 @@
 #      Starts the grunt publish-task of the module.
 #    s | stop
 #      Stops any production instance of NodeBB (just calls `./nodebb stop` within NodeBB root).
+#    l | log
+#      Shows logging of production instance of NodeBB (just calls `./nodebb log` within NodeBB root).
 
 CWD="$(cd "$(dirname "$0")" && pwd)"
 
@@ -107,7 +111,12 @@ if [ $# -eq 1 ]; then
       ;;
 
     "s"|"stop")
-      "$NBB" stop
+      (cd "$NBB_ROOT" && "$NBB" stop)
+      exit $?
+      ;;
+
+    "l"|"log")
+      (cd "$NBB_ROOT" && "$NBB" log)
       exit $?
       ;;
 
@@ -143,7 +152,7 @@ elif [ $# -eq 2 ]; then
       grunt "$GRUNT_FILE" build:"$1"
       code=$?
       if [ ${code} -eq 0 ]; then
-        "$NBB" start
+        (cd "$NBB_ROOT" && "$NBB" start)
         code=$?
       fi
       exit ${code}
@@ -160,7 +169,12 @@ elif [ $# -eq 2 ]; then
       ;;
 
     "s"|"stop")
-      "$NBB" stop
+      (cd "$NBB_ROOT" && "$NBB" stop)
+      exit $?
+      ;;
+
+    "l"|"log")
+      (cd "$NBB_ROOT" && "$NBB" log)
       exit $?
       ;;
 
