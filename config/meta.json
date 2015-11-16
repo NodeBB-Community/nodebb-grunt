@@ -1,10 +1,10 @@
 {
   "author": {
-    "name": "Ole Reglitzki",
-    "email": "frissdiegurke@protonmail.com",
-    "url": "https://github.com/frissdiegurke"
+    "name": "Jon Doe",
+    "email": "jondoe@example.com",
+    "url": "https://github.com/NodeBB-Community"
   },
-  "GitHubAuthor": "frissdiegurke",
+  "GitHubAuthor": "NodeBB-Community",
   "keywords": [
     "nodebb",
     "@{type.name}",

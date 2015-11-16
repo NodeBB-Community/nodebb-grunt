@@ -40,7 +40,7 @@
 
 CWD="$(cd "$(dirname "$0")" && pwd)"
 
-URL_NBB_GRUNT="https://raw.githubusercontent.com/frissdiegurke/nodebb-grunt-development"
+URL_NBB_GRUNT="https://raw.githubusercontent.com/NodeBB-Community/nodebb-grunt"
 URL_NBB="https://raw.githubusercontent.com/NodeBB/NodeBB"
 
 CONFIG="$CWD/config"

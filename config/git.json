@@ -1,6 +1,6 @@
 {
   "providers": {
-    "GitHub": "https://github.com/frissdiegurke/@{name}.git"
+    "GitHub": "https://github.com/NodeBB-Community/@{name}.git"
   },
   "defaultProvider": "GitHub"
 }
