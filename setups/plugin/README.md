@@ -20,4 +20,4 @@ The manual installation via [NPM](https://www.npmjs.com/) may result in version-
 
 ## Development
 
-This module gets developed using the [NodeBB Grunt](https://github.com/frissdiegurke/nodebb-grunt-development) Framework.
+This module gets developed using the [NodeBB Grunt](https://github.com/frissdiegurke/nodebb-grunt) Framework.
