@@ -1,8 +1,8 @@
-# NodeBB Grunt - Rework
+# NodeBB Grunt
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
-[![Dependency Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework)
-[![optionalDependencies Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework/optional-status.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development/rework#info=optionalDependencies)
+[![Dependency Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development)
+[![optionalDependencies Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/optional-status.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development#info=optionalDependencies)
 ![Version 1.0.0-alpha.1](https://img.shields.io/badge/version-1.0.0--alpha.1-lightgrey.svg)
 
 **This project is in alpha phase, see below for TODO tasks**
@@ -41,9 +41,6 @@ The most interesting tasks you need to know ( *my-module* may either be the name
 ## TODO
 
  + Basic plugin-, theme- and widgets-setups
-
-### Nice to have
-
  + Create wiki step-by-step guides for
     * NodeBB Grunt setup
     * Module setup creation (incl. what to keep in mind regarding `${x}`, `@{x}` and `@{>x}`)
