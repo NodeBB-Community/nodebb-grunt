@@ -16,16 +16,20 @@ module.exports = function (config, helpers) {
           }
 
           var commands = config.publish[configKey] || [];
-          var publish = moduleData.meta.publish[configKey];
-          if (publish instanceof Array) {
-            grunt.log.ok("Module has custom commands, not using defaults.");
-            commands = publish;
-          } else if (typeof publish === "object") {
-            grunt.log.ok("Module has custom commands, not using defaults.");
-            commands = [publish];
-          } else if (publish !== true) {
-            grunt.log.ok("Module is configured to skip this step.");
-            return;
+
+          var info = grunt.file.readJSON(moduleData.paths.info);
+          if (info.hasOwnProperty("publish") && info.publish.hasOwnProperty(configKey)) {
+            var publish = info.publish[configKey];
+            if (publish instanceof Array) {
+              grunt.log.ok("Module has custom commands, not using defaults.");
+              commands = publish;
+            } else if (typeof publish === "object") {
+              grunt.log.ok("Module has custom commands, not using defaults.");
+              commands = [publish];
+            } else if (publish !== true) {
+              grunt.log.ok("Module is configured to skip this step.");
+              return;
+            }
           }
 
           var options = {cwd: moduleData.paths[pathKey]};
