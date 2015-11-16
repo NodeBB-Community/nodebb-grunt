@@ -1,8 +1,0 @@
-{
-  "id": "nodebb-theme-@{id}",
-  "name": "@{name}",
-  "description": "@{desc}",
-  "url": "https://www.github.com/@{gh}/nodebb-theme-@{id}",
-  "screenshot": "screenshot.png",
-  "templates": "templates"
-}
