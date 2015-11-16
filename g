@@ -13,6 +13,8 @@
 #    Starts the grunt init-task for new module setup.
 #  s | stop
 #    Stops any production instance of NodeBB (just calls `./nodebb stop` within NodeBB root).
+#  r | restart
+#    Restarts any production instance of NodeBB (just calls `./nodebb restart` within NodeBB root).
 #  l | log
 #    Shows logging of production instance of NodeBB (just calls `./nodebb log` within NodeBB root).
 #  v | version
@@ -31,6 +33,8 @@
 #      Starts the grunt publish-task of the module.
 #    s | stop
 #      Stops any production instance of NodeBB (just calls `./nodebb stop` within NodeBB root).
+#    r | restart
+#      Restarts any production instance of NodeBB (just calls `./nodebb restart` within NodeBB root).
 #    l | log
 #      Shows logging of production instance of NodeBB (just calls `./nodebb log` within NodeBB root).
 
@@ -115,6 +119,11 @@ if [ $# -eq 1 ]; then
       exit $?
       ;;
 
+    "r"|"restart")
+      (cd "$NBB_ROOT" && "$NBB" restart)
+      exit $?
+      ;;
+
     "l"|"log")
       (cd "$NBB_ROOT" && "$NBB" log)
       exit $?
@@ -170,6 +179,11 @@ elif [ $# -eq 2 ]; then
 
     "s"|"stop")
       (cd "$NBB_ROOT" && "$NBB" stop)
+      exit $?
+      ;;
+
+    "r"|"restart")
+      (cd "$NBB_ROOT" && "$NBB" restart)
       exit $?
       ;;
 

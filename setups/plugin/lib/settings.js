@@ -18,9 +18,11 @@ var defaultSettings = {
   custom: true
 };
 
-exports = module.exports = new Settings(packageJSON.name, packageJSON.version, defaultSettings, null, dev, false);
+var id = "@{id}";
 
-exports.id = "@{id}";
+exports = module.exports = new Settings(id, packageJSON.version, defaultSettings, null, dev, false);
+
+exports.id = id;
 exports.Id = "@{Id}";
 exports.iD = "@{iD}";
 exports.ID = "@{ID}";
