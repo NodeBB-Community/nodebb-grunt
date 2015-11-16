@@ -1,6 +1,6 @@
 {
   "name": "nodebb-grunt",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "grunt": "^0.4.5",

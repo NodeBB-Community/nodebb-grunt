@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 [![Dependency Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development)
 [![optionalDependencies Status](https://david-dm.org/frissdiegurke/nodebb-grunt-development/optional-status.svg)](https://david-dm.org/frissdiegurke/nodebb-grunt-development#info=optionalDependencies)
-![Version 1.0.0-alpha.1](https://img.shields.io/badge/version-1.0.0--alpha.1-lightgrey.svg)
+![Version 1.0.0](https://img.shields.io/badge/version-1.0.0-lightgrey.svg)
 
 **This project is in alpha phase, see below for TODO tasks**
 
