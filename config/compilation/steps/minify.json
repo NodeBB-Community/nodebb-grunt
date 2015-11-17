@@ -1,20 +1,22 @@
 {
   "steps": {
     "minify": {
-      "compiler": "minify",
-      "options": {
-        "preserveComments": "some",
-        "maxLineLen": 4000
-      },
-      "files": [
-        {
-          "expand": true,
-          "src": [
-            "public/**/*.js",
-            "!public/**/vendor/**/*.js"
-          ]
-        }
-      ]
+      "default": {
+        "compiler": "minify",
+        "options": {
+          "preserveComments": "some",
+          "maxLineLen": 4000
+        },
+        "files": [
+          {
+            "expand": true,
+            "src": [
+              "public/**/*.js",
+              "!public/**/vendor/**/*.js"
+            ]
+          }
+        ]
+      }
     }
   }
 }

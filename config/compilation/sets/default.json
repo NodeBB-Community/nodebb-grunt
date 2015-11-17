@@ -2,12 +2,14 @@
   "sets": {
     "default": {
       "dev": [
-        "steps.meta.default"
+        "steps.meta.default",
+        "steps.less.default"
       ],
       "dist": [
         "steps.codeQuality.default",
-        "sets.default.dev",
-        "steps.minify"
+        "steps.meta.default",
+        "steps.less.compressed",
+        "steps.minify.default"
       ]
     }
   }

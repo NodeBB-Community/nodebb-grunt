@@ -2,12 +2,16 @@
   "sets": {
     "coffee": {
       "dev": [
-        "sets.default.dev",
-        "steps.coffee"
+        "steps.meta.default",
+        "steps.less.default",
+        "steps.coffee.default"
       ],
       "dist": [
-        "sets.coffee.dev",
-        "steps.minify"
+        "steps.codeQuality.default",
+        "steps.meta.default",
+        "steps.less.compressed",
+        "steps.coffee.default",
+        "steps.minify.default"
       ]
     }
   }

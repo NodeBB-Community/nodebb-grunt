@@ -1,28 +1,27 @@
 {
   "steps": {
-    "typescript": [
-      {
-        "compiler": "typescript",
-        "src": ["lib/**/*.ts"],
-        "options": {
-          "target": "ES5"
+    "typescript": {
+      "default": [
+        {
+          "compiler": "typescript",
+          "src": ["lib/**/*.ts"],
+          "options": {
+            "target": "ES5"
+          }
+        },
+        {
+          "compiler": "clean",
+          "src": "lib/**/*.ts"
+        },
+        {
+          "compiler": "typescript",
+          "src": ["**/*.ts"]
+        },
+        {
+          "compiler": "clean",
+          "src": "**/*.ts"
         }
-      },
-      {
-        "compiler": "clean",
-        "src": "lib/**/*.ts"
-      },
-      {
-        "compiler": "typescript",
-        "src": ["**/*.ts"],
-        "options": {
-
-        }
-      },
-      {
-        "compiler": "clean",
-        "src": "**/*.ts"
-      }
-    ]
+      ]
+    }
   }
 }

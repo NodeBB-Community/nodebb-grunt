@@ -2,13 +2,16 @@
   "sets": {
     "typescript": {
       "dev": [
-        "sets.default.dev",
-        "steps.typescript"
+        "steps.meta.default",
+        "steps.less.default",
+        "steps.typescript.default"
       ],
       "dist": [
         "steps.codeQuality.default",
-        "sets.typescript.dev",
-        "steps.minify"
+        "steps.meta.default",
+        "steps.less.compressed",
+        "steps.typescript.default",
+        "steps.minify.default"
       ]
     }
   }

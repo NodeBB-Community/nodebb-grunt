@@ -1,0 +1,33 @@
+{
+  "steps": {
+    "less": {
+      "default": [
+        {
+          "compiler": "less",
+          "expand": true,
+          "src": "public/static/**/*.less",
+          "ext": ".css"
+        },
+        {
+          "compiler": "clean",
+          "src": "public/static/**/*.less"
+        }
+      ],
+      "compressed": [
+        {
+          "compiler": "less",
+          "expand": true,
+          "src": "public/static/**/*.less",
+          "ext": ".css",
+          "options": {
+            "compress": true
+          }
+        },
+        {
+          "compiler": "clean",
+          "src": "public/static/**/*.less"
+        }
+      ]
+    }
+  }
+}

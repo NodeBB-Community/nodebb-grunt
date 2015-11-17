@@ -1,29 +1,31 @@
 {
   "steps": {
-    "coffee": [
-      {
-        "compiler": "coffee",
-        "expand": true,
-        "src": "lib/**/*.coffee",
-        "ext": ".js",
-        "options": {
-          "bare": true
+    "coffee": {
+      "default": [
+        {
+          "compiler": "coffee",
+          "expand": true,
+          "src": "lib/**/*.coffee",
+          "ext": ".js",
+          "options": {
+            "bare": true
+          }
+        },
+        {
+          "compiler": "clean",
+          "src": "lib/**/*.coffee"
+        },
+        {
+          "compiler": "coffee",
+          "expand": true,
+          "src": "**/*.coffee",
+          "ext": ".js"
+        },
+        {
+          "compiler": "clean",
+          "src": "**/*.coffee"
         }
-      },
-      {
-        "compiler": "clean",
-        "src": "lib/**/*.coffee"
-      },
-      {
-        "compiler": "coffee",
-        "expand": true,
-        "src": "**/*.coffee",
-        "ext": ".js"
-      },
-      {
-        "compiler": "clean",
-        "src": "**/*.coffee"
-      }
-    ]
+      ]
+    }
   }
 }
