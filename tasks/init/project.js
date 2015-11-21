@@ -78,15 +78,6 @@ module.exports = function (config, helpers, gruntConfig) {
     }],
 
     meta: [
-      {
-        config: prefix + "version", type: "input", message: "Initial version:", default: "0.1.0",
-        validate: function (version) {
-          if (!semver.valid(version)) {
-            return "Version needs to be semver-valid.";
-          }
-          return true;
-        }
-      },
       {config: prefix + "name", type: "input", message: "Specify the name of your new module (human readable):"},
       {config: prefix + "description", type: "input", message: "Enter a brief description of what the module does:"}
     ],
@@ -258,7 +249,6 @@ module.exports = function (config, helpers, gruntConfig) {
       name: grunt.config(prefix + "name"),
       author: grunt.config(prefix + "author"),
       license: {id: grunt.config(prefix + "license")},
-      version: grunt.config(prefix + "version"),
       description: grunt.config(prefix + "description")
     });
 

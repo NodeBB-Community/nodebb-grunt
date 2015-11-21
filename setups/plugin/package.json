@@ -1,6 +1,6 @@
 {
   "name": "nodebb-${type.name}-${id}",
-  "version": "${version}+@{build}",
+  "version": "0.1.0+@{build}",
   "description": "${description}",
   "main": "lib/main.js",
   "author": "${author.full}",
