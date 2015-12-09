@@ -11,7 +11,11 @@
 #    Starts the grunt config-task.
 #  m | module | n | new | i | init
 #    Starts the grunt init-task for new module setup.
-#  s | stop
+#  s | start
+#    Starts production instance of NodeBB (just calls `./nodebb start` within NodeBB root).
+#  d | dev
+#    Starts development instance of NodeBB (just calls `./nodebb dev` within NodeBB root).
+#  t | stop | terminate
 #    Stops any production instance of NodeBB (just calls `./nodebb stop` within NodeBB root).
 #  r | restart
 #    Restarts any production instance of NodeBB (just calls `./nodebb restart` within NodeBB root).
@@ -31,7 +35,9 @@
 #      Starts the grunt deploy-task of the module.
 #    p | publish
 #      Starts the grunt publish-task of the module.
-#    s | stop
+#    s | start
+#      Starts production instance of NodeBB (just calls `./nodebb start` within NodeBB root).
+#    t | stop | terminate
 #      Stops any production instance of NodeBB (just calls `./nodebb stop` within NodeBB root).
 #    r | restart
 #      Restarts any production instance of NodeBB (just calls `./nodebb restart` within NodeBB root).
@@ -114,7 +120,17 @@ if [ $# -eq 1 ]; then
       exit $?
       ;;
 
-    "s"|"stop")
+    "s"|"start")
+      (cd "$NBB_ROOT" && "$NBB" start)
+      exit $?
+      ;;
+
+    "d"|"dev")
+      (cd "$NBB_ROOT" && "$NBB" dev)
+      exit $?
+      ;;
+
+    "t"|"stop"|"terminate")
       (cd "$NBB_ROOT" && "$NBB" stop)
       exit $?
       ;;
@@ -177,7 +193,12 @@ elif [ $# -eq 2 ]; then
       exit $?
       ;;
 
-    "s"|"stop")
+    "s"|"start")
+      (cd "$NBB_ROOT" && "$NBB" start)
+      exit $?
+      ;;
+
+    "t"|"stop"|"terminate")
       (cd "$NBB_ROOT" && "$NBB" stop)
       exit $?
       ;;

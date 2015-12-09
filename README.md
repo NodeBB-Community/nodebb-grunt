@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 [![Dependency Status](https://david-dm.org/NodeBB-Community/nodebb-grunt.svg)](https://david-dm.org/NodeBB-Community/nodebb-grunt)
 [![optionalDependencies Status](https://david-dm.org/NodeBB-Community/nodebb-grunt/optional-status.svg)](https://david-dm.org/NodeBB-Community/nodebb-grunt#info=optionalDependencies)
-![Version 1.0.2](https://img.shields.io/badge/version-1.0.2-lightgrey.svg)
+![Version 2.0.0](https://img.shields.io/badge/version-2.0.0-lightgrey.svg)
 
 This Grunt-Setup simplifies the creation and development workflow on [NodeBB](https://nodebb.org/) plugins, themes and widgets (further called *modules*).
 
