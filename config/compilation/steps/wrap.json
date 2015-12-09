@@ -1,0 +1,22 @@
+{
+  "steps": {
+    "wrap": {
+      "default": {
+        "compiler": "wrap",
+        "options": {
+          "wrapper": ["(function () {", "})();"],
+          "indent": "  "
+        },
+        "files": [
+          {
+            "expand": true,
+            "src": [
+              "public/**/*.js",
+              "!public/**/vendor/**/*.js"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

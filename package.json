@@ -1,6 +1,6 @@
 {
   "name": "nodebb-grunt",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "dependencies": {
     "grunt": "^0.4.5",
@@ -23,6 +23,7 @@
     "grunt-jscs": "^2.3.0",
     "grunt-jslint": "^1.1.14",
     "grunt-tslint": "^2.5.0",
-    "grunt-typescript": "^0.8.0"
+    "grunt-typescript": "^0.8.0",
+    "grunt-wrap": "^0.3.0"
   }
 }
