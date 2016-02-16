@@ -29,6 +29,8 @@
 #  The second parameter may be one of the following:
 #    d | dev
 #      Starts the grunt dev-task of the module and `grunt` within NodeBB root.
+#    ds | dev_stop
+#      Starts the grunt dev_stop-task of the module.
 #    b | build
 #      Starts the grunt build-task of the module and afterwards the NodeBB instance in production mode.
 #    e | deploy
@@ -170,6 +172,11 @@ elif [ $# -eq 2 ]; then
     "d"|"dev")
       grunt "$GRUNT_FILE" dev:"$1" &
       grunt "$GRUNT_FILE_NBB"
+      exit $?
+      ;;
+
+    "ds"|"dev_stop")
+      grunt "$GRUNT_FILE" dev_stop:"$1"
       exit $?
       ;;
 
