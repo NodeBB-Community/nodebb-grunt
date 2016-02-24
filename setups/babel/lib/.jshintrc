@@ -1,0 +1,18 @@
+{
+  "eqnull": true,
+  "curly": true,
+  "globalstrict": true,
+  "strict": true,
+  "boss": true,
+  "undef": true,
+  "expr": true,
+  "nonew": true,
+  "unused": true,
+  "noarg": true,
+  "node": true,
+  "noempty": true,
+  "newcap": true,
+  "nonbsp": true,
+  "esnext": true,
+  "quotmark": "double"
+}

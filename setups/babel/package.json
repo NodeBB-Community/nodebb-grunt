@@ -1,0 +1,21 @@
+{
+  "name": "nodebb-${type.name}-${id}",
+  "version": "0.1.0+@{build}",
+  "description": "${description}",
+  "main": "lib/main.js",
+  "author": "${author.full}",
+  "contributors": [
+    "${author.full}"
+  ],
+  "license": "${license.id}",
+  "repository": {
+    "type": "git",
+    "url": "${git}"
+  },
+  "nbbpm": {
+    "id": "@{id}",
+    "name": "${name}",
+    "type": "@{type.name}",
+    "compatibility": "${nbbpm.compatibility}"
+  }
+}

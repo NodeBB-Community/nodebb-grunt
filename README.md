@@ -39,6 +39,7 @@ The most interesting tasks you need to know ( *my-module* may either be the name
 ## TODO
 
  + Basic plugin-, theme- and widgets-setups
+ + Excessive use of ES6 features within plugin-babel setup
  + Save necessary meta within module source dir to *import* a project into nodebb-grunt (type-definition)
  + Create wiki step-by-step guides for
     * NodeBB Grunt setup

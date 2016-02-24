@@ -1,0 +1,25 @@
+{
+  "plugin-babel": {
+    "name": "Plugin Babel",
+    "sort": 110,
+    "compilation": "babel",
+    "setup": {
+      "base": "setups/${type.id}",
+      "metaReplace": {
+        "regex": "\\$\\{([^}]+)}",
+        "files": [
+          "LICENSE",
+          "README.md",
+          "package.json",
+          "plugin.json"
+        ],
+        "paths": ["**/*"]
+      },
+      "meta": {
+        "Name": "Plugin",
+        "name": "plugin",
+        "path": "plugins"
+      }
+    }
+  }
+}

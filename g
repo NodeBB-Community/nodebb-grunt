@@ -33,6 +33,8 @@
 #      Starts the grunt dev_stop-task of the module.
 #    b | build
 #      Starts the grunt build-task of the module and afterwards the NodeBB instance in production mode.
+#    bs | build_stop
+#      Starts the grunt build-task of the module.
 #    e | deploy
 #      Starts the grunt deploy-task of the module.
 #    p | publish
@@ -188,6 +190,11 @@ elif [ $# -eq 2 ]; then
         code=$?
       fi
       exit ${code}
+      ;;
+
+    "bs"|"build_stop")
+      grunt "$GRUNT_FILE" build:"$1"
+      exit $?
       ;;
 
     "e"|"deploy")

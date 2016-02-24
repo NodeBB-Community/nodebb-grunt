@@ -1,0 +1,15 @@
+{
+  "steps": {
+    "babel": {
+      "default": {
+        "compiler": "babel",
+        "src": ["lib/**/*.js", "public/**/*.js"],
+        "dest": "./",
+        "expand": true,
+        "options": {
+          "presets": ["es2015"]
+        }
+      }
+    }
+  }
+}

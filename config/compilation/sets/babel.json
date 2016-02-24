@@ -1,0 +1,17 @@
+{
+  "sets": {
+    "babel": {
+      "dev": [
+        "steps.meta.default",
+        "steps.less.default"
+      ],
+      "dist": [
+        "steps.codeQuality.default",
+        "steps.meta.default",
+        "steps.babel.default",
+        "steps.less.compressed",
+        "steps.minify.default"
+      ]
+    }
+  }
+}
