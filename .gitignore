@@ -2,5 +2,6 @@
 .idea/
 node_modules/
 /modules/
-/NodeBB
+/NodeBB-*/
 /config/**/*.local.json
+/local/
