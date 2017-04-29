@@ -32,7 +32,7 @@ var SUPPORTED_LINTERS = {
 module.exports = function (config, helpers, gruntConfig) {
   var grunt = this;
   var enabled = [];
-  var linters = _.pick(SUPPORTED_LINTERS, function (tool) {
+  var linters = _.pick(SUPPORTED_LINTERS, tool => {
     if (_.contains(enabled, tool.task)) {
       return true;
     }
@@ -47,14 +47,14 @@ module.exports = function (config, helpers, gruntConfig) {
 
   function mapDirectoryRecursive(options, dir, queue, targets) {
     var files = fs.readdirSync(dir);
-    _.each(linters, function (tool, key) {
+    _.each(linters, (tool, key) => {
       var idx = _.indexOf(files, key);
       if (~idx) {
         var file = path.join(dir, files[idx]);
         try {
           var stats = fs.statSync(file);
           if (stats.isFile()) {
-            var entry = {configFile: file, options: JSON.parse(fs.readFileSync(file)), tool: tool, files: []};
+            var entry = {configFile: file, options: JSON.parse(fs.readFileSync(file)), tool, files: []};
             targets = _.clone(targets);
             targets[tool.task] = entry;
             files.splice(idx, 1);
@@ -63,11 +63,11 @@ module.exports = function (config, helpers, gruntConfig) {
         } catch (e) {}
       }
     });
-    _.each(files, function (filename) {
+    _.each(files, filename => {
       var file = path.join(dir, filename);
       var stats = fs.statSync(file);
       if (stats.isFile() && (!options.files || grunt.file.match(options, options.files, file))) {
-        _.each(targets, function (match) {
+        _.each(targets, match => {
           if (filename.endsWith(match.tool.ext)) {
             match.files.push(file);
           }
@@ -78,7 +78,7 @@ module.exports = function (config, helpers, gruntConfig) {
     });
   }
 
-  grunt.registerTask("codeQuality_step", function () {
+  grunt.registerTask("codeQuality_step", () => {
     var active = grunt.config.get("codeQuality");
     var entry = active.stack.pop();
     grunt.config.set("codeQuality", active);
@@ -110,7 +110,7 @@ module.exports = function (config, helpers, gruntConfig) {
   });
 
   return {
-    process: function (module, options) {
+    process(module, options) {
       if (_.isEmpty(linters)) {
         grunt.log.warn("WARN: For code quality checks you need to install at least one of the supported tasks: " + _.pluck(SUPPORTED_LINTERS, "module").join(" "));
         grunt.log.warn("WARN: skipping.");

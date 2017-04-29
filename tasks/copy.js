@@ -5,7 +5,7 @@ module.exports = function (config, helpers) {
 
   helpers.loadNpmTask("grunt-contrib-copy");
 
-  grunt.registerTask("copy_tmp", "Copies the active module into the tmp-dir for further processing", function () {
+  grunt.registerTask("copy_tmp", "Copies the active module into the tmp-dir for further processing", () => {
     var moduleData = grunt.config.get("modules.active");
     if (moduleData == null) {
       return grunt.fail.fatal("set_active_module must be run first");
@@ -24,7 +24,7 @@ module.exports = function (config, helpers) {
     grunt.task.run("copy:tmp");
   });
 
-  grunt.registerTask("copy_deploy", "Copies the active module into the deployment directory", function () {
+  grunt.registerTask("copy_deploy", "Copies the active module into the deployment directory", () => {
     var moduleData = grunt.config.get("modules.active");
     if (moduleData == null) {
       return grunt.fail.fatal("set_active_module must be run first");

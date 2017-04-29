@@ -7,9 +7,9 @@ module.exports = function (config, helpers) {
   _.each({
     source: "source",
     distribution: "destination"
-  }, function (pathKey, configKey) {
+  }, (pathKey, configKey) => {
     grunt.registerTask("publish_" + configKey, "Triggers " + configKey + " publish flow for active module.",
-        function () {
+        () => {
           var moduleData = grunt.config.get("modules.active");
           if (moduleData == null) {
             return grunt.fail.fatal("set_active_module must be run first");

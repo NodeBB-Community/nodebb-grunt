@@ -9,7 +9,8 @@ var regexps = require("regexps");
 var prefix = "init.prompt.";
 
 module.exports = function (config, helpers, gruntConfig) {
-  var grunt = this, idOverwriteConfirm = null;
+  var grunt = this;
+  var idOverwriteConfirm = null;
   var keywords = config.meta.keywords instanceof Array ? config.meta.keywords : ["nodebb", "@{type.name}"];
   var metaService = helpers.loadService("meta");
 
@@ -17,40 +18,37 @@ module.exports = function (config, helpers, gruntConfig) {
 
   /*============================================== Question Definitions ==============================================*/
 
-  var customTypeMetaKeys = _.uniq(_.flatten(_.map(_.pluck(_.values(config.types), "meta"), function (val) {
-    return _.keys(val);
-  })));
+  var customTypeMetaKeys = _.uniq(_.flatten(_.map(_.pluck(_.values(config.types), "meta"), val => _.keys(val))));
 
   var questions = {
     type: [
       {
         config: prefix + "type.id", type: "list", message: "Choose the NodeBB module-type:",
-        choices: _.map(_.sortBy(_.compact(_.map(config.types, function (t, k) {
-          return t && {key: k, sort: t.sort, name: t.name};
-        })), "sort"), function (t) {
-          return {name: t.name, value: t.key};
-        }).concat("---", {name: "New Module-Type", value: null})
+        choices: _.map(_.sortBy(_.compact(_.map(config.types, (t, k) => t && {key: k, sort: t.sort, name: t.name})), "sort"), t => ({
+          name: t.name,
+          value: t.key
+        })).concat("---", {name: "New Module-Type", value: null})
       },
       {
         config: prefix + "customType.id", type: "input", message: "Insert a new ID for the custom NodeBB module-type:",
-        when: function (answers) {
+        when(answers) {
           return answers[prefix + "type.id"] === null;
         }
       }
-    ].concat(_.map(customTypeMetaKeys, function (key) {
-      return {
-        config: prefix + "customType.meta." + key, type: "input",
-        message: "Insert the value for '" + key + "' of the new custom module:",
-        when: function (answers) {
-          return answers[prefix + "type.id"] === null && config.types[answers[prefix + "customType.id"]] == null;
-        }
-      };
-    })),
+    ].concat(_.map(customTypeMetaKeys, key => ({
+      config: prefix + "customType.meta." + key,
+      type: "input",
+      message: "Insert the value for '" + key + "' of the new custom module:",
+
+      when(answers) {
+        return answers[prefix + "type.id"] === null && config.types[answers[prefix + "customType.id"]] == null;
+      }
+    }))),
 
     id: [{
       config: prefix + "id", type: "input",
       message: "Specify the ID of your new module (without nodebb-[type]- prefix):",
-      validate: function (id) {
+      validate(id) {
         if (!id) {
           idOverwriteConfirm = null;
           return "No ID specified.";
@@ -89,7 +87,7 @@ module.exports = function (config, helpers, gruntConfig) {
       },
       {
         config: prefix + "license", type: "input", message: "License-Name:",
-        when: function (answers) {
+        when(answers) {
           return answers[prefix + "license"] === "Others";
         }
       },
@@ -98,10 +96,10 @@ module.exports = function (config, helpers, gruntConfig) {
         type: "input",
         message: "Author:",
         default: metaService.authorObjectToString(config.meta.author),
-        validate: function (str) {
+        validate(str) {
           return metaService.authorStringToObject(str) == null ? "An author needs at least a name." : true;
         },
-        filter: function (str) {
+        filter(str) {
           var obj = metaService.authorStringToObject(str);
           obj.full = str;
           return obj;
@@ -117,9 +115,9 @@ module.exports = function (config, helpers, gruntConfig) {
     git: [{
       config: prefix + "git.provider", type: "list",
       message: "Choose the git-provider to use for the package.json entry:",
-      choices: _.map(config.git.providers, function (url, name) {
-        return {name: name};
-      }).concat("---", {name: "None", value: "$$none"}),
+      choices: _.map(config.git.providers, (url, name) => ({
+        name
+      })).concat("---", {name: "None", value: "$$none"}),
       default: config.git.defaultProvider || "$$none"
     }],
 
@@ -156,7 +154,7 @@ module.exports = function (config, helpers, gruntConfig) {
             meta: {}
           }
         };
-        _.each(customTypeMetaKeys, function (key) {
+        _.each(customTypeMetaKeys, key => {
           t.setup.meta[key] = answers[prefix + "customType.meta." + key];
         });
         grunt.file.write(typePath, JSON.stringify(typeJSON, null, 2));
@@ -220,8 +218,8 @@ module.exports = function (config, helpers, gruntConfig) {
   gruntConfig.prompt.init = {
     options: {
       questions: questionsArray,
-      then: function (answers) {
-        var setAnswer = function (key, val) {
+      then(answers) {
+        var setAnswer = (key, val) => {
           grunt.config.set(prefix + key, answers[prefix + key] = val);
           return val;
         };
@@ -236,8 +234,9 @@ module.exports = function (config, helpers, gruntConfig) {
 
   /*----------------------------------- Collect information and create module-file -----------------------------------*/
 
-  grunt.registerTask("initProject", "Creates an initial module as specified by the prompt:init task", function () {
-    var typeId = grunt.config(prefix + "type.id"), type = config.types[typeId];
+  grunt.registerTask("initProject", "Creates an initial module as specified by the prompt:init task", () => {
+    var typeId = grunt.config(prefix + "type.id");
+    var type = config.types[typeId];
 
     var module = {
       type: typeId,
@@ -252,18 +251,18 @@ module.exports = function (config, helpers, gruntConfig) {
       description: grunt.config(prefix + "description")
     });
 
-    var metaReplaceData = type.setup.metaReplace,
-        metaReplace = helpers.getReplacer(new RegExp(metaReplaceData.regex, "g"), meta);
+    var metaReplaceData = type.setup.metaReplace;
+    var metaReplace = helpers.getReplacer(new RegExp(metaReplaceData.regex, "g"), meta);
 
     meta.license.text = metaReplace(helpers.getLicenseText(meta.license.id));
     meta.git = metaReplace(grunt.config(prefix + "git.url"));
     meta.keywords = metaReplace(grunt.config(prefix + "keywords"));
     meta.aliases = module.aliases = metaReplace(grunt.config(prefix + "aliases"));
 
-    var moduleFile = path.join(config.cwd, "modules", meta.id + ".json"),
-        destination = path.join(config.cwd, metaReplace(config.paths.source.base)),
-        source = path.join(config.cwd, metaReplace(type.setup.base)),
-        relDestination = path.relative(config.cwd, destination);
+    var moduleFile = path.join(config.cwd, "modules", meta.id + ".json");
+    var destination = path.join(config.cwd, metaReplace(config.paths.source.base));
+    var source = path.join(config.cwd, metaReplace(type.setup.base));
+    var relDestination = path.relative(config.cwd, destination);
 
     if (!grunt.file.exists(moduleFile) && grunt.file.exists(destination)) {
       grunt.log.ok("The module-destination '" + relDestination + "' exists already. Overwriting.");
@@ -291,10 +290,10 @@ module.exports = function (config, helpers, gruntConfig) {
     });
     grunt.config.set("initProjectReplace.options", {
       cwd: destination,
-      meta: meta,
-      moduleMeta: moduleMeta,
-      metaReplace: metaReplace,
-      metaReplaceData: metaReplaceData
+      meta,
+      moduleMeta,
+      metaReplace,
+      metaReplaceData
     });
 
     grunt.log.ok("Set-up copy-task 'copy:init': " + path.relative(config.cwd, source) + " -> " + relDestination);
@@ -325,14 +324,14 @@ module.exports = function (config, helpers, gruntConfig) {
       grunt.file.write(packagePath, JSON.stringify(packageJSON, null, 2));
     }
     // write meta-replaces as specified within config/types.json
-    _.each(grunt.file.expand({cwd: options.cwd}, options.metaReplaceData.files), function (filePath) {
+    _.each(grunt.file.expand({cwd: options.cwd}, options.metaReplaceData.files), filePath => {
       filePath = path.join(options.cwd, filePath);
       if (grunt.file.isFile(filePath)) {
         grunt.file.write(filePath, metaReplace(grunt.file.read(filePath)));
       }
     });
     // write meta-replaces for paths as specified within config/types.json
-    _.each(grunt.file.expand({cwd: options.cwd}, options.metaReplaceData.paths), function (filePath) {
+    _.each(grunt.file.expand({cwd: options.cwd}, options.metaReplaceData.paths), filePath => {
       filePath = path.join(options.cwd, filePath);
       var newFilePath = metaReplace(filePath);
       if (newFilePath !== filePath) {

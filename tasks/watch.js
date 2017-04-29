@@ -7,7 +7,7 @@ module.exports = function (config, helpers) {
 
   helpers.loadNpmTask("grunt-contrib-watch");
 
-  grunt.registerTask("watch_module", "Watch for file changes within active module", function () {
+  grunt.registerTask("watch_module", "Watch for file changes within active module", () => {
     var moduleData = grunt.config.get("modules.active");
     if (moduleData == null) {
       return grunt.fail.fatal("set_active_module must be run first");

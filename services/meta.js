@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports.authorObjectToString = function (obj) {
+module.exports.authorObjectToString = obj => {
   if (typeof obj.name !== "string") {
     return "";
   }
@@ -14,7 +14,7 @@ module.exports.authorObjectToString = function (obj) {
   return string;
 };
 
-module.exports.authorStringToObject = function (string) {
+module.exports.authorStringToObject = string => {
   var obj = {};
   var name = /^[^<\(]*/.exec(string);
   if (name == null) {

@@ -26,7 +26,7 @@ module.exports = function (config, helpers, gruntConfig) {
   ];
 
   return {
-    process: function (module, options) {
+    process(module, options) {
       if (options.options == null) { options.options = {}; }
 
       var optPaths = options.options.paths;

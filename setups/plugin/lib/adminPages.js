@@ -11,7 +11,7 @@ var pages = [
     name: settings.pkg.nbbpm.name,
     icon: "fa-chevron-circle-right",
     route: "/plugins/" + settings.id,
-    template: function () {
+    template() {
       return {
         id: settings.pkg.name,
         name: settings.pkg.nbbpm.name,
@@ -31,7 +31,7 @@ function initPageRoute(router, UIMiddleware, page) {
   router.get("/api/admin" + page.route, renderPage);
 }
 
-exports.addNavigation = function (header, cb) {
+exports.addNavigation = (header, cb) => {
   var page;
   for (var i = 0; i < pages.length; i++) {
     page = pages[i];
@@ -40,7 +40,7 @@ exports.addNavigation = function (header, cb) {
   cb(null, header);
 };
 
-exports.onInit = function (data, cb) {
+exports.onInit = (data, cb) => {
   var page;
   for (var i = 0; i < pages.length; i++) {
     page = pages[i];

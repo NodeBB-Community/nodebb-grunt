@@ -13,7 +13,7 @@ module.exports = function (config, helpers, gruntConfig) {
   gruntConfig.babel = {};
 
   return {
-    process: function (module, options) {
+    process(module, options) {
       grunt.config.set("babel.step", options);
       return "babel:step";
     }

@@ -5,7 +5,8 @@ var path = require("path");
 var prefix = "config.prompt.";
 
 module.exports = function (config, helpers, gruntConfig) {
-  var grunt = this, nameOverwriteConfirm = null;
+  var grunt = this;
+  var nameOverwriteConfirm = null;
   var metaService = helpers.loadService("meta");
 
   helpers.loadNpmTask("grunt-prompt");
@@ -18,10 +19,10 @@ module.exports = function (config, helpers, gruntConfig) {
           type: "input",
           message: "Specify the default author-value:",
           default: metaService.authorObjectToString(config.meta.author),
-          validate: function (str) {
+          validate(str) {
             return metaService.authorStringToObject(str) == null ? "An author needs at least a name." : true;
           },
-          filter: function (str) {
+          filter(str) {
             return metaService.authorStringToObject(str);
           }
         },
@@ -36,7 +37,7 @@ module.exports = function (config, helpers, gruntConfig) {
           type: "input",
           message: "Specify your GitHub username:",
           default: config.meta.GitHubAuthor,
-          when: function (answers) {
+          when(answers) {
             return answers[prefix + "github.use"] === true;
           }
         },
@@ -46,10 +47,10 @@ module.exports = function (config, helpers, gruntConfig) {
           message: "Insert the git-repository URL schema of your providers public-access URLs." + grunt.util.linefeed +
           "  Sample: https://github.com/frissdiegurke/@{name}.git" + grunt.util.linefeed +
           "  Keep empty if you don't want it to be set within package.json of your modules." + grunt.util.linefeed,
-          when: function (answers) {
+          when(answers) {
             return answers[prefix + "github.use"] === false;
           },
-          filter: function (str) {
+          filter(str) {
             return str.trim() || null;
           }
         },
@@ -57,10 +58,10 @@ module.exports = function (config, helpers, gruntConfig) {
           config: prefix + "repository.providerName",
           type: "input",
           message: "Insert any id for the git-URL schema specified above:",
-          when: function (answers) {
+          when(answers) {
             return typeof answers[prefix + "repository.url"] === "string";
           },
-          validate: function (str) {
+          validate(str) {
             if (str === "$$none") {
               return "Reserved Keyword";
             }
@@ -90,7 +91,7 @@ module.exports = function (config, helpers, gruntConfig) {
           default: config.paths.nodeBB.deploy
         }
       ],
-      then: function (answers) {
+      then(answers) {
         var configDir = path.join(config.cwd, "config");
         var meta = grunt.file.readJSON(path.join(configDir, "meta.json"));
         var paths = grunt.file.readJSON(path.join(configDir, "paths.json"));

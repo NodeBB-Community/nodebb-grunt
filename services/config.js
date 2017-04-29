@@ -6,9 +6,11 @@ var path = require("path");
 var _cfg = ["compilation", "types", "git", "licenses", "meta", "paths", "publish"];
 
 module.exports = function (cwd) {
-  var grunt = this, config = {}, current;
+  var grunt = this;
+  var config = {};
+  var current;
 
-  var mergeFile = function (file) { current = _.merge(current, grunt.file.readJSON(file)); };
+  var mergeFile = file => { current = _.merge(current, grunt.file.readJSON(file)); };
 
   for (var i = 0; i < _cfg.length; i++) {
     current = null;

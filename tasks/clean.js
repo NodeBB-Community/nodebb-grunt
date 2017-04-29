@@ -7,7 +7,7 @@ module.exports = function (config, helpers) {
 
   helpers.loadNpmTask("grunt-contrib-clean");
 
-  grunt.registerTask("clean_tmp", "Cleans the temporary data of the active module", function () {
+  grunt.registerTask("clean_tmp", "Cleans the temporary data of the active module", () => {
     var moduleData = grunt.config.get("modules.active");
     if (moduleData == null) {
       return grunt.fail.fatal("set_active_module must be run first");
@@ -16,7 +16,7 @@ module.exports = function (config, helpers) {
     grunt.task.run("clean:active");
   });
 
-  grunt.registerTask("clean_deploy", "Cleans the deployment data of the active module", function () {
+  grunt.registerTask("clean_deploy", "Cleans the deployment data of the active module", () => {
     var moduleData = grunt.config.get("modules.active");
     if (moduleData == null) {
       return grunt.fail.fatal("set_active_module must be run first");
