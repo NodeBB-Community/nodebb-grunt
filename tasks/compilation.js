@@ -2,7 +2,7 @@ module.exports = function (config, helpers) {
   "use strict";
   var grunt = this;
 
-  grunt.registerTask("compilation_step", "Runs iterative all compilation steps from config", function () {
+  grunt.registerTask("compilation_step", "Runs iterative all compilation steps from config", () => {
     var moduleData = grunt.config.get("modules.active");
     if (moduleData == null) {
       return grunt.fail.fatal("set_active_module must be run first");
@@ -25,7 +25,7 @@ module.exports = function (config, helpers) {
     }
   });
 
-  grunt.registerTask("compilation", "Runs compilation of module as defined within config", function () {
+  grunt.registerTask("compilation", "Runs compilation of module as defined within config", () => {
     var moduleData = grunt.config.get("modules.active");
     if (moduleData == null) {
       return grunt.fail.fatal("set_active_module must be run first");
@@ -41,7 +41,7 @@ module.exports = function (config, helpers) {
     }
   });
 
-  grunt.registerTask("compilation_step_done", "Resets the cwd", function () { grunt.file.setBase(config.cwd); });
+  grunt.registerTask("compilation_step_done", "Resets the cwd", () => { grunt.file.setBase(config.cwd); });
 
   return {};
 };

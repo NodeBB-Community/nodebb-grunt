@@ -7,7 +7,7 @@
  * grunt-tasks).
  */
 
-define("@{type.name}/@{id}", function () {
+define("@{type.name}/@{id}", () => {
   var version = "@{>version}".split("+");
 
   return {

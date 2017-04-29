@@ -14,7 +14,7 @@ module.exports = function (config, helpers, gruntConfig) {
   gruntConfig.coffee = {};
 
   return {
-    process: function (module, options) {
+    process(module, options) {
       grunt.config.set("coffee.step", options);
       return "coffee:step";
     }

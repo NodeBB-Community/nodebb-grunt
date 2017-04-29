@@ -14,7 +14,7 @@ module.exports = function (config, helpers, gruntConfig) {
   gruntConfig.concat = {};
 
   return {
-    process: function (module, options) {
+    process(module, options) {
       grunt.config.set("concat.step", options);
       return "concat:step";
     }

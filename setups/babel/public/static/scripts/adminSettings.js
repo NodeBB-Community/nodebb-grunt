@@ -7,27 +7,27 @@
  * grunt-tasks).
  */
 
-require(["settings"], function (settings) {
+require(["settings"], settings => {
   var moduleId = "@{id}";
   var wrapper = $("#" + moduleId + "-settings");
 
   // synchronize settings instantly
   settings.sync(moduleId, wrapper);
 
-  wrapper.find("#" + moduleId + "-settings-save").click(function (event) {
+  wrapper.find("#" + moduleId + "-settings-save").click(event => {
     event.preventDefault();
-    settings.persist(moduleId, wrapper, function () { socket.emit("admin.settings.sync@{Id}"); });
+    settings.persist(moduleId, wrapper, () => { socket.emit("admin.settings.sync@{Id}"); });
   });
 
-  wrapper.find("#" + moduleId + "-settings-reset").click(function (event) {
+  wrapper.find("#" + moduleId + "-settings-reset").click(event => {
     event.preventDefault();
     settings.sync(moduleId, wrapper);
   });
 
-  wrapper.find("#" + moduleId + "-settings-purge").click(function (event) {
+  wrapper.find("#" + moduleId + "-settings-purge").click(event => {
     event.preventDefault();
-    socket.emit("admin.settings.get@{Id}Defaults", null, function (err, data) {
-      settings.set(moduleId, data, wrapper, function () { socket.emit("admin.settings.sync@{Id}"); });
+    socket.emit("admin.settings.get@{Id}Defaults", null, (err, data) => {
+      settings.set(moduleId, data, wrapper, () => { socket.emit("admin.settings.sync@{Id}"); });
     });
   });
 });

@@ -4,7 +4,7 @@
  * All files within public/scripts/ get executed on client-side as by default plugin.json
  */
 
-require(["@{type.name}/@{id}", "alerts"], function (module, alerts) {
+require(["@{type.name}/@{id}", "alerts"], (module, alerts) => {
   var sampleImagePath = RELATIVE_PATH + "/plugins/" + module.id + "/static/sample.png";
 
   alerts.alert(

@@ -6,8 +6,9 @@ var path = require("path");
 module.exports = function (config, helpers) {
   var grunt = this;
 
-  grunt.registerTask("set_active_module", "Collects information about the given module", function (id) {
-    var moduleFile = helpers.findModule(id), alias = id;
+  grunt.registerTask("set_active_module", "Collects information about the given module", id => {
+    var moduleFile = helpers.findModule(id);
+    var alias = id;
     if (!moduleFile || !grunt.file.exists(moduleFile)) {
       return grunt.fail.fatal("Module '" + id + "' not found.");
     }
@@ -18,8 +19,8 @@ module.exports = function (config, helpers) {
       var meta = helpers.getMetaData(id, grunt.file.readJSON(moduleFile).type);
       var type = config.types[meta.type.id];
 
-      var metaReplaceData = type.setup.metaReplace,
-          metaReplace = helpers.getReplacer(new RegExp(metaReplaceData.regex, "g"), meta);
+      var metaReplaceData = type.setup.metaReplace;
+      var metaReplace = helpers.getReplacer(new RegExp(metaReplaceData.regex, "g"), meta);
 
       var sourcePath = path.join(config.cwd, metaReplace(config.paths.source.base));
       var moduleMetaFile = path.join(sourcePath, ".meta.json");
@@ -30,11 +31,11 @@ module.exports = function (config, helpers) {
       meta.paths = config.paths;
 
       data = {
-        id: id,
-        alias: alias,
-        meta: meta,
-        metaReplace: metaReplace,
-        metaReplaceData: metaReplaceData,
+        id,
+        alias,
+        meta,
+        metaReplace,
+        metaReplaceData,
         paths: {
           info: moduleFile,
           source: sourcePath,
@@ -54,7 +55,7 @@ module.exports = function (config, helpers) {
     grunt.config.set("modules.active", data);
   });
 
-  grunt.registerTask("increment_module_build", "Increments the saved build-value of the active module", function () {
+  grunt.registerTask("increment_module_build", "Increments the saved build-value of the active module", () => {
     var moduleData = grunt.config.get("modules.active");
     if (moduleData == null) {
       return grunt.fail.fatal("set_active_module must be run first");

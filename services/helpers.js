@@ -16,26 +16,27 @@ var MODULE_META_STATICS = {
 
 module.exports = function (config, gruntConfig, loadService) {
   var grunt = this;
-  var dependencies = config.pkg.dependencies || {}, optionalDependencies = config.pkg.optionalDependencies || {};
+  var dependencies = config.pkg.dependencies || {};
+  var optionalDependencies = config.pkg.optionalDependencies || {};
 
   //noinspection JSUnusedGlobalSymbols
   var helpers = {
     services: {
-      config: config,
-      helpers: helpers
+      config,
+      helpers
     },
     tasks: {},
 
-    loadService: function (name) {
+    loadService(name) {
       if (helpers.services[name] != null) {
         return helpers.services[name].result;
       }
       var result = loadService.apply(this, arguments);
-      helpers.services[name] = {result: result};
+      helpers.services[name] = {result};
       return result;
     },
 
-    getByKey: function (obj, key) {
+    getByKey(obj, key) {
       if (!key.length) {
         return obj;
       }
@@ -55,7 +56,7 @@ module.exports = function (config, gruntConfig, loadService) {
       return obj[parts[_len]];
     },
 
-    setByKey: function (obj, key, value) {
+    setByKey(obj, key, value) {
       if (obj === null || typeof obj !== "object") {
         return;
       }
@@ -72,7 +73,7 @@ module.exports = function (config, gruntConfig, loadService) {
       return obj[parts[_len]] = value;
     },
 
-    loadTask: function (name, attrName) {
+    loadTask(name, attrName) {
       if (helpers.tasks[name] != null) {
         return helpers.setByKey(gruntConfig, attrName, helpers.tasks[name].result);
       }
@@ -86,19 +87,19 @@ module.exports = function (config, gruntConfig, loadService) {
       if (result != null) {
         helpers.setByKey(gruntConfig, attrName, result);
       }
-      helpers.tasks[name] = {result: result};
+      helpers.tasks[name] = {result};
       return result;
     },
 
-    loadDeepTask: function (dir, name, attrName) {
+    loadDeepTask(dir, name, attrName) {
       return helpers.loadTask(path.join(dir, name), attrName || name);
     },
 
-    loadCompiler: function (name, attrName) {
+    loadCompiler(name, attrName) {
       return helpers.loadTask(path.join("compiler", name), attrName || name + "Compiler");
     },
 
-    exec: function (cmd, options) {
+    exec(cmd, options) {
       if (options == null) {
         options = {};
       }
@@ -122,7 +123,7 @@ module.exports = function (config, gruntConfig, loadService) {
       return res;
     },
 
-    loadNpmTask: function (name) {
+    loadNpmTask(name) {
       if (!grunt.file.exists(path.join(path.resolve("node_modules"), name, "package.json"))) {
         if (dependencies.hasOwnProperty(name)) {
           return grunt.fail.fatal("You need to run 'npm install' first.");
@@ -138,7 +139,7 @@ module.exports = function (config, gruntConfig, loadService) {
       grunt.loadNpmTasks(name);
     },
 
-    readModule: function (id) {
+    readModule(id) {
       var result = grunt.file.readJSON(path.join(config.cwd, "modules", id + ".json"));
       if (result != null) {
         result.id = id;
@@ -146,20 +147,20 @@ module.exports = function (config, gruntConfig, loadService) {
       return result;
     },
 
-    findModules: function () {
+    findModules() {
       var p = path.join(config.cwd, "modules");
       if (!grunt.file.isDir(p)) {
         return config.modules = [];
       }
       var files = fs.readdirSync(p);
-      return config.modules = _.compact(_.map(files, function (file) {
+      return config.modules = _.compact(_.map(files, file => {
         if (path.extname(file) === ".json") {
           return helpers.readModule(path.basename(file, ".json"));
         }
       }));
     },
 
-    findModule: function (alias) {
+    findModule(alias) {
       var p = path.join(config.cwd, "modules");
       if (!grunt.file.isDir(p)) {
         return;
@@ -169,45 +170,39 @@ module.exports = function (config, gruntConfig, loadService) {
         return moduleFile;
       }
       var files = fs.readdirSync(p);
-      var file = _.find(files, function (file) {
-        return path.extname(file) === ".json" &&
-            (~_.indexOf(helpers.readModule(path.basename(file, ".json")).aliases, alias)) &&
-            file;
-      });
+      var file = _.find(files, file => path.extname(file) === ".json" &&
+          (~_.indexOf(helpers.readModule(path.basename(file, ".json")).aliases, alias)) &&
+          file);
       if (file) {
         return path.join(p, file);
       }
     },
 
-    camelCase: function (str) {
-      return str.replace(/[^a-zA-Z\d]+([a-zA-Z\d])/g, function (match, char) {
-        return char.toUpperCase();
-      });
+    camelCase(str) {
+      return str.replace(/[^a-zA-Z\d]+([a-zA-Z\d])/g, (match, char) => char.toUpperCase());
     },
 
-    idToName: function (id) {
-      return id.replace(/(^|[^a-zA-Z])([a-z])/g, function (ignored, bound, letter) {
-        return bound + letter.toUpperCase();
-      });
+    idToName(id) {
+      return id.replace(/(^|[^a-zA-Z])([a-z])/g, (ignored, bound, letter) => bound + letter.toUpperCase());
     },
 
-    getLicenseText: function (name) {
+    getLicenseText(name) {
       return (config.licenses[name] || "").replace(/\n/g, grunt.util.linefeed);
     },
 
-    getMetaData: function (moduleId, moduleType, moduleMeta) {
+    getMetaData(moduleId, moduleType, moduleMeta) {
       if (!config.types.hasOwnProperty(moduleType) || config.types[moduleType] == null) {
         return grunt.fail.fatal("Type '" + moduleType + "' not found.");
       }
-      var iD = helpers.camelCase(moduleId),
-          Id = iD[0].toUpperCase() + iD.substring(1),
-          ID = iD.replace(/([A-Z])/g, "_$1").toUpperCase();
-      var meta = _.extend({id: moduleId, Id: Id, iD: iD, ID: ID}, MODULE_META_STATICS, moduleMeta);
+      var iD = helpers.camelCase(moduleId);
+      var Id = iD[0].toUpperCase() + iD.substring(1);
+      var ID = iD.replace(/([A-Z])/g, "_$1").toUpperCase();
+      var meta = _.extend({id: moduleId, Id, iD, ID}, MODULE_META_STATICS, moduleMeta);
       meta.type = _.extend({id: moduleType}, config.types[moduleType].setup.meta);
       return meta;
     },
 
-    getReplacer: function (regex, content) {
+    getReplacer(regex, content) {
       return function replaceObj(obj) {
         function replaceMatch(match, name) {
           var recursive = name[0] === ">";
@@ -239,11 +234,11 @@ module.exports = function (config, gruntConfig, loadService) {
       };
     },
 
-    getCompilation: function (key, dev) {
+    getCompilation(key, dev) {
       return _.flattenDeep(helpers.populateCompilation(key + (dev ? ".dev" : ".dist")));
     },
 
-    populateCompilation: function (obj) {
+    populateCompilation(obj) {
       var type = typeof obj;
       if (type === "string") {
         return helpers.populateCompilation(helpers.getByKey(config.compilation, obj));

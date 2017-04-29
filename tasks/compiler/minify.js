@@ -14,7 +14,7 @@ module.exports = function (config, helpers, gruntConfig) {
   gruntConfig.uglify = {};
 
   return {
-    process: function (module, options) {
+    process(module, options) {
       grunt.config.set("uglify.step", options);
       return "uglify:step";
     }

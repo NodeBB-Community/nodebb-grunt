@@ -32,7 +32,7 @@ module.exports.process = function (module, options, helpers) {
   var cwd = module.paths.tmp;
 
   // replace meta within files
-  _.each(grunt.file.expand({cwd: cwd}, options.src), function (filePath) {
+  _.each(grunt.file.expand({cwd}, options.src), filePath => {
     filePath = path.join(cwd, filePath);
     if (grunt.file.isFile(filePath)) {
       grunt.file.write(filePath, metaReplace(grunt.file.read(filePath)));
@@ -41,9 +41,9 @@ module.exports.process = function (module, options, helpers) {
 
   // move files if path contains meta
   var replaced = [];
-  _.each(grunt.file.expand({cwd: cwd}, options.src), function (filePath) {
+  _.each(grunt.file.expand({cwd}, options.src), filePath => {
     filePath = path.join(cwd, filePath);
-    _.each(replaced, function (r) { filePath = filePath.replace(r.origin, r.result); });
+    _.each(replaced, r => { filePath = filePath.replace(r.origin, r.result); });
     var newFilePath = metaReplace(filePath);
     if (newFilePath !== filePath) {
       fs.renameSync(filePath, newFilePath);

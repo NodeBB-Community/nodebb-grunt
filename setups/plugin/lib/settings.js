@@ -12,7 +12,9 @@ var Settings = require.main.require("./src/settings");
  * It is not recommended to add any more files, rather it is recommended to add additional exports here if needed.
  */
 
-var env = "@{env}", dev = (env === "development");
+var env = "@{env}";
+
+var dev = (env === "development");
 var defaultSettings = {
   setting1: "Lorem Ipsum",
   custom: true

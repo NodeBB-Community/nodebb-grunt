@@ -9,7 +9,7 @@ var socketRoutes = require("./socketRoutes");
 
 exports.adminMenu = adminPages.addNavigation;
 
-exports.init = function (data, cb) {
+exports.init = (data, cb) => {
   socketRoutes.init();
   adminPages.onInit(data, cb);
 };

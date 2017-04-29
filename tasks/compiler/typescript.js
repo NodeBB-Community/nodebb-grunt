@@ -14,7 +14,7 @@ module.exports = function (config, helpers, gruntConfig) {
   gruntConfig.typescript = {};
 
   return {
-    process: function (module, options) {
+    process(module, options) {
       grunt.config.set("typescript.step", options);
       return "typescript:step";
     }

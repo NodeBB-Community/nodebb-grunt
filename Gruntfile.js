@@ -7,7 +7,7 @@ var cwd = __dirname;
 
 /*================================================ Grunt entry-point  ================================================*/
 
-module.exports = function (grunt) {
+module.exports = grunt => {
   var gruntConfig = {prompt: {}};
 
   /*-------------------------------------- load main services (config, helpers) --------------------------------------*/
@@ -55,7 +55,7 @@ module.exports = function (grunt) {
 
   // load all compilers that may be executed by any existing type-definition (not null)
   _.each(_.uniq(_.flatten(_.map(_.pluck(_.compact(_.map(config.types, _.identity)), "compilation"), getCompilerNames))),
-         function (name) { helpers.loadCompiler(name); });
+         name => { helpers.loadCompiler(name); });
 
   /*---------------------------------------------- persist grunt-config ----------------------------------------------*/
 
@@ -65,28 +65,28 @@ module.exports = function (grunt) {
 
   grunt.registerTask("compile", ["clean_tmp", "copy_tmp", "compilation", "clean_deploy", "copy_deploy"]);
 
-  grunt.registerTask("set_development", "Enables/Sets development task-settings", function (val) {
+  grunt.registerTask("set_development", "Enables/Sets development task-settings", val => {
     grunt.config.set("development", val !== "false");
   });
 
-  grunt.registerTask("dev", "Starts development-mode of specified module [compilation, watch_module]", function (id) {
+  grunt.registerTask("dev", "Starts development-mode of specified module [compilation, watch_module]", id => {
     grunt.task.run("set_development", "set_active_module:" + id, "compile", "watch_module");
   });
-  grunt.registerTask("dev_stop", "Starts development-mode of specified module [compilation]", function (id) {
+  grunt.registerTask("dev_stop", "Starts development-mode of specified module [compilation]", id => {
     grunt.task.run("set_development", "set_active_module:" + id, "compile");
   });
-  grunt.registerTask("dev_skip", "Starts development-mode of specified module [watch_module]", function (id) {
+  grunt.registerTask("dev_skip", "Starts development-mode of specified module [watch_module]", id => {
     grunt.task.run("set_development", "set_active_module:" + id, "watch_module");
   });
 
-  grunt.registerTask("build", "Triggers distribution of specified module", function (id) {
+  grunt.registerTask("build", "Triggers distribution of specified module", id => {
     grunt.task.run("set_development:false", "set_active_module:" + id, "compile");
   });
-  grunt.registerTask("publish", "Triggers publishing of specified module", function (id) {
+  grunt.registerTask("publish", "Triggers publishing of specified module", id => {
     grunt.task.run("set_active_module:" + id, "publish_source", "publish_distribution");
   });
 
-  grunt.registerTask("deploy", "Triggers build and publish of specified module", function (id) {
+  grunt.registerTask("deploy", "Triggers build and publish of specified module", id => {
     grunt.task.run("build:" + id, "publish:" + id);
   });
 
